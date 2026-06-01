@@ -1223,13 +1223,12 @@
           viewport.appendChild(mascotSidePanel);
         }
       } else if (!allCategoriesMode) {
-        // Jika kategori aktif berganti saat mode fokus, ganti board utama secara presisi
+        // Jika kategori aktif berganti saat mode fokus, ganti board utama secara presisi tanpa mengganggu maskot!
         const boardContainer = viewport.querySelector('.board-container');
         const currentCatAttribute = boardContainer ? boardContainer.getAttribute('data-cat') : '';
         
         if (currentCatAttribute !== activeCategory) {
-          const mascotSide = viewport.querySelector('.mascot-board-wrapper');
-          viewport.innerHTML = '';
+          if (boardContainer) boardContainer.remove(); // Hapus board kategori lama saja
           
           let label = '';
           let icon = '';
@@ -1237,8 +1236,11 @@
           else if (activeCategory === 'madya') { label = 'PMR Madya (Tingkat SMP)'; icon = 'fa-school'; }
           else { label = 'PMR Wira (Tingkat SMA)'; icon = 'fa-building-columns'; }
 
-          viewport.appendChild(createStaticBoardDOM(activeCategory, label, icon));
-          if (mascotSide) viewport.appendChild(mascotSide);
+          // Buat board kategori baru
+          const newBoard = createStaticBoardDOM(activeCategory, label, icon);
+          
+          // Sisipkan di posisi paling awal (sebelum maskot)
+          viewport.insertBefore(newBoard, viewport.firstChild);
         }
       }
 
