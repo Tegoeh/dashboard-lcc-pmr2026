@@ -918,6 +918,43 @@
     }
 
     /* ==========================================
+       7.5 COMPACT VIEW FOR PENYISIHAN (ANTI-SCROLL)
+       ========================================== */
+    .board-container.round-penyisihan {
+      padding: 1.1rem 1.6rem;
+      gap: 0.7rem;
+    }
+
+    .board-container.round-penyisihan .board-header {
+      padding-bottom: 0.5rem;
+    }
+
+    .board-container.round-penyisihan .contestant-list {
+      gap: 0.45rem;
+    }
+
+    .board-container.round-penyisihan .contestant-card {
+      padding: 0.5rem 1rem;
+      border-radius: 12px;
+      gap: 0.8rem;
+    }
+
+    .board-container.round-penyisihan .medal-icon-wrapper {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+
+    .board-container.round-penyisihan .team-name {
+      font-size: 0.98rem;
+    }
+
+    .board-container.round-penyisihan .score-val {
+      font-size: 1.55rem;
+    }
+
+    /* ==========================================
        8. ANIMATIONS & KEYFRAMES
        ========================================== */
     @keyframes pulseGlow {
@@ -1606,6 +1643,16 @@
         }
       }
 
+      // Menyesuaikan kelas keringkasan (compact class) babak Penyisihan secara dinamis
+      const boards = viewport.querySelectorAll('.board-container');
+      boards.forEach(board => {
+        if (activeRound === 'penyisihan') {
+          board.classList.add('round-penyisihan');
+        } else {
+          board.classList.remove('round-penyisihan');
+        }
+      });
+
       // Update data kartu di setiap list kontestan yang terpasang di DOM
       if (allCategoriesMode) {
         updateCategoryBoard('mula', viewport.querySelector('.board-container[data-cat="mula"] .contestant-list'));
@@ -1620,6 +1667,9 @@
     function createStaticBoardDOM(cat, title, iconClass) {
       const cardContainer = document.createElement('div');
       cardContainer.className = 'board-container';
+      if (activeRound === 'penyisihan') {
+        cardContainer.classList.add('round-penyisihan');
+      }
       cardContainer.setAttribute('data-cat', cat);
 
       let subLabel = 'Live Skor Pertandingan';
