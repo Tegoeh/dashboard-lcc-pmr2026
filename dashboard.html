@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🏆 LIVE DASHBOARD LCC PMR KABUPATEN JEMBRANA 2026</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* ==========================================
+       1. MODERN DESIGN SYSTEM & RESET
+       ========================================== */
+    :root {
+      --bg-base: #030712; /* Slate 950 ultra-dark */
+      --panel-bg: rgba(15, 23, 42, 0.45); /* Glass base */
+      --panel-border: rgba(255, 255, 255, 0.06);
+      
+      --neon-red: #ff2a5f;
+      --neon-red-glow: rgba(255, 42, 95, 0.35);
+      --neon-blue: #00f0ff;
+      --neon-blue-glow: rgba(0, 240, 255, 0.3);
+      --neon-gold: #f59e0b;
+      --neon-gold-glow: rgba(245, 158, 11, 0.35);
+      
+      --gold: #fbcfe8; /* Soft golden tint */
+      --silver: #e2e8f0;
+      --bronze: #ffedd5;
+      
+      --font-main: 'Plus Jakarta Sans', sans-serif;
+      --font-space: 'Space Grotesk', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(255, 42, 95, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(0, 240, 255, 0.1) 0%, transparent 45%);
+      background-attachment: fixed;
+      color: #f3f4f6;
+      font-family: var(--font-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+
+    /* ==========================================
+       2. PREMIUM ULTRA-MODERN HEADER
+       ========================================== */
+    header {
+      background: rgba(3, 7, 18, 0.6);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--panel-border);
+      padding: 0.8rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .header-logo-side {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    /* Perbaikan Khusus Logo PMI agar Tidak Kebesaran & Tidak Potong */
+    .logo-img-wrapper {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 6px 14px;
+      transition: all 0.3s ease;
+    }
+
+    .logo-img-wrapper:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 42, 95, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .logo-img-wrapper img {
+      height: 100%;
+      max-width: 130px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.15));
+    }
+
+    .header-center-info {
+      text-align: center;
+    }
+
+    .header-center-info h1 {
+      font-family: var(--font-space);
+      font-weight: 700;
+      font-size: 1.6rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #ffffff 40%, #a5f3fc 70%, var(--neon-red) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.15rem;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .live-indicator-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      font-size: 0.85rem;
+      color: #9ca3af;
+    }
+
+    .badge-live-pulse {
+      background: var(--neon-red);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 0.15rem 0.6rem;
+      border-radius: 50px;
+      letter-spacing: 1px;
+      animation: pulseGlow 1.5s infinite;
+      box-shadow: 0 0 10px var(--neon-red-glow);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    /* ==========================================
+       3. NAVIGATION & VIEW CONTROLS
+       ========================================== */
+    .controls-wrapper {
+      padding: 1.5rem 2.5rem 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+    }
+
+    .nav-tabs {
+      display: flex;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 0.25rem;
+      border-radius: 14px;
+      border: 1px solid var(--panel-border);
+      backdrop-filter: blur(8px);
+    }
+
+    .tab-trigger {
+      background: transparent;
+      border: none;
+      color: #9ca3af;
+      padding: 0.7rem 1.4rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: var(--font-space);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tab-trigger.active {
+      background: var(--neon-red);
+      color: white;
+      box-shadow: 0 4px 15px var(--neon-red-glow);
+    }
+
+    .tab-trigger:hover:not(.active) {
+      color: white;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .actions-group {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-control {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--panel-border);
+      color: white;
+      padding: 0.65rem 1.2rem;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-control:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .btn-control.btn-primary {
+      background: linear-gradient(135deg, var(--neon-blue), #0b8fa0);
+      border: none;
+      color: #030712;
+      box-shadow: 0 4px 15px var(--neon-blue-glow);
+    }
+
+    .btn-control.btn-primary:hover {
+      box-shadow: 0 6px 20px rgba(0, 240, 255, 0.55);
+      transform: translateY(-2px);
+    }
+
+    .sync-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.82rem;
+      color: #9ca3af;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 0.65rem 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--panel-border);
+    }
+
+    .status-ping {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+    }
+
+    .status-ping.connecting {
+      background: var(--neon-gold);
+      box-shadow: 0 0 8px var(--neon-gold);
+      animation: pulseGlow 1s infinite;
+    }
+
+    .status-ping.offline {
+      background: var(--neon-red);
+      box-shadow: 0 0 8px var(--neon-red);
+    }
+
+    /* ==========================================
+       4. RESPONSIVE DASHBOARD LAYOUT
+       ========================================== */
+    .dashboard-view-wrapper {
+      flex: 1;
+      padding: 1rem 2.5rem 2.5rem;
+      display: grid;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    /* Mode Fokus 1 Kategori + Maskot Terintegrasi di Dashboard */
+    .view-focus {
+      grid-template-columns: 1fr 340px;
+    }
+
+    /* Mode Tampil Semua Kategori (3 Kolom Sejajar) */
+    .view-grid-all {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .board-container {
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 24px;
+      padding: 1.8rem 2rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Garis Aksentuasi Cahaya di Papan Peringkat */
+    .board-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon-red), var(--neon-blue), transparent);
+    }
+
+    .board-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 1rem;
+    }
+
+    .board-title-group {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .board-icon {
+      font-size: 1.4rem;
+      color: var(--neon-blue);
+      filter: drop-shadow(0 0 6px var(--neon-blue-glow));
+    }
+
+    .board-title {
+      font-family: var(--font-space);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .board-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ==========================================
+       5. CARD KONTESTAN ULTRA-MODERN (LEADERBOARD ITEMS)
+       ========================================== */
+    .contestant-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .contestant-card {
+      background: rgba(255, 255, 255, 0.015);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      border-radius: 16px;
+      padding: 1rem 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    /* Soft Glow Effects untuk Peringkat Teratas */
+    .contestant-card.top-1 {
+      background: linear-gradient(90deg, rgba(245, 158, 11, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%);
+      border-color: rgba(245, 158, 11, 0.22);
+    }
+    .contestant-card.top-2 {
+      background: linear-gradient(90deg, rgba(226, 232, 240, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%);
+      border-color: rgba(226, 232, 240, 0.18);
+    }
+    .contestant-card.top-3 {
+      background: linear-gradient(90deg, rgba(255, 237, 213, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+      border-color: rgba(255, 237, 213, 0.15);
+    }
+
+    .contestant-card:hover {
+      transform: translateX(6px);
+      background: rgba(255, 255, 255, 0.035);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .medal-icon-wrapper {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-space);
+      font-size: 1.25rem;
+      font-weight: 700;
+      position: relative;
+    }
+
+    .top-1 .medal-icon-wrapper {
+      background: linear-gradient(135deg, var(--neon-gold), #b45309);
+      color: #030712;
+      border: none;
+      box-shadow: 0 0 15px var(--neon-gold-glow);
+    }
+    .top-2 .medal-icon-wrapper {
+      background: linear-gradient(135deg, #e2e8f0, #475569);
+      color: #030712;
+      border: none;
+      box-shadow: 0 0 12px rgba(226, 232, 240, 0.35);
+    }
+    .top-3 .medal-icon-wrapper {
+      background: linear-gradient(135deg, #f97316, #7c2d12);
+      color: white;
+      border: none;
+      box-shadow: 0 0 10px rgba(249, 115, 22, 0.3);
+    }
+
+    .info-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .team-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: white;
+      letter-spacing: 0.3px;
+    }
+
+    .team-meta {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .badge-status {
+      background: rgba(255, 42, 95, 0.12);
+      border: 1px solid rgba(255, 42, 95, 0.2);
+      color: var(--neon-red);
+      padding: 0.1rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .score-wrapper {
+      text-align: right;
+    }
+
+    .score-val {
+      font-family: var(--font-space);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: white;
+      line-height: 1;
+    }
+
+    .top-1 .score-val {
+      color: var(--neon-gold);
+      text-shadow: 0 0 8px var(--neon-gold-glow);
+    }
+
+    .score-lbl {
+      font-size: 0.7rem;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Progress Bar (Visualisasi Kesenjangan Skor) */
+    .indicator-bar-bg {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    .indicator-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: rgba(255, 255, 255, 0.1);
+      transition: width 1.5s cubic-bezier(0.1, 0.8, 0.1, 1);
+    }
+
+    .top-1 .indicator-bar-fill { background: linear-gradient(90deg, transparent, var(--neon-gold)); }
+    .top-2 .indicator-bar-fill { background: linear-gradient(90deg, transparent, #e2e8f0); }
+    .top-3 .indicator-bar-fill { background: linear-gradient(90deg, transparent, #f97316); }
+
+    /* ==========================================
+       6. INTEGRATED MASKOT PANEL (TAMPILAN MASKOT MODERN)
+       ========================================== */
+    .mascot-board-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .mascot-card-premium {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.6) 0%, rgba(255, 255, 255, 0.01) 100%);
+      border: 1px solid var(--panel-border);
+      border-radius: 24px;
+      padding: 1.8rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animasi Mengambang Modern untuk Maskot */
+    .floating-mascot-img {
+      width: 100%;
+      max-height: 220px;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 25px rgba(255, 42, 95, 0.25));
+      border-radius: 16px;
+      animation: floatMascot 4s ease-in-out infinite;
+      margin-bottom: 1.2rem;
+      transition: transform 0.3s ease;
+    }
+
+    .floating-mascot-img:hover {
+      transform: scale(1.05) rotate(1deg);
+    }
+
+    .mascot-title-group {
+      margin-bottom: 0.6rem;
+    }
+
+    .mascot-heading-name {
+      font-family: var(--font-space);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--neon-red);
+      letter-spacing: 0.5px;
+      text-shadow: 0 0 10px var(--neon-red-glow);
+    }
+
+    .mascot-badge-name {
+      font-size: 0.72rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #d1d5db;
+      padding: 0.15rem 0.6rem;
+      border-radius: 50px;
+      font-weight: 600;
+      display: inline-block;
+      margin-top: 0.2rem;
+    }
+
+    .mascot-text-info {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      line-height: 1.45;
+    }
+
+    /* Podium Penjelasan Card */
+    .podium-explain-card {
+      background: rgba(15, 23, 42, 0.45);
+      border: 1px solid var(--panel-border);
+      border-radius: 20px;
+      padding: 1.2rem 1.5rem;
+    }
+
+    .podium-explain-card h4 {
+      font-family: var(--font-space);
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .podium-mini-row {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.5rem 0.8rem;
+      background: rgba(255,255,255,0.01);
+      border: 1px solid rgba(255,255,255,0.03);
+      border-radius: 10px;
+      margin-bottom: 0.5rem;
+    }
+
+    .podium-mini-index {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: bold;
+    }
+
+    /* ==========================================
+       7. SETTINGS MODAL DIALOG
+       ========================================== */
+    .settings-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(3, 7, 18, 0.8);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+
+    .settings-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .settings-modal {
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      width: 480px;
+      max-width: 90%;
+      padding: 2.2rem;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+      transform: scale(0.92);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+    }
+
+    .settings-backdrop.active .settings-modal {
+      transform: scale(1);
+    }
+
+    .settings-title-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 0.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .settings-title {
+      font-family: var(--font-space);
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .close-modal-btn {
+      background: transparent;
+      border: none;
+      color: #9ca3af;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .close-modal-btn:hover {
+      color: white;
+    }
+
+    .form-input-box {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .form-input-box label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #9ca3af;
+    }
+
+    .form-input-box input {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      padding: 0.8rem 1rem;
+      color: white;
+      font-family: var(--font-main);
+      font-size: 0.95rem;
+      transition: all 0.25s ease;
+    }
+
+    .form-input-box input:focus {
+      outline: none;
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 10px var(--neon-blue-glow);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .empty-board-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      color: #9ca3af;
+      gap: 1rem;
+      text-align: center;
+      min-height: 250px;
+    }
+
+    .empty-board-state i {
+      font-size: 3.5rem;
+      opacity: 0.2;
+    }
+
+    /* ==========================================
+       8. ANIMATIONS & KEYFRAMES
+       ========================================== */
+    @keyframes pulseGlow {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.8; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes floatMascot {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(0.8deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    .effect-score-changed {
+      animation: scoreHighlight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.35);
+    }
+
+    @keyframes scoreHighlight {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.25); color: #10b981; }
+      100% { transform: scale(1); }
+    }
+
+    /* ==========================================
+       9. RESPONSIVE MEDIA QUERIES (100% RESPONSIVE)
+       ========================================== */
+    @media (max-width: 1024px) {
+      .view-focus {
+        grid-template-columns: 1fr; /* Kolom tunggal di tablet/HP */
+      }
+      .view-grid-all {
+        grid-template-columns: 1fr; /* Kolom tunggal di tablet/HP */
+      }
+      header {
+        padding: 0.8rem 1.5rem;
+      }
+      .header-center-info h1 {
+        font-size: 1.25rem;
+      }
+      .logo-img-wrapper {
+        padding: 4px 10px;
+        height: 40px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      header {
+        flex-direction: column;
+        gap: 0.8rem;
+        padding: 1rem;
+      }
+      .logo-img-wrapper {
+        height: 36px;
+      }
+      .controls-wrapper {
+        padding: 1rem;
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .nav-tabs {
+        flex-direction: column;
+        width: 100%;
+      }
+      .tab-trigger {
+        justify-content: center;
+      }
+      .actions-group {
+        justify-content: center;
+      }
+      .dashboard-view-wrapper {
+        padding: 1rem;
+      }
+      .contestant-card {
+        padding: 0.8rem 1rem;
+        gap: 0.8rem;
+      }
+      .team-name {
+        font-size: 0.95rem;
+      }
+      .score-val {
+        font-size: 1.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================
+       HEADER SECTION
+       ========================================== -->
+  <header>
+    <div class="header-logo-side">
+      <!-- Logo PMI Kabupaten Jembrana -->
+      <div class="logo-img-wrapper">
+        <img src="LOGO-LOGO DAN CONTOH/logo-pmi.png" alt="Logo PMI" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/e/e0/Indonesian_Red_Cross_Society_logo.png'">
+      </div>
+    </div>
+    
+    <div class="header-center-info">
+      <h1>Dashboard LCC PMR Jembrana</h1>
+      <div class="live-indicator-wrapper">
+        <span class="badge-live-pulse"><i class="fa-solid fa-circle-dot"></i> LIVE REKAP</span>
+        <span>FINAL KABUPATEN JEMBRANA 2026</span>
+      </div>
+    </div>
+    
+    <div class="header-logo-side">
+      <!-- Logo Kegiatan -->
+      <div class="logo-img-wrapper">
+        <img src="LOGO-LOGO DAN CONTOH/LOGO (1).png" alt="Logo Kegiatan" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/4/40/Generic_Red_Cross_Logo.svg'">
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       VIEW CONTROLS BAR
+       ========================================== -->
+  <div class="controls-wrapper">
+    <div class="nav-tabs" id="tabNavGroup">
+      <button class="tab-trigger active" onclick="changeCategory('mula')">
+        <i class="fa-solid fa-graduation-cap"></i> PMR Mula (SD)
+      </button>
+      <button class="tab-trigger" onclick="changeCategory('madya')">
+        <i class="fa-solid fa-school"></i> PMR Madya (SMP)
+      </button>
+      <button class="tab-trigger" onclick="changeCategory('wira')">
+        <i class="fa-solid fa-building-columns"></i> PMR Wira (SMA)
+      </button>
+      <button class="tab-trigger" id="btnToggleAll" onclick="toggleViewAll()">
+        <i class="fa-solid fa-table-cells-large"></i> Bandingkan Semua
+      </button>
+    </div>
+    
+    <div class="actions-group">
+      <div class="sync-status">
+        <div class="status-ping" id="apiStatusPing"></div>
+        <span id="apiStatusMsg">Tersambung ke Google Sheets</span>
+      </div>
+      <button class="btn-control btn-primary" onclick="syncSheetsData()">
+        <i class="fa-solid fa-arrows-rotate" id="syncSpinIcon"></i> Sinkron Live
+      </button>
+      <button class="btn-control" onclick="showSettingsModal()">
+        <i class="fa-solid fa-sliders"></i> Sambungkan
+      </button>
+      <button class="btn-control" id="btnSimulation" onclick="toggleSimulation()" style="background: rgba(0, 240, 255, 0.1); border-color: rgba(0, 240, 255, 0.25);">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--neon-blue);"></i> Uji Coba Lomba
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       DASHBOARD LEADERBOARD DISPLAY
+       ========================================== -->
+  <div class="dashboard-view-wrapper view-focus" id="dashboardViewport">
+    <!-- Di-render dinamis oleh JavaScript -->
+  </div>
+
+  <!-- ==========================================
+       SETTINGS MODAL BOX
+       ========================================== -->
+  <div class="settings-backdrop" id="modalBackdrop">
+    <div class="settings-modal">
+      <div class="settings-title-group">
+        <h2 class="settings-title"><i class="fa-solid fa-link" style="color: var(--neon-blue);"></i> Hubungkan Google Sheets</h2>
+        <button class="close-modal-btn" onclick="hideSettingsModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="form-input-box">
+        <label for="appsScriptUrl">Tautan Google Sheets atau Web App URL:</label>
+        <input type="text" id="appsScriptUrl" placeholder="https://docs.google.com/spreadsheets/d/... atau https://script.google.com/macros/s/...">
+        <p style="font-size: 0.75rem; color: #9ca3af; margin-top: 0.4rem; line-height: 1.4;">
+          Tempelkan langsung tautan **Google Sheets** Anda atau URL **Google Apps Script Web App** untuk memulai sinkronisasi real-time.
+        </p>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 0.8rem; margin-top: 1.8rem;">
+        <button class="btn-control" onclick="hideSettingsModal()">Batal</button>
+        <button class="btn-control btn-primary" onclick="saveConnectionSettings()">Simpan & Jalankan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       JAVASCRIPT DYNAMIC ENGINE
+       ========================================== -->
+  <script>
+    // State Aplikasi
+    let activeCategory = 'mula'; 
+    let allCategoriesMode = false; 
+    let simulationActive = false;
+    let simTimer = null;
+    let autoRefreshTimer = null;
+    let cachedPreviousData = null;
+
+    // URL default spreadsheet pengguna untuk koneksi instan
+    const DEFAULT_SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/1V0TX1XM8sT2nto1S0AhfQEDNC7g4D6cTLg1sOWxiZ0U/edit';
+
+    // Ambil Simpanan API URL
+    let sheetsApiEndpoint = localStorage.getItem('LCC_API_ENDPOINT') || DEFAULT_SPREADSHEET_URL;
+
+    // Data Awal Mock/Demo yang Diuji secara Visual
+    let liveScoreboardData = {
+      mula: [
+        { kode: 'MU13', nama: 'SD NEGERI 6 DAUHWARU', total: 700, rank: 1, status: 'LOLOS FINAL' },
+        { kode: 'MU07', nama: 'SD NEGERI 3 BERANGBANG', total: 600, rank: 2, status: 'LOLOS FINAL' },
+        { kode: 'MU12', nama: 'SD NEGERI 1 MENDOYO DAUH TUKAD', total: 300, rank: 3, status: 'LOLOS FINAL' },
+        { kode: 'MU04', nama: 'SD NEGERI 2 PEKUTATAN', total: 300, rank: 3, status: 'LOLOS FINAL' },
+        { kode: 'MU11', nama: 'SD NEGERI 1 BALER BALE AGUNG', total: 200, rank: 5, status: 'LOLOS FINAL' }
+      ],
+      madya: [
+        { kode: 'MA09', nama: 'SMP NEGERI 2 MENDOYO', total: 700, rank: 1, status: 'LOLOS FINAL' },
+        { kode: 'MA05', nama: 'SMP NEGERI 3 BALUK', total: 600, rank: 2, status: 'LOLOS FINAL' },
+        { kode: 'MA02', nama: 'SMP NEGERI 1 NEGARA', total: 450, rank: 3, status: 'LOLOS FINAL' },
+        { kode: 'MA12', nama: 'SMP SDK MARSUDIRINI', total: 350, rank: 4, status: 'LOLOS FINAL' },
+        { kode: 'MA07', nama: 'SMP NEGERI 4 NEGARA', total: 250, rank: 5, status: 'LOLOS FINAL' }
+      ],
+      wira: [
+        { kode: 'WI05', nama: 'SMA NEGERI 1 NEGARA', total: 800, rank: 1, status: 'LOLOS FINAL' },
+        { kode: 'WI08', nama: 'SMA NEGERI 2 NEGARA', total: 650, rank: 2, status: 'LOLOS FINAL' },
+        { kode: 'WI03', nama: 'SMA NEGERI 1 MENDOYO', total: 550, rank: 3, status: 'LOLOS FINAL' },
+        { kode: 'WI11', nama: 'SMK NEGERI 1 NEGARA', total: 400, rank: 4, status: 'LOLOS FINAL' },
+        { kode: 'WI01', nama: 'SMA NEGERI 3 NEGARA', total: 300, rank: 5, status: 'LOLOS FINAL' }
+      ]
+    };
+
+    // Urutkan data awal secara descending
+    reorderCategories();
+
+    // ==========================================
+    // INITIALIZATION & LIFECYCLE
+    // ==========================================
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('appsScriptUrl').value = sheetsApiEndpoint;
+      
+      if (!sheetsApiEndpoint) {
+        // Nyalakan uji coba default bila belum ada koneksi untuk kepuasan instan visual pengguna
+        toggleSimulation(true);
+      } else {
+        setPingStatus('connecting', 'Menghubungkan live...');
+        syncSheetsData();
+        autoRefreshTimer = setInterval(syncSheetsData, 3000);
+      }
+
+      renderViewPort();
+    });
+
+    // ==========================================
+    // DATA SORT & CLASSIFY ENGINE
+    // ==========================================
+    function reorderCategory(cat) {
+      liveScoreboardData[cat].sort((a, b) => b.total - a.total);
+      liveScoreboardData[cat].forEach((item, index) => {
+        item.rank = index + 1;
+      });
+    }
+
+    function reorderCategories() {
+      reorderCategory('mula');
+      reorderCategory('madya');
+      reorderCategory('wira');
+    }
+
+    // ==========================================
+    // NAVIGATION CONTROLS (TABS & MODES)
+    // ==========================================
+    function changeCategory(cat) {
+      if (allCategoriesMode) {
+        toggleViewAll(); // Kembalikan ke fokus view
+      }
+      activeCategory = cat;
+      
+      const tabTriggers = document.querySelectorAll('#tabNavGroup .tab-trigger');
+      tabTriggers.forEach(btn => btn.classList.remove('active'));
+      
+      const idx = ['mula', 'madya', 'wira'].indexOf(cat);
+      if (idx !== -1) {
+        tabTriggers[idx].classList.add('active');
+      }
+
+      renderViewPort();
+    }
+
+    function toggleViewAll() {
+      allCategoriesMode = !allCategoriesMode;
+      const btnAll = document.getElementById('btnToggleAll');
+      const tabTriggers = document.querySelectorAll('#tabNavGroup .tab-trigger:not(#btnToggleAll)');
+      
+      if (allCategoriesMode) {
+        btnAll.classList.add('active');
+        tabTriggers.forEach(btn => btn.classList.remove('active'));
+      } else {
+        btnAll.classList.remove('active');
+        changeCategory(activeCategory);
+        return;
+      }
+      renderViewPort();
+    }
+
+    // ==========================================
+    // RENDER VIEWPORT DOM ENGINE
+    // ==========================================
+    function renderViewPort() {
+      const viewport = document.getElementById('dashboardViewport');
+      viewport.innerHTML = '';
+
+      if (allCategoriesMode) {
+        viewport.className = 'dashboard-view-wrapper view-grid-all';
+        viewport.appendChild(buildBoardDOM('mula', 'PMR Mula (SD)', 'fa-graduation-cap'));
+        viewport.appendChild(buildBoardDOM('madya', 'PMR Madya (SMP)', 'fa-school'));
+        viewport.appendChild(buildBoardDOM('wira', 'PMR Wira (SMA)', 'fa-building-columns'));
+      } else {
+        viewport.className = 'dashboard-view-wrapper view-focus';
+        
+        let label = '';
+        let icon = '';
+        if (activeCategory === 'mula') { label = 'PMR Mula (Tingkat SD)'; icon = 'fa-graduation-cap'; }
+        else if (activeCategory === 'madya') { label = 'PMR Madya (Tingkat SMP)'; icon = 'fa-school'; }
+        else { label = 'PMR Wira (Tingkat SMA)'; icon = 'fa-building-columns'; }
+
+        // Tambahkan Leaderboard Board Utama
+        viewport.appendChild(buildBoardDOM(activeCategory, label, icon));
+
+        // Tambahkan Panel Maskot Terintegrasi secara Mewah di Samping Leaderboard
+        const mascotSidePanel = document.createElement('div');
+        mascotSidePanel.className = 'mascot-board-wrapper';
+        mascotSidePanel.innerHTML = `
+          <!-- INTEGRATED PREMIUM MASCOT CARD -->
+          <div class="mascot-card-premium">
+            <img class="floating-mascot-img" src="LOGO-LOGO DAN CONTOH/JALLA (1).png" alt="Maskot Jalla" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?w=400&q=80'">
+            <div class="mascot-title-group">
+              <div class="mascot-heading-name">SI JALLA</div>
+              <span class="mascot-badge-name">Maskot Kebanggaan PMI Jembrana</span>
+            </div>
+            <p class="mascot-text-info">
+              Si Jalla merepresentasikan ketangkasan, kerelaan, dan kepedulian yang tinggi relawan PMR Satuan Inti PMI Kabupaten Jembrana.
+            </p>
+          </div>
+          
+          <!-- PODIUM INFO CARD -->
+          <div class="podium-explain-card">
+            <h4><i class="fa-solid fa-trophy" style="color: var(--neon-gold); filter: drop-shadow(0 0 4px var(--neon-gold-glow));"></i> Penentuan Juara Final</h4>
+            <div class="podium-mini-row">
+              <span class="podium-mini-index" style="background: var(--neon-gold); color: black;"><i class="fa-solid fa-medal"></i></span>
+              <div style="flex:1; font-weight:700; font-size:0.85rem; color: white;">Juara I</div>
+              <div style="font-size:0.75rem; color:#9ca3af;">Podium Tertinggi 1</div>
+            </div>
+            <div class="podium-mini-row">
+              <span class="podium-mini-index" style="background: #cbd5e1; color: black;"><i class="fa-solid fa-medal"></i></span>
+              <div style="flex:1; font-weight:700; font-size:0.85rem; color: white;">Juara II</div>
+              <div style="font-size:0.75rem; color:#9ca3af;">Podium Tertinggi 2</div>
+            </div>
+            <div class="podium-mini-row">
+              <span class="podium-mini-index" style="background: #b45309; color: white;"><i class="fa-solid fa-medal"></i></span>
+              <div style="flex:1; font-weight:700; font-size:0.85rem; color: white;">Juara III</div>
+              <div style="font-size:0.75rem; color:#9ca3af;">Podium Tertinggi 3</div>
+            </div>
+          </div>
+        `;
+        viewport.appendChild(mascotSidePanel);
+      }
+    }
+
+    // Builder Elemen DOM Leaderboard Board
+    function buildBoardDOM(cat, title, iconClass) {
+      const cardContainer = document.createElement('div');
+      cardContainer.className = 'board-container';
+
+      const header = document.createElement('div');
+      header.className = 'board-header';
+      header.innerHTML = `
+        <div class="board-title-group">
+          <i class="fa-solid ${iconClass} board-icon"></i>
+          <div>
+            <div class="board-title">${title}</div>
+            <span style="font-size:0.78rem; color: #9ca3af;">Live Skor Pertandingan</span>
+          </div>
+        </div>
+        <div class="board-badge">Finalis</div>
+      `;
+      cardContainer.appendChild(header);
+
+      const listDiv = document.createElement('div');
+      listDiv.className = 'contestant-list';
+
+      const items = liveScoreboardData[cat];
+
+      if (!items || items.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'empty-board-state';
+        empty.innerHTML = `
+          <i class="fa-solid fa-folder-open"></i>
+          <div>Belum ada data finalis.<br><span style="font-size:0.75rem; color: #9ca3af;">Hubungkan API Sheets untuk sinkronisasi.</span></div>
+        `;
+        listDiv.appendChild(empty);
+      } else {
+        const topScore = Math.max(...items.map(i => i.total), 1);
+
+        items.forEach((item, index) => {
+          const rank = index + 1;
+          const card = document.createElement('div');
+          card.className = `contestant-card top-${rank}`;
+          card.id = `card-${cat}-${item.kode}`;
+          
+          const fillWidth = Math.max((item.total / topScore) * 100, 8);
+
+          let badgeMedal = rank;
+          if (rank === 1) badgeMedal = '<i class="fa-solid fa-crown"></i>';
+          else if (rank === 2) badgeMedal = '<i class="fa-solid fa-medal"></i>';
+          else if (rank === 3) badgeMedal = '<i class="fa-solid fa-medal"></i>';
+
+          card.innerHTML = `
+            <div class="medal-icon-wrapper">${badgeMedal}</div>
+            <div class="info-container">
+              <div class="team-name">${item.nama}</div>
+              <div class="team-meta">
+                <span><i class="fa-solid fa-qrcode" style="color: var(--neon-blue);"></i> ${item.kode}</span>
+                <span style="opacity:0.3;">|</span>
+                <span class="badge-status"><i class="fa-solid fa-shield-heart"></i> ${item.status || 'FINALIS'}</span>
+              </div>
+            </div>
+            <div class="score-wrapper">
+              <div class="score-val" id="scoreval-${cat}-${item.kode}">${item.total}</div>
+              <div class="score-lbl">Skor</div>
+            </div>
+            <div class="indicator-bar-bg">
+              <div class="indicator-bar-fill" style="width: ${fillWidth}%"></div>
+            </div>
+          `;
+          listDiv.appendChild(card);
+        });
+      }
+
+      cardContainer.appendChild(listDiv);
+      return cardContainer;
+    }
+
+    // ==========================================
+    // SINKRONISASI REAL-TIME DENGAN GOOGLE SHEETS
+    // ==========================================
+    // Fetch data Google Sheets menggunakan metode JSONP untuk memintas pembatasan CORS browser
+    function fetchSheetDataJSONP(spreadsheetId, sheetName, callbackName) {
+      return new Promise((resolve, reject) => {
+        // Definisikan fungsi callback secara dinamis di lingkup global window
+        window[callbackName] = function(data) {
+          cleanup();
+          if (data && data.status === 'ok') {
+            resolve(data.table);
+          } else {
+            reject(new Error(`Gagal mengambil data dari sheet ${sheetName}: ` + (data ? data.status : 'Respons kosong')));
+          }
+        };
+
+        const script = document.createElement('script');
+        script.id = `script_${callbackName}`;
+        // Ambil data visualisasi format default (JSONP wrapper) dari Google Sheets
+        script.src = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=responseHandler:${callbackName}&sheet=${encodeURIComponent(sheetName)}&t=${Date.now()}`;
+        
+        script.onerror = function() {
+          cleanup();
+          reject(new Error(`Gagal memuat data Google Sheets untuk sheet ${sheetName} (Cek koneksi/akses internet)`));
+        };
+
+        document.body.appendChild(script);
+
+        function cleanup() {
+          const el = document.getElementById(`script_${callbackName}`);
+          if (el) el.remove();
+          delete window[callbackName];
+        }
+      });
+    }
+
+    // Mengurai data finalis dari objek tabel JSONP Google Sheets
+    function extractFinalistsFromTable(table) {
+      if (!table || !table.rows) return [];
+      
+      const rows = table.rows;
+      let headerIndex = -1;
+      
+      // Cari baris header yang bertindak sebagai pemisah awal data finalis
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        if (row && row.c && row.c[2] && row.c[2].v && row.c[2].v.toString().includes("Nama Sekolah (Final)")) {
+          headerIndex = i;
+          break;
+        }
+      }
+
+      if (headerIndex === -1) return [];
+
+      const finalists = [];
+      // 5 baris setelah baris header adalah data 5 besar finalis LCC
+      for (let i = headerIndex + 1; i <= headerIndex + 5; i++) {
+        const row = rows[i];
+        if (row && row.c) {
+          const kode = row.c[1] && row.c[1].v ? row.c[1].v.toString().trim() : '';
+          const nama = row.c[2] && row.c[2].v ? row.c[2].v.toString().trim() : '';
+          const totalRaw = row.c[3] ? row.c[3].v : 0;
+          const rankRaw = row.c[4] ? row.c[4].v : 1;
+          const status = row.c[5] && row.c[5].v ? row.c[5].v.toString().trim() : 'FINALIS';
+
+          if (kode && kode !== '') {
+            let total = parseFloat(totalRaw);
+            if (isNaN(total)) total = 0;
+            
+            let rank = parseInt(rankRaw);
+            if (isNaN(rank)) rank = 1;
+
+            finalists.push({
+              kode: kode,
+              nama: nama,
+              total: total,
+              rank: rank,
+              status: status
+            });
+          }
+        }
+      }
+      return finalists;
+    }
+
+    function syncSheetsData() {
+      if (!sheetsApiEndpoint) return;
+
+      const refreshIcon = document.getElementById('syncSpinIcon');
+      if (refreshIcon) refreshIcon.classList.add('fa-spin');
+
+      // Deteksi apakah target koneksi adalah URL Google Sheets biasa
+      const sheetIdMatch = sheetsApiEndpoint.match(/\/d\/([a-zA-Z0-9-_]+)/);
+
+      if (sheetIdMatch) {
+        const spreadsheetId = sheetIdMatch[1];
+        
+        // Fetch data paralel menggunakan JSONP (Bebas hambatan CORS!)
+        const fetchPromises = [
+          fetchSheetDataJSONP(spreadsheetId, 'PMR MULA', 'cb_mula_' + Date.now()),
+          fetchSheetDataJSONP(spreadsheetId, 'PMR MADYA', 'cb_madya_' + Date.now()),
+          fetchSheetDataJSONP(spreadsheetId, 'PMR WIRA', 'cb_wira_' + Date.now())
+        ];
+
+        Promise.all(fetchPromises)
+          .then(([tableMula, tableMadya, tableWira]) => {
+            setPingStatus('online', 'Tersambung ke Google Sheets');
+            
+            cachedPreviousData = JSON.parse(JSON.stringify(liveScoreboardData));
+            
+            liveScoreboardData.mula = extractFinalistsFromTable(tableMula);
+            liveScoreboardData.madya = extractFinalistsFromTable(tableMadya);
+            liveScoreboardData.wira = extractFinalistsFromTable(tableWira);
+            
+            reorderCategories();
+            renderViewPort();
+            animateScoreChanges();
+          })
+          .catch(err => {
+            console.error(err);
+            setPingStatus('offline', 'Koneksi Sheets Gagal');
+          })
+          .finally(() => {
+            if (refreshIcon) refreshIcon.classList.remove('fa-spin');
+          });
+      } else {
+        // Logika fallback menggunakan JSON dari Google Apps Script Web App
+        fetch(sheetsApiEndpoint)
+          .then(res => {
+            if (!res.ok) throw new Error('API Respon Bermasalah');
+            return res.json();
+          })
+          .then(payload => {
+            setPingStatus('online', 'Tersambung Live');
+            
+            cachedPreviousData = JSON.parse(JSON.stringify(liveScoreboardData));
+            
+            if (payload.mula) liveScoreboardData.mula = payload.mula;
+            if (payload.madya) liveScoreboardData.madya = payload.madya;
+            if (payload.wira) liveScoreboardData.wira = payload.wira;
+            
+            reorderCategories();
+            renderViewPort();
+            animateScoreChanges();
+          })
+          .catch(err => {
+            console.error(err);
+            setPingStatus('offline', 'Koneksi API Gagal');
+          })
+          .finally(() => {
+            if (refreshIcon) refreshIcon.classList.remove('fa-spin');
+          });
+      }
+    }
+
+    function animateScoreChanges() {
+      if (!cachedPreviousData) return;
+
+      ['mula', 'madya', 'wira'].forEach(cat => {
+        liveScoreboardData[cat].forEach(item => {
+          const prevItem = cachedPreviousData[cat].find(x => x.kode === item.kode);
+          if (prevItem && prevItem.total !== item.total) {
+            const numEl = document.getElementById(`scoreval-${cat}-${item.kode}`);
+            if (numEl) {
+              numEl.classList.add('effect-score-changed');
+              setTimeout(() => {
+                numEl.classList.remove('effect-score-changed');
+              }, 600);
+            }
+          }
+        });
+      });
+    }
+
+    function setPingStatus(state, msg) {
+      const dot = document.getElementById('apiStatusPing');
+      const label = document.getElementById('apiStatusMsg');
+      
+      dot.className = 'status-ping ' + state;
+      label.innerText = msg;
+    }
+
+    // ==========================================
+    // SETTINGS MODAL SYSTEM
+    // ==========================================
+    function showSettingsModal() {
+      document.getElementById('modalBackdrop').classList.add('active');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') hideSettingsModal();
+    });
+
+    function hideSettingsModal() {
+      document.getElementById('modalBackdrop').classList.remove('active');
+    }
+
+    function saveConnectionSettings() {
+      const rawUrl = document.getElementById('appsScriptUrl').value.trim();
+      sheetsApiEndpoint = rawUrl;
+      localStorage.setItem('LCC_API_ENDPOINT', rawUrl);
+      hideSettingsModal();
+
+      if (rawUrl) {
+        if (simulationActive) toggleSimulation(false);
+        if (autoRefreshTimer) clearInterval(autoRefreshTimer);
+        
+        setPingStatus('connecting', 'Menghubungkan...');
+        syncSheetsData();
+        autoRefreshTimer = setInterval(syncSheetsData, 3000);
+      } else {
+        if (autoRefreshTimer) clearInterval(autoRefreshTimer);
+        setPingStatus('offline', 'Belum Terhubung API');
+      }
+    }
+
+    // ==========================================
+    // MODE UJI COBA / SIMULASI PERTANDINGAN
+    // ==========================================
+    function toggleSimulation(forceValue = null) {
+      simulationActive = forceValue !== null ? forceValue : !simulationActive;
+      const simBtn = document.getElementById('btnSimulation');
+
+      if (simulationActive) {
+        simBtn.innerHTML = '<i class="fa-solid fa-circle-stop"></i> Hentikan Uji Coba';
+        simBtn.style.background = 'rgba(255, 42, 95, 0.15)';
+        simBtn.style.borderColor = 'rgba(255, 42, 95, 0.3)';
+        setPingStatus('online', 'Uji Coba Lomba Aktif (Simulasi)');
+
+        if (autoRefreshTimer) clearInterval(autoRefreshTimer);
+
+        // Simulasi persaingan nilai finalis bertambah/berkurang acak
+        simTimer = setInterval(() => {
+          const cats = ['mula', 'madya', 'wira'];
+          const randomCat = cats[Math.floor(Math.random() * cats.length)];
+          const group = liveScoreboardData[randomCat];
+          
+          if (group && group.length > 0) {
+            const index = Math.floor(Math.random() * group.length);
+            const correctOption = Math.random() > 0.35; 
+            
+            if (correctOption) {
+              group[index].total += 100;
+            } else {
+              group[index].total = Math.max(group[index].total - 50, 0); 
+            }
+            
+            cachedPreviousData = JSON.parse(JSON.stringify(liveScoreboardData));
+            reorderCategory(randomCat);
+            renderViewPort();
+            animateScoreChanges();
+          }
+        }, 2200);
+      } else {
+        simBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Uji Coba Lomba';
+        simBtn.style.background = 'rgba(0, 240, 255, 0.1)';
+        simBtn.style.borderColor = 'rgba(0, 240, 255, 0.25)';
+        
+        if (simTimer) clearInterval(simTimer);
+        
+        if (sheetsApiEndpoint) {
+          setPingStatus('connecting', 'Menghubungkan live...');
+          syncSheetsData();
+          autoRefreshTimer = setInterval(syncSheetsData, 3000);
+        } else {
+          setPingStatus('offline', 'Belum Terhubung API');
+        }
+      }
+    }
+  </script>
+</body>
+</html>
