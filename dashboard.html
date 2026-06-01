@@ -37,6 +37,188 @@
       --font-space: 'Space Grotesk', sans-serif;
     }
 
+    /* ==========================================
+       1.5 LIGHT THEME DESIGN SYSTEM (PREMIUM)
+       ========================================== */
+    body.light-theme {
+      --bg-base: #f8fafc; /* Slate 50 ultra-light soft gray */
+      --panel-bg: rgba(255, 255, 255, 0.7); /* White glass base */
+      --panel-border: rgba(15, 23, 42, 0.08);
+      
+      --neon-red: #e11d48; /* Darker crimson for readable contrast */
+      --neon-red-glow: rgba(225, 29, 72, 0.15);
+      --neon-blue: #0284c7; /* Sky blue for contrast */
+      --neon-blue-glow: rgba(2, 132, 199, 0.15);
+      --neon-gold: #d97706; /* Amber 600 */
+      --neon-gold-glow: rgba(217, 119, 6, 0.18);
+      
+      color: #0f172a; /* Slate 900 for dark readable text */
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(225, 29, 72, 0.06) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(2, 132, 199, 0.06) 0%, transparent 45%);
+    }
+
+    body.light-theme header {
+      background: rgba(255, 255, 255, 0.8);
+      border-bottom-color: rgba(15, 23, 42, 0.08);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+    }
+
+    body.light-theme .header-center-info h1 {
+      background: linear-gradient(135deg, #0f172a 40%, #0369a1 70%, #e11d48 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    body.light-theme .live-indicator-wrapper {
+      color: #475569;
+    }
+
+    body.light-theme .nav-tabs {
+      background: rgba(15, 23, 42, 0.02);
+      border-color: rgba(15, 23, 42, 0.06);
+    }
+
+    body.light-theme .tab-trigger:hover:not(.active) {
+      color: #0f172a;
+      background: rgba(15, 23, 42, 0.04);
+    }
+
+    body.light-theme .btn-control {
+      background: rgba(15, 23, 42, 0.03);
+      color: #0f172a;
+      border-color: rgba(15, 23, 42, 0.08);
+    }
+
+    body.light-theme .btn-control:hover {
+      background: rgba(15, 23, 42, 0.06);
+      border-color: rgba(15, 23, 42, 0.15);
+    }
+
+    body.light-theme .btn-control.btn-primary {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: white;
+      border: none;
+    }
+
+    body.light-theme .btn-control.btn-primary:hover {
+      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
+    }
+
+    body.light-theme .sync-status {
+      background: rgba(15, 23, 42, 0.02);
+      color: #475569;
+      border-color: rgba(15, 23, 42, 0.06);
+    }
+
+    body.light-theme .board-container {
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    }
+
+    body.light-theme .board-title {
+      color: #0f172a;
+    }
+
+    body.light-theme .board-header {
+      border-bottom-color: rgba(15, 23, 42, 0.06);
+    }
+
+    body.light-theme .contestant-card {
+      background: rgba(15, 23, 42, 0.015);
+      border-color: rgba(15, 23, 42, 0.03);
+    }
+
+    body.light-theme .contestant-card:hover {
+      background: rgba(15, 23, 42, 0.03);
+      border-color: rgba(15, 23, 42, 0.1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    body.light-theme .contestant-card.top-1 {
+      background: linear-gradient(90deg, rgba(217, 119, 6, 0.06) 0%, transparent 100%);
+    }
+    body.light-theme .contestant-card.top-2 {
+      background: linear-gradient(90deg, rgba(71, 85, 105, 0.05) 0%, transparent 100%);
+    }
+    body.light-theme .contestant-card.top-3 {
+      background: linear-gradient(90deg, rgba(180, 83, 9, 0.04) 0%, transparent 100%);
+    }
+
+    body.light-theme .team-name {
+      color: #0f172a;
+    }
+
+    body.light-theme .score-val {
+      color: #0f172a;
+    }
+
+    body.light-theme .mascot-heading-name {
+      color: #e11d48;
+    }
+
+    body.light-theme .mascot-badge-name {
+      background: rgba(15, 23, 42, 0.03);
+      border-color: rgba(15, 23, 42, 0.06);
+      color: #475569;
+    }
+
+    body.light-theme .mascot-text-info {
+      color: #475569;
+    }
+
+    body.light-theme .podium-mini-row {
+      background: rgba(15, 23, 42, 0.015);
+      border-color: rgba(15, 23, 42, 0.03);
+    }
+
+    body.light-theme .podium-mini-row div {
+      color: #0f172a !important;
+    }
+
+    body.light-theme .logo-img-wrapper {
+      background: rgba(15, 23, 42, 0.02);
+      border-color: rgba(15, 23, 42, 0.05);
+    }
+
+    body.light-theme .logo-img-wrapper img {
+      filter: drop-shadow(0 0 4px rgba(15, 23, 42, 0.06));
+    }
+
+    body.light-theme .medal-icon-wrapper {
+      background: rgba(15, 23, 42, 0.03);
+      border-color: rgba(15, 23, 42, 0.06);
+      color: #475569;
+    }
+
+    body.light-theme .top-1 .medal-icon-wrapper {
+      color: #0f172a;
+    }
+    body.light-theme .top-2 .medal-icon-wrapper {
+      color: #0f172a;
+    }
+
+    body.light-theme .settings-modal {
+      background: #ffffff;
+      border-color: rgba(15, 23, 42, 0.1);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+      color: #0f172a;
+    }
+
+    body.light-theme .settings-title-group {
+      border-bottom-color: rgba(15, 23, 42, 0.08);
+    }
+
+    body.light-theme .form-input-box input {
+      background: rgba(15, 23, 42, 0.01);
+      border-color: rgba(15, 23, 42, 0.08);
+      color: #0f172a;
+    }
+
+    body.light-theme .form-input-box input:focus {
+      background: #ffffff;
+      border-color: #0284c7;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -884,6 +1066,9 @@
       <button class="btn-control" id="btnSimulation" onclick="toggleSimulation()" style="background: rgba(0, 240, 255, 0.1); border-color: rgba(0, 240, 255, 0.25);">
         <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--neon-blue);"></i> Uji Coba Lomba
       </button>
+      <button class="btn-control" id="btnThemeToggle" onclick="toggleTheme()" style="background: rgba(255, 255, 255, 0.03); width: 42px; padding: 0.65rem 0; justify-content: center;" title="Beralih ke Tema Terang">
+        <i class="fa-solid fa-sun" id="themeIcon" style="color: var(--neon-gold);"></i>
+      </button>
     </div>
   </div>
 
@@ -929,6 +1114,42 @@
     let autoRefreshTimer = null;
     let cachedPreviousData = null;
 
+    // State & Engine Tema (Light/Dark Mode)
+    let currentTheme = localStorage.getItem('LCC_THEME') || 'dark';
+
+    function applyTheme() {
+      const icon = document.getElementById('themeIcon');
+      const btnToggle = document.getElementById('btnThemeToggle');
+      
+      if (currentTheme === 'light') {
+        document.body.classList.add('light-theme');
+        if (icon) {
+          icon.className = 'fa-solid fa-moon';
+          icon.style.color = '#475569';
+        }
+        if (btnToggle) {
+          btnToggle.title = 'Beralih ke Tema Gelap';
+          btnToggle.style.background = 'rgba(15, 23, 42, 0.05)';
+        }
+      } else {
+        document.body.classList.remove('light-theme');
+        if (icon) {
+          icon.className = 'fa-solid fa-sun';
+          icon.style.color = 'var(--neon-gold)';
+        }
+        if (btnToggle) {
+          btnToggle.title = 'Beralih ke Tema Terang';
+          btnToggle.style.background = 'rgba(255, 255, 255, 0.03)';
+        }
+      }
+    }
+
+    function toggleTheme() {
+      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('LCC_THEME', currentTheme);
+      applyTheme();
+    }
+
     // URL default spreadsheet pengguna untuk koneksi instan
     const DEFAULT_SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/1V0TX1XM8sT2nto1S0AhfQEDNC7g4D6cTLg1sOWxiZ0U/edit';
 
@@ -967,6 +1188,9 @@
     // INITIALIZATION & LIFECYCLE
     // ==========================================
     window.addEventListener('DOMContentLoaded', () => {
+      // Terapkan tema tersimpan
+      applyTheme();
+
       document.getElementById('appsScriptUrl').value = sheetsApiEndpoint;
       
       if (!sheetsApiEndpoint) {
