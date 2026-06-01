@@ -975,7 +975,7 @@
       } else {
         setPingStatus('connecting', 'Menghubungkan live...');
         syncSheetsData();
-        autoRefreshTimer = setInterval(syncSheetsData, 3000);
+        autoRefreshTimer = setInterval(syncSheetsData, 1500); // Interval dipercepat ke 1.5 detik
       }
 
       renderViewPort();
@@ -1380,7 +1380,7 @@
         
         setPingStatus('connecting', 'Menghubungkan...');
         syncSheetsData();
-        autoRefreshTimer = setInterval(syncSheetsData, 3000);
+        autoRefreshTimer = setInterval(syncSheetsData, 1500);
       } else {
         if (autoRefreshTimer) clearInterval(autoRefreshTimer);
         setPingStatus('offline', 'Belum Terhubung API');
@@ -1434,7 +1434,7 @@
         if (sheetsApiEndpoint) {
           setPingStatus('connecting', 'Menghubungkan live...');
           syncSheetsData();
-          autoRefreshTimer = setInterval(syncSheetsData, 3000);
+          autoRefreshTimer = setInterval(syncSheetsData, 1500);
         } else {
           setPingStatus('offline', 'Belum Terhubung API');
         }
