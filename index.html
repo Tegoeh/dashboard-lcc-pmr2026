@@ -1166,7 +1166,14 @@
       
       const hasGridStructure = viewport.classList.contains('view-grid-all');
       const hasFocusStructure = viewport.classList.contains('view-focus');
-      const needRebuild = (allCategoriesMode && !hasGridStructure) || (!allCategoriesMode && !hasFocusStructure) || (viewport.innerHTML.trim() === '');
+      
+      // Deteksi keberadaan fisik elemen di DOM untuk mencegah kegagalan inisialisasi akibat komentar HTML/caching
+      const hasBoard = viewport.querySelector('.board-container') !== null;
+      const hasMascot = viewport.querySelector('.mascot-board-wrapper') !== null;
+      
+      const needRebuild = (allCategoriesMode && (!hasGridStructure || !hasBoard)) || 
+                          (!allCategoriesMode && (!hasFocusStructure || !hasBoard || !hasMascot)) || 
+                          (viewport.innerHTML.trim() === '');
 
       if (needRebuild) {
         viewport.innerHTML = '';
