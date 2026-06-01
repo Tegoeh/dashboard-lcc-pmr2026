@@ -1,5 +1,5 @@
 KODE CHAT / CONVERSATION ID SESI INI:
 1f27dd45-31c5-4edb-9166-baa1ca17869b
 
-Tanggal Diperbarui: 2026-06-01
-Deskripsi: Sesi ini berhasil melanjutkan pengembangan Tabulasi LCC PMR 2026 dengan fitur multi-round lengkap (Penyisihan 10 Sekolah, Semi Final I & II, Final, Juara & Ranking Akhir), pembersihan maskot agar papan peringkat melebar penuh (full-width) & berdaya kontras tinggi di proyektor, serta sinkronisasi otomatis gviz JSONP yang tangguh untuk setiap babak.
+Tanggal Diperbarui: 2026-06-02
+Deskripsi: Sesi ini berhasil menambahkan fitur Premium Hide/Reveal nama kontestan di Babak Penyisihan. Nama peserta disembunyikan menggunakan efek CSS Blur 10px premium dan lencana gembok interaktif, serta dilengkapi tombol "Buka Semua Nama" dan "Tutup Semua Nama" global di header papan peringkat.
