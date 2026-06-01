@@ -1239,8 +1239,8 @@
           // Buat board kategori baru
           const newBoard = createStaticBoardDOM(activeCategory, label, icon);
           
-          // Sisipkan di posisi paling awal (sebelum maskot)
-          viewport.insertBefore(newBoard, viewport.firstChild);
+          // Sisipkan di posisi paling awal (sebelum maskot) secara presisi
+          viewport.insertBefore(newBoard, viewport.firstElementChild);
         }
       }
 
