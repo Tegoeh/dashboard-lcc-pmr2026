@@ -1007,6 +1007,85 @@
     }
 
     /* ==========================================
+       7.8 DYNAMIC HIDE & REVEAL CONTESTANT NAMES
+       ========================================== */
+    .name-locked {
+      position: relative;
+      cursor: pointer;
+      display: inline-flex !important;
+      align-items: center;
+      gap: 0.6rem;
+      width: 100%;
+    }
+
+    .name-locked .team-name-text {
+      filter: blur(10px);
+      opacity: 0.25;
+      user-select: none;
+      -webkit-user-select: none;
+      pointer-events: none;
+      transition: filter 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.8s ease;
+    }
+
+    .name-locked:hover .team-name-text {
+      filter: blur(8px);
+      opacity: 0.35;
+    }
+
+    .name-unlocked {
+      display: inline-flex !important;
+      align-items: center;
+      gap: 0.6rem;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .name-unlocked .team-name-text {
+      filter: blur(0);
+      opacity: 1;
+      transition: filter 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.8s ease;
+    }
+
+    .lock-badge {
+      background: rgba(255, 42, 95, 0.12);
+      border: 1px solid rgba(255, 42, 95, 0.25);
+      color: var(--neon-red);
+      padding: 0.15rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      box-shadow: 0 0 8px var(--neon-red-glow);
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .name-locked:hover .lock-badge {
+      background: var(--neon-red);
+      color: white;
+      box-shadow: 0 0 12px var(--neon-red-glow);
+    }
+
+    body.light-theme .lock-badge {
+      background: rgba(225, 29, 72, 0.06);
+      border-color: rgba(225, 29, 72, 0.2);
+      color: #e11d48;
+      box-shadow: none;
+    }
+
+    body.light-theme .name-locked:hover .lock-badge {
+      background: #e11d48;
+      color: white;
+      box-shadow: 0 4px 12px rgba(225, 29, 72, 0.2);
+    }
+
+    .lock-badge i {
+      font-size: 0.65rem;
+    }
+
+    /* ==========================================
        8. ANIMATIONS & KEYFRAMES
        ========================================== */
     @keyframes pulseGlow {
@@ -1224,6 +1303,10 @@
     let simTimer = null;
     let autoRefreshTimer = null;
     let cachedPreviousData = null;
+    
+    // State Sembunyikan/Buka Nama Peserta Babak Penyisihan
+    let showAllNames = false;
+    const revealedSchools = new Set();
 
     // State & Engine Tema (Light/Dark Mode)
     let currentTheme = localStorage.getItem('LCC_THEME') || 'dark';
@@ -1259,6 +1342,26 @@
       currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
       localStorage.setItem('LCC_THEME', currentTheme);
       applyTheme();
+    }
+
+    // Fungsi Pengendali Nama Terkunci/Terbuka (Babak Penyisihan)
+    function toggleSchoolName(kode) {
+      if (activeRound !== 'penyisihan') return;
+      if (revealedSchools.has(kode)) {
+        revealedSchools.delete(kode);
+      } else {
+        revealedSchools.add(kode);
+      }
+      renderViewPort();
+    }
+
+    function toggleAllNames() {
+      if (activeRound !== 'penyisihan') return;
+      showAllNames = !showAllNames;
+      if (!showAllNames) {
+        revealedSchools.clear();
+      }
+      renderViewPort();
     }
 
     // URL default spreadsheet pengguna untuk koneksi instan
@@ -1464,6 +1567,12 @@
         roundTriggers[idx].classList.add('active');
       }
 
+      // Reset sembunyikan nama saat babak berubah demi kejutan baru
+      if (round === 'penyisihan') {
+        showAllNames = false;
+        revealedSchools.clear();
+      }
+
       // Update tulisan babak live di sub-header PMI
       const subHeaderMsg = document.querySelector('.live-indicator-wrapper span:not(.badge-live-pulse)');
       if (subHeaderMsg) {
@@ -1572,10 +1681,21 @@
           ? `<span class="badge-status"><i class="fa-solid fa-star"></i> ${item.status}</span>`
           : '';
 
+        // Penentuan Visibilitas Nama Kontestan (Khusus Babak Penyisihan)
+        const isNameVisible = (activeRound !== 'penyisihan') || showAllNames || revealedSchools.has(item.kode);
+        const nameHTML = isNameVisible
+          ? `<div class="team-name name-unlocked" onclick="toggleSchoolName('${item.kode}')" title="Klik untuk menyembunyikan nama">
+               <span class="team-name-text">${item.nama}</span>
+             </div>`
+          : `<div class="team-name name-locked" onclick="toggleSchoolName('${item.kode}')" title="Klik untuk membuka nama">
+               <span class="lock-badge"><i class="fa-solid fa-lock"></i> Terkunci</span>
+               <span class="team-name-text">${item.nama}</span>
+             </div>`;
+
         card.innerHTML = `
           <div class="medal-icon-wrapper">${badgeMedal}</div>
           <div class="info-container">
-            <div class="team-name">${item.nama}</div>
+            ${nameHTML}
             <div class="team-meta">
               <span><i class="fa-solid fa-qrcode" style="color: var(--neon-blue);"></i> ${item.kode}</span>
               ${item.status ? `<span style="opacity:0.3;">|</span>` : ''}
@@ -1738,6 +1858,14 @@
       else if (activeRound === 'final') subLabel = 'Live Final - Skor Real-Time';
       else if (activeRound === 'ranking_akhir') subLabel = 'Hasil Juara & Peringkat Akhir';
 
+      // Tombol Buka/Tutup Semua Nama khusus Babak Penyisihan
+      const toggleBtnHTML = activeRound === 'penyisihan' 
+        ? `<button class="btn-control" style="font-size:0.75rem; padding: 0.35rem 0.7rem; background: rgba(0, 240, 255, 0.08); border-color: rgba(0, 240, 255, 0.2); font-weight:700;" onclick="event.stopPropagation(); toggleAllNames()">
+             <i class="fa-solid ${showAllNames ? 'fa-eye-slash' : 'fa-eye'}" style="color: var(--neon-blue); margin-right: 0.3rem;"></i>
+             ${showAllNames ? 'Tutup Semua Nama' : 'Buka Semua Nama'}
+           </button>`
+        : '';
+
       const header = document.createElement('div');
       header.className = 'board-header';
       header.innerHTML = `
@@ -1748,7 +1876,10 @@
             <span style="font-size:0.78rem; color: #9ca3af;">${subLabel}</span>
           </div>
         </div>
-        <div class="board-badge" style="font-size:0.8rem; font-weight:700; color: var(--neon-red);"><i class="fa-solid fa-trophy"></i> LCC 2026</div>
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          ${toggleBtnHTML}
+          <div class="board-badge" style="font-size:0.8rem; font-weight:700; color: var(--neon-red);"><i class="fa-solid fa-trophy"></i> LCC 2026</div>
+        </div>
       `;
       cardContainer.appendChild(header);
 
