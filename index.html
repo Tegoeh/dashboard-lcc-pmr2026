@@ -462,9 +462,9 @@
       align-items: start;
     }
 
-    /* Mode Fokus 1 Kategori + Maskot Terintegrasi di Dashboard */
+    /* Mode Fokus 1 Kategori Tanpa Maskot (Lebar Penuh) */
     .view-focus {
-      grid-template-columns: 1fr 340px;
+      grid-template-columns: 1fr;
     }
 
     /* Mode Tampil Semua Kategori (3 Kolom Sejajar) */
@@ -1036,38 +1036,59 @@
   <!-- ==========================================
        VIEW CONTROLS BAR
        ========================================== -->
-  <div class="controls-wrapper">
-    <div class="nav-tabs" id="tabNavGroup">
-      <button class="tab-trigger active" onclick="changeCategory('mula')">
-        <i class="fa-solid fa-graduation-cap"></i> PMR Mula (SD)
-      </button>
-      <button class="tab-trigger" onclick="changeCategory('madya')">
-        <i class="fa-solid fa-school"></i> PMR Madya (SMP)
-      </button>
-      <button class="tab-trigger" onclick="changeCategory('wira')">
-        <i class="fa-solid fa-building-columns"></i> PMR Wira (SMA)
-      </button>
-      <button class="tab-trigger" id="btnToggleAll" onclick="toggleViewAll()">
-        <i class="fa-solid fa-table-cells-large"></i> Bandingkan Semua
-      </button>
-    </div>
-    
-    <div class="actions-group">
-      <div class="sync-status">
-        <div class="status-ping" id="apiStatusPing"></div>
-        <span id="apiStatusMsg">Tersambung ke Google Sheets</span>
+  <div class="controls-wrapper" style="display: flex; flex-direction: column; align-items: stretch; gap: 1rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.2rem; width: 100%;">
+      <div class="nav-tabs" id="tabNavGroup">
+        <button class="tab-trigger active" onclick="changeCategory('mula')">
+          <i class="fa-solid fa-graduation-cap"></i> PMR Mula (SD)
+        </button>
+        <button class="tab-trigger" onclick="changeCategory('madya')">
+          <i class="fa-solid fa-school"></i> PMR Madya (SMP)
+        </button>
+        <button class="tab-trigger" onclick="changeCategory('wira')">
+          <i class="fa-solid fa-building-columns"></i> PMR Wira (SMA)
+        </button>
+        <button class="tab-trigger" id="btnToggleAll" onclick="toggleViewAll()">
+          <i class="fa-solid fa-table-cells-large"></i> Bandingkan Semua
+        </button>
       </div>
-      <button class="btn-control btn-primary" onclick="syncSheetsData()">
-        <i class="fa-solid fa-arrows-rotate" id="syncSpinIcon"></i> Sinkron Live
+      
+      <div class="actions-group">
+        <div class="sync-status">
+          <div class="status-ping" id="apiStatusPing"></div>
+          <span id="apiStatusMsg">Tersambung ke Google Sheets</span>
+        </div>
+        <button class="btn-control btn-primary" onclick="syncSheetsData()">
+          <i class="fa-solid fa-arrows-rotate" id="syncSpinIcon"></i> Sinkron Live
+        </button>
+        <button class="btn-control" onclick="showSettingsModal()">
+          <i class="fa-solid fa-sliders"></i> Sambungkan
+        </button>
+        <button class="btn-control" id="btnSimulation" onclick="toggleSimulation()" style="background: rgba(0, 240, 255, 0.1); border-color: rgba(0, 240, 255, 0.25);">
+          <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--neon-blue);"></i> Uji Coba Lomba
+        </button>
+        <button class="btn-control" id="btnThemeToggle" onclick="toggleTheme()" style="background: rgba(255, 255, 255, 0.03); width: 42px; padding: 0.65rem 0; justify-content: center;" title="Beralih ke Tema Terang">
+          <i class="fa-solid fa-sun" id="themeIcon" style="color: var(--neon-gold);"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Sub-Navigasi Babak Lomba Premium -->
+    <div class="nav-tabs" id="roundNavGroup" style="width: 100%; display: flex; flex-wrap: wrap; gap: 0.3rem; padding: 0.3rem;">
+      <button class="tab-trigger active" onclick="changeRound('penyisihan')" style="flex: 1; justify-content: center;">
+        <i class="fa-solid fa-list-check"></i> Babak Penyisihan (10 Besar)
       </button>
-      <button class="btn-control" onclick="showSettingsModal()">
-        <i class="fa-solid fa-sliders"></i> Sambungkan
+      <button class="tab-trigger" onclick="changeRound('semifinal1')" style="flex: 1; justify-content: center;">
+        <i class="fa-solid fa-sitemap"></i> Semi Final I
       </button>
-      <button class="btn-control" id="btnSimulation" onclick="toggleSimulation()" style="background: rgba(0, 240, 255, 0.1); border-color: rgba(0, 240, 255, 0.25);">
-        <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--neon-blue);"></i> Uji Coba Lomba
+      <button class="tab-trigger" onclick="changeRound('semifinal2')" style="flex: 1; justify-content: center;">
+        <i class="fa-solid fa-sitemap"></i> Semi Final II
       </button>
-      <button class="btn-control" id="btnThemeToggle" onclick="toggleTheme()" style="background: rgba(255, 255, 255, 0.03); width: 42px; padding: 0.65rem 0; justify-content: center;" title="Beralih ke Tema Terang">
-        <i class="fa-solid fa-sun" id="themeIcon" style="color: var(--neon-gold);"></i>
+      <button class="tab-trigger" onclick="changeRound('final')" style="flex: 1; justify-content: center;">
+        <i class="fa-solid fa-fire-flame-curved"></i> Babak Final
+      </button>
+      <button class="tab-trigger" onclick="changeRound('ranking_akhir')" style="flex: 1; justify-content: center;">
+        <i class="fa-solid fa-trophy"></i> Juara & Ranking Akhir 🏆
       </button>
     </div>
   </div>
@@ -1108,6 +1129,7 @@
   <script>
     // State Aplikasi
     let activeCategory = 'mula'; 
+    let activeRound = 'penyisihan';
     let allCategoriesMode = false; 
     let simulationActive = false;
     let simTimer = null;
@@ -1158,27 +1180,120 @@
 
     // Data Awal Mock/Demo yang Diuji secara Visual
     let liveScoreboardData = {
-      mula: [
-        { kode: 'MU13', nama: 'SD NEGERI 6 DAUHWARU', total: 700, rank: 1, status: 'LOLOS FINAL' },
-        { kode: 'MU07', nama: 'SD NEGERI 3 BERANGBANG', total: 600, rank: 2, status: 'LOLOS FINAL' },
-        { kode: 'MU12', nama: 'SD NEGERI 1 MENDOYO DAUH TUKAD', total: 300, rank: 3, status: 'LOLOS FINAL' },
-        { kode: 'MU04', nama: 'SD NEGERI 2 PEKUTATAN', total: 300, rank: 3, status: 'LOLOS FINAL' },
-        { kode: 'MU11', nama: 'SD NEGERI 1 BALER BALE AGUNG', total: 200, rank: 5, status: 'LOLOS FINAL' }
-      ],
-      madya: [
-        { kode: 'MA09', nama: 'SMP NEGERI 2 MENDOYO', total: 700, rank: 1, status: 'LOLOS FINAL' },
-        { kode: 'MA05', nama: 'SMP NEGERI 3 BALUK', total: 600, rank: 2, status: 'LOLOS FINAL' },
-        { kode: 'MA02', nama: 'SMP NEGERI 1 NEGARA', total: 450, rank: 3, status: 'LOLOS FINAL' },
-        { kode: 'MA12', nama: 'SMP SDK MARSUDIRINI', total: 350, rank: 4, status: 'LOLOS FINAL' },
-        { kode: 'MA07', nama: 'SMP NEGERI 4 NEGARA', total: 250, rank: 5, status: 'LOLOS FINAL' }
-      ],
-      wira: [
-        { kode: 'WI05', nama: 'SMA NEGERI 1 NEGARA', total: 800, rank: 1, status: 'LOLOS FINAL' },
-        { kode: 'WI08', nama: 'SMA NEGERI 2 NEGARA', total: 650, rank: 2, status: 'LOLOS FINAL' },
-        { kode: 'WI03', nama: 'SMA NEGERI 1 MENDOYO', total: 550, rank: 3, status: 'LOLOS FINAL' },
-        { kode: 'WI11', nama: 'SMK NEGERI 1 NEGARA', total: 400, rank: 4, status: 'LOLOS FINAL' },
-        { kode: 'WI01', nama: 'SMA NEGERI 3 NEGARA', total: 300, rank: 5, status: 'LOLOS FINAL' }
-      ]
+      mula: {
+        penyisihan: [
+          { kode: 'MU12', nama: 'SD NEGERI 1 MENDOYO DAUH TUKAD', total: 654, rank: 1, status: 'LOLOS SEMIFINAL' },
+          { kode: 'MU07', nama: 'SD NEGERI 3 BERANGBANG', total: 555, rank: 2, status: 'LOLOS SEMIFINAL' },
+          { kode: 'MU09', nama: 'SD NEGERI 5 BERANGBANG', total: 524, rank: 3, status: 'LOLOS SEMIFINAL' },
+          { kode: 'MU04', nama: 'SD NEGERI 2 PEKUTATAN', total: 432, rank: 4, status: 'LOLOS SEMIFINAL' },
+          { kode: 'MU11', nama: 'SD NEGERI 1 BALER BALE AGUNG', total: 425, rank: 5, status: 'LOLOS SEMIFINAL' },
+          { kode: 'MU14', nama: 'SDK MARSUDIRINI', total: 75, rank: 6, status: 'LOLOS SEMIFINAL' },
+          { kode: 'MU13', nama: 'SD NEGERI 6 DAUHWARU', total: 55, rank: 7, status: 'LOLOS SEMIFINAL' },
+          { kode: 'MU01', nama: 'SD NEGERI PANGYANGAN', total: 54, rank: 8, status: 'LOLOS SEMIFINAL' },
+          { kode: 'MU05', nama: 'SD NEGERI 3 LELATENG', total: 43, rank: 9, status: 'LOLOS SEMIFINAL' },
+          { kode: 'MU03', nama: 'SD NEGERI 1 SANGKARAGUNG', total: 40, rank: 10, status: '' },
+          { kode: 'MU02', nama: 'SD NEGERI 4 PEKUTATAN', total: 35, rank: 11, status: '' },
+          { kode: 'MU06', nama: 'SD NEGERI 1 PULUKAN', total: 24, rank: 12, status: '' }
+        ],
+        semifinal1: [
+          { kode: 'MU07', nama: 'SD NEGERI 3 BERANGBANG', total: 600, rank: 1, status: 'LOLOS FINAL' },
+          { kode: 'MU12', nama: 'SD NEGERI 1 MENDOYO DAUH TUKAD', total: 300, rank: 2, status: 'LOLOS FINAL' },
+          { kode: 'MU04', nama: 'SD NEGERI 2 PEKUTATAN', total: 300, rank: 2, status: 'LOLOS FINAL' },
+          { kode: 'MU11', nama: 'SD NEGERI 1 BALER BALE AGUNG', total: 200, rank: 4, status: 'LOLOS FINAL' },
+          { kode: 'MU09', nama: 'SD NEGERI 5 BERANGBANG', total: 100, rank: 5, status: '' }
+        ],
+        semifinal2: [
+          { kode: 'MU13', nama: 'SD NEGERI 6 DAUHWARU', total: 700, rank: 1, status: 'LOLOS FINAL' },
+          { kode: 'MU03', nama: 'SD NEGERI 1 SANGKARAGUNG', total: 100, rank: 2, status: '' },
+          { kode: 'MU14', nama: 'SDK MARSUDIRINI', total: 100, rank: 2, status: '' },
+          { kode: 'MU01', nama: 'SD NEGERI PANGYANGAN', total: 100, rank: 2, status: '' },
+          { kode: 'MU05', nama: 'SD NEGERI 3 LELATENG', total: 100, rank: 2, status: '' }
+        ],
+        final: [
+          { kode: 'MU12', nama: 'SD NEGERI 1 MENDOYO DAUH TUKAD', total: 950, rank: 1, status: 'FINALIS' },
+          { kode: 'MU07', nama: 'SD NEGERI 3 BERANGBANG', total: 900, rank: 2, status: 'FINALIS' },
+          { kode: 'MU13', nama: 'SD NEGERI 6 DAUHWARU', total: 850, rank: 3, status: 'FINALIS' },
+          { kode: 'MU04', nama: 'SD NEGERI 2 PEKUTATAN', total: 800, rank: 4, status: 'FINALIS' },
+          { kode: 'MU11', nama: 'SD NEGERI 1 BALER BALE AGUNG', total: 750, rank: 5, status: 'FINALIS' }
+        ],
+        ranking_akhir: [
+          { kode: 'MU12', nama: 'SD NEGERI 1 MENDOYO DAUH TUKAD', total: 950, rank: 1, status: 'JUARA I 🏆' },
+          { kode: 'MU07', nama: 'SD NEGERI 3 BERANGBANG', total: 900, rank: 2, status: 'JUARA II 🥈' },
+          { kode: 'MU13', nama: 'SD NEGERI 6 DAUHWARU', total: 850, rank: 3, status: 'JUARA III 🥉' },
+          { kode: 'MU04', nama: 'SD NEGERI 2 PEKUTATAN', total: 800, rank: 4, status: 'HARAPAN I' },
+          { kode: 'MU11', nama: 'SD NEGERI 1 BALER BALE AGUNG', total: 750, rank: 5, status: 'HARAPAN II' }
+        ]
+      },
+      madya: {
+        penyisihan: [
+          { kode: 'MA09', nama: 'SMP NEGERI 2 MENDOYO', total: 700, rank: 1, status: 'LOLOS SEMIFINAL' },
+          { kode: 'MA05', nama: 'SMP NEGERI 3 BALUK', total: 600, rank: 2, status: 'LOLOS SEMIFINAL' },
+          { kode: 'MA02', nama: 'SMP NEGERI 1 NEGARA', total: 450, rank: 3, status: 'LOLOS SEMIFINAL' },
+          { kode: 'MA12', nama: 'SMP SDK MARSUDIRINI', total: 350, rank: 4, status: 'LOLOS SEMIFINAL' },
+          { kode: 'MA07', nama: 'SMP NEGERI 4 NEGARA', total: 250, rank: 5, status: 'LOLOS SEMIFINAL' },
+          { kode: 'MA03', nama: 'SMP NEGERI 2 NEGARA', total: 200, rank: 6, status: 'LOLOS SEMIFINAL' },
+          { kode: 'MA04', nama: 'SMP NEGERI 5 NEGARA', total: 180, rank: 7, status: 'LOLOS SEMIFINAL' },
+          { kode: 'MA01', nama: 'SMP NEGERI 1 MELAYA', total: 150, rank: 8, status: 'LOLOS SEMIFINAL' },
+          { kode: 'MA08', nama: 'SMP NEGERI 1 MENDOYO', total: 120, rank: 9, status: 'LOLOS SEMIFINAL' },
+          { kode: 'MA10', nama: 'SMP NEGERI 3 NEGARA', total: 100, rank: 10, status: 'LOLOS SEMIFINAL' }
+        ],
+        semifinal1: [
+          { kode: 'MA09', nama: 'SMP NEGERI 2 MENDOYO', total: 550, rank: 1, status: 'LOLOS FINAL' },
+          { kode: 'MA02', nama: 'SMP NEGERI 1 NEGARA', total: 400, rank: 2, status: 'LOLOS FINAL' },
+          { kode: 'MA07', nama: 'SMP NEGERI 4 NEGARA', total: 200, rank: 3, status: '' }
+        ],
+        semifinal2: [
+          { kode: 'MA05', nama: 'SMP NEGERI 3 BALUK', total: 600, rank: 1, status: 'LOLOS FINAL' },
+          { kode: 'MA12', nama: 'SMP SDK MARSUDIRINI', total: 300, rank: 2, status: 'LOLOS FINAL' }
+        ],
+        final: [
+          { kode: 'MA09', nama: 'SMP NEGERI 2 MENDOYO', total: 800, rank: 1, status: 'FINALIS' },
+          { kode: 'MA05', nama: 'SMP NEGERI 3 BALUK', total: 750, rank: 2, status: 'FINALIS' },
+          { kode: 'MA02', nama: 'SMP NEGERI 1 NEGARA', total: 600, rank: 3, status: 'FINALIS' },
+          { kode: 'MA12', nama: 'SMP SDK MARSUDIRINI', total: 500, rank: 4, status: 'FINALIS' }
+        ],
+        ranking_akhir: [
+          { kode: 'MA09', nama: 'SMP NEGERI 2 MENDOYO', total: 800, rank: 1, status: 'JUARA I 🏆' },
+          { kode: 'MA05', nama: 'SMP NEGERI 3 BALUK', total: 750, rank: 2, status: 'JUARA II 🥈' },
+          { kode: 'MA02', nama: 'SMP NEGERI 1 NEGARA', total: 600, rank: 3, status: 'JUARA III 🥉' },
+          { kode: 'MA12', nama: 'SMP SDK MARSUDIRINI', total: 500, rank: 4, status: 'HARAPAN I' }
+        ]
+      },
+      wira: {
+        penyisihan: [
+          { kode: 'WI05', nama: 'SMA NEGERI 1 NEGARA', total: 800, rank: 1, status: 'LOLOS SEMIFINAL' },
+          { kode: 'WI08', nama: 'SMA NEGERI 2 NEGARA', total: 650, rank: 2, status: 'LOLOS SEMIFINAL' },
+          { kode: 'WI03', nama: 'SMA NEGERI 1 MENDOYO', total: 550, rank: 3, status: 'LOLOS SEMIFINAL' },
+          { kode: 'WI11', nama: 'SMK NEGERI 1 NEGARA', total: 400, rank: 4, status: 'LOLOS SEMIFINAL' },
+          { kode: 'WI01', nama: 'SMA NEGERI 3 NEGARA', total: 300, rank: 5, status: 'LOLOS SEMIFINAL' },
+          { kode: 'WI02', nama: 'SMA NEGERI 1 MELAYA', total: 250, rank: 6, status: 'LOLOS SEMIFINAL' },
+          { kode: 'WI04', nama: 'SMA NEGERI 1 PEKUTATAN', total: 200, rank: 7, status: 'LOLOS SEMIFINAL' },
+          { kode: 'WI06', nama: 'SMA NEGERI 2 MENDOYO', total: 180, rank: 8, status: 'LOLOS SEMIFINAL' },
+          { kode: 'WI07', nama: 'SMK NEGERI 2 NEGARA', total: 150, rank: 9, status: 'LOLOS SEMIFINAL' },
+          { kode: 'WI09', nama: 'SMK NEGERI 3 NEGARA', total: 120, rank: 10, status: 'LOLOS SEMIFINAL' }
+        ],
+        semifinal1: [
+          { kode: 'WI05', nama: 'SMA NEGERI 1 NEGARA', total: 600, rank: 1, status: 'LOLOS FINAL' },
+          { kode: 'WI03', nama: 'SMA NEGERI 1 MENDOYO', total: 450, rank: 2, status: 'LOLOS FINAL' },
+          { kode: 'WI01', nama: 'SMA NEGERI 3 NEGARA', total: 300, rank: 3, status: '' }
+        ],
+        semifinal2: [
+          { kode: 'WI08', nama: 'SMA NEGERI 2 NEGARA', total: 700, rank: 1, status: 'LOLOS FINAL' },
+          { kode: 'WI11', nama: 'SMK NEGERI 1 NEGARA', total: 400, rank: 2, status: 'LOLOS FINAL' }
+        ],
+        final: [
+          { kode: 'WI08', nama: 'SMA NEGERI 2 NEGARA', total: 850, rank: 1, status: 'FINALIS' },
+          { kode: 'WI05', nama: 'SMA NEGERI 1 NEGARA', total: 800, rank: 2, status: 'FINALIS' },
+          { kode: 'WI03', nama: 'SMA NEGERI 1 MENDOYO', total: 650, rank: 3, status: 'FINALIS' },
+          { kode: 'WI11', nama: 'SMK NEGERI 1 NEGARA', total: 500, rank: 4, status: 'FINALIS' }
+        ],
+        ranking_akhir: [
+          { kode: 'WI08', nama: 'SMA NEGERI 2 NEGARA', total: 850, rank: 1, status: 'JUARA I 🏆' },
+          { kode: 'WI05', nama: 'SMA NEGERI 1 NEGARA', total: 800, rank: 2, status: 'JUARA II 🥈' },
+          { kode: 'WI03', nama: 'SMA NEGERI 1 MENDOYO', total: 650, rank: 3, status: 'JUARA III 🥉' },
+          { kode: 'WI11', nama: 'SMK NEGERI 1 NEGARA', total: 500, rank: 4, status: 'HARAPAN I' }
+        ]
+      }
     };
 
     // Urutkan data awal secara descending
@@ -1193,6 +1308,9 @@
 
       document.getElementById('appsScriptUrl').value = sheetsApiEndpoint;
       
+      // Update tulisan babak live di sub-header PMI
+      changeRound(activeRound);
+
       if (!sheetsApiEndpoint) {
         // Nyalakan uji coba default bila belum ada koneksi untuk kepuasan instan visual pengguna
         toggleSimulation(true);
@@ -1209,9 +1327,14 @@
     // DATA SORT & CLASSIFY ENGINE
     // ==========================================
     function reorderCategory(cat) {
-      liveScoreboardData[cat].sort((a, b) => b.total - a.total);
-      liveScoreboardData[cat].forEach((item, index) => {
-        item.rank = index + 1;
+      const rounds = ['penyisihan', 'semifinal1', 'semifinal2', 'final', 'ranking_akhir'];
+      rounds.forEach(round => {
+        if (liveScoreboardData[cat] && liveScoreboardData[cat][round]) {
+          liveScoreboardData[cat][round].sort((a, b) => b.total - a.total);
+          liveScoreboardData[cat][round].forEach((item, index) => {
+            item.rank = index + 1;
+          });
+        }
       });
     }
 
@@ -1241,6 +1364,28 @@
       renderViewPort();
     }
 
+    function changeRound(round) {
+      activeRound = round;
+      
+      const roundTriggers = document.querySelectorAll('#roundNavGroup .tab-trigger');
+      roundTriggers.forEach(btn => btn.classList.remove('active'));
+      
+      const idx = ['penyisihan', 'semifinal1', 'semifinal2', 'final', 'ranking_akhir'].indexOf(round);
+      if (idx !== -1) {
+        roundTriggers[idx].classList.add('active');
+      }
+
+      // Update tulisan babak live di sub-header PMI
+      const subHeaderMsg = document.querySelector('.live-indicator-wrapper span:not(.badge-live-pulse)');
+      if (subHeaderMsg) {
+        let roundLabel = activeRound.toUpperCase().replace('1', 'I').replace('2', 'II').replace('_', ' ');
+        if (activeRound === 'ranking_akhir') roundLabel = 'JUARA & RANKING AKHIR';
+        subHeaderMsg.innerText = `${roundLabel} KABUPATEN JEMBRANA 2026`;
+      }
+
+      renderViewPort();
+    }
+
     function toggleViewAll() {
       allCategoriesMode = !allCategoriesMode;
       const btnAll = document.getElementById('btnToggleAll');
@@ -1264,12 +1409,18 @@
     function updateCategoryBoard(cat, listContainer) {
       if (!listContainer) return;
       
-      const items = liveScoreboardData[cat];
+      const roundData = liveScoreboardData[cat] ? liveScoreboardData[cat][activeRound] : [];
+      // Jika Penyisihan, tampilkan maksimal 10 sekolah sesuai permintaan user
+      let items = roundData || [];
+      if (activeRound === 'penyisihan') {
+        items = items.slice(0, 10);
+      }
+      
       if (!items || items.length === 0) {
         listContainer.innerHTML = `
           <div class="empty-board-state">
             <i class="fa-solid fa-folder-open"></i>
-            <div>Belum ada data finalis.<br><span style="font-size:0.75rem; color: #9ca3af;">Hubungkan API Sheets untuk sinkronisasi.</span></div>
+            <div>Belum ada data untuk babak ini.<br><span style="font-size:0.75rem; color: #9ca3af;">Hubungkan API Sheets untuk sinkronisasi.</span></div>
           </div>
         `;
         return;
@@ -1308,10 +1459,29 @@
         }
 
         const fillWidth = Math.max((item.total / topScore) * 100, 8);
+        
+        // Custom Medal Styling berdasarkan Peringkat dan Babak
         let badgeMedal = rank;
-        if (rank === 1) badgeMedal = '<i class="fa-solid fa-crown"></i>';
-        else if (rank === 2) badgeMedal = '<i class="fa-solid fa-medal"></i>';
-        else if (rank === 3) badgeMedal = '<i class="fa-solid fa-medal"></i>';
+        if (activeRound === 'ranking_akhir') {
+          if (rank === 1) {
+            badgeMedal = '<i class="fa-solid fa-trophy" style="color: var(--neon-gold); font-size:1.4rem;"></i>';
+          } else if (rank === 2) {
+            badgeMedal = '<i class="fa-solid fa-medal" style="color: #cbd5e1; font-size:1.25rem;"></i>';
+          } else if (rank === 3) {
+            badgeMedal = '<i class="fa-solid fa-medal" style="color: #b45309; font-size:1.2rem;"></i>';
+          } else {
+            badgeMedal = '<i class="fa-solid fa-award" style="color: #9ca3af;"></i>';
+          }
+        } else {
+          if (rank === 1) badgeMedal = '<i class="fa-solid fa-crown"></i>';
+          else if (rank === 2) badgeMedal = '<i class="fa-solid fa-medal"></i>';
+          else if (rank === 3) badgeMedal = '<i class="fa-solid fa-medal"></i>';
+        }
+
+        // Tampilkan badge status jika ada nilainya
+        const statusBadgeHTML = item.status 
+          ? `<span class="badge-status"><i class="fa-solid fa-star"></i> ${item.status}</span>`
+          : '';
 
         card.innerHTML = `
           <div class="medal-icon-wrapper">${badgeMedal}</div>
@@ -1319,8 +1489,8 @@
             <div class="team-name">${item.nama}</div>
             <div class="team-meta">
               <span><i class="fa-solid fa-qrcode" style="color: var(--neon-blue);"></i> ${item.kode}</span>
-              <span style="opacity:0.3;">|</span>
-              <span class="badge-status"><i class="fa-solid fa-shield-heart"></i> ${item.status || 'FINALIS'}</span>
+              ${item.status ? `<span style="opacity:0.3;">|</span>` : ''}
+              ${statusBadgeHTML}
             </div>
           </div>
           <div class="score-wrapper">
@@ -1393,10 +1563,9 @@
       
       // Deteksi keberadaan fisik elemen di DOM untuk mencegah kegagalan inisialisasi akibat komentar HTML/caching
       const hasBoard = viewport.querySelector('.board-container') !== null;
-      const hasMascot = viewport.querySelector('.mascot-board-wrapper') !== null;
       
       const needRebuild = (allCategoriesMode && (!hasGridStructure || !hasBoard)) || 
-                          (!allCategoriesMode && (!hasFocusStructure || !hasBoard || !hasMascot)) || 
+                          (!allCategoriesMode && (!hasFocusStructure || !hasBoard)) || 
                           (viewport.innerHTML.trim() === '');
 
       if (needRebuild) {
@@ -1416,45 +1585,9 @@
           else { label = 'PMR Wira (Tingkat SMA)'; icon = 'fa-building-columns'; }
 
           viewport.appendChild(createStaticBoardDOM(activeCategory, label, icon));
-
-          // Panel Maskot Kebanggaan (Sisi Kanan)
-          const mascotSidePanel = document.createElement('div');
-          mascotSidePanel.className = 'mascot-board-wrapper';
-          mascotSidePanel.innerHTML = `
-            <div class="mascot-card-premium">
-              <img class="floating-mascot-img" src="LOGO-LOGO DAN CONTOH/JALLA (1).png" alt="Maskot Jalla" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?w=400&q=80'">
-              <div class="mascot-title-group">
-                <div class="mascot-heading-name">SI JALLA</div>
-                <span class="mascot-badge-name">Maskot Kebanggaan PMI Jembrana</span>
-              </div>
-              <p class="mascot-text-info">
-                Si Jalla merepresentasikan ketangkasan, kerelaan, dan kepedulian yang tinggi relawan PMR Satuan Inti PMI Kabupaten Jembrana.
-              </p>
-            </div>
-            
-            <div class="podium-explain-card">
-              <h4><i class="fa-solid fa-trophy" style="color: var(--neon-gold); filter: drop-shadow(0 0 4px var(--neon-gold-glow));"></i> Penentuan Juara Final</h4>
-              <div class="podium-mini-row">
-                <span class="podium-mini-index" style="background: var(--neon-gold); color: black;"><i class="fa-solid fa-medal"></i></span>
-                <div style="flex:1; font-weight:700; font-size:0.85rem; color: white;">Juara I</div>
-                <div style="font-size:0.75rem; color:#9ca3af;">Podium Tertinggi 1</div>
-              </div>
-              <div class="podium-mini-row">
-                <span class="podium-mini-index" style="background: #cbd5e1; color: black;"><i class="fa-solid fa-medal"></i></span>
-                <div style="flex:1; font-weight:700; font-size:0.85rem; color: white;">Juara II</div>
-                <div style="font-size:0.75rem; color:#9ca3af;">Podium Tertinggi 2</div>
-              </div>
-              <div class="podium-mini-row">
-                <span class="podium-mini-index" style="background: #b45309; color: white;"><i class="fa-solid fa-medal"></i></span>
-                <div style="flex:1; font-weight:700; font-size:0.85rem; color: white;">Juara III</div>
-                <div style="font-size:0.75rem; color:#9ca3af;">Podium Tertinggi 3</div>
-              </div>
-            </div>
-          `;
-          viewport.appendChild(mascotSidePanel);
         }
       } else if (!allCategoriesMode) {
-        // Jika kategori aktif berganti saat mode fokus, ganti board utama secara presisi tanpa mengganggu maskot!
+        // Jika kategori aktif berganti saat mode fokus, ganti board utama secara presisi
         const boardContainer = viewport.querySelector('.board-container');
         const currentCatAttribute = boardContainer ? boardContainer.getAttribute('data-cat') : '';
         
@@ -1469,8 +1602,6 @@
 
           // Buat board kategori baru
           const newBoard = createStaticBoardDOM(activeCategory, label, icon);
-          
-          // Sisipkan di posisi paling awal (sebelum maskot) secara presisi
           viewport.insertBefore(newBoard, viewport.firstElementChild);
         }
       }
@@ -1491,6 +1622,13 @@
       cardContainer.className = 'board-container';
       cardContainer.setAttribute('data-cat', cat);
 
+      let subLabel = 'Live Skor Pertandingan';
+      if (activeRound === 'penyisihan') subLabel = 'Penyisihan - 10 Besar Terbaik';
+      else if (activeRound === 'semifinal1') subLabel = 'Semi Final Grup I';
+      else if (activeRound === 'semifinal2') subLabel = 'Semi Final Grup II';
+      else if (activeRound === 'final') subLabel = 'Live Final - Skor Real-Time';
+      else if (activeRound === 'ranking_akhir') subLabel = 'Hasil Juara & Peringkat Akhir';
+
       const header = document.createElement('div');
       header.className = 'board-header';
       header.innerHTML = `
@@ -1498,10 +1636,10 @@
           <i class="fa-solid ${iconClass} board-icon"></i>
           <div>
             <div class="board-title">${title}</div>
-            <span style="font-size:0.78rem; color: #9ca3af;">Live Skor Pertandingan</span>
+            <span style="font-size:0.78rem; color: #9ca3af;">${subLabel}</span>
           </div>
         </div>
-        <div class="board-badge">Finalis</div>
+        <div class="board-badge" style="font-size:0.8rem; font-weight:700; color: var(--neon-red);"><i class="fa-solid fa-trophy"></i> LCC 2026</div>
       `;
       cardContainer.appendChild(header);
 
@@ -1548,43 +1686,52 @@
       });
     }
 
-    // Mengurai data finalis dari objek tabel JSONP Google Sheets
-    function extractFinalistsFromTable(table) {
-      if (!table || !table.rows) return [];
-      
+    // Mengurai seluruh babak secara otomatis dari tabel visualisasi Google Sheets
+    function parseAllRoundsFromTable(table) {
+      const result = {
+        penyisihan: [],
+        semifinal1: [],
+        semifinal2: [],
+        final: [],
+        ranking_akhir: []
+      };
+
+      if (!table || !table.rows) return result;
       const rows = table.rows;
-      let headerIndex = -1;
-      
-      // Cari baris header yang bertindak sebagai pemisah awal data finalis
+
+      let idxLolos = -1; // Indeks baris "Nama Sekolah (Lolos)"
+      let idxFinal = -1; // Indeks baris "Nama Sekolah (Final)"
+
       for (let i = 0; i < rows.length; i++) {
         const row = rows[i];
-        if (row && row.c && row.c[2] && row.c[2].v && row.c[2].v.toString().includes("Nama Sekolah (Final)")) {
-          headerIndex = i;
-          break;
+        if (row && row.c && row.c[2] && row.c[2].v) {
+          const valStr = row.c[2].v.toString();
+          if (valStr.includes("Nama Sekolah (Lolos)")) {
+            idxLolos = i;
+          } else if (valStr.includes("Nama Sekolah (Final)")) {
+            idxFinal = i;
+          }
         }
       }
 
-      if (headerIndex === -1) return [];
-
-      const finalists = [];
-      // 5 baris setelah baris header adalah data 5 besar finalis LCC
-      for (let i = headerIndex + 1; i <= headerIndex + 5; i++) {
+      // A. BABAK PENYISIHAN (Baris 0 sampai sebelum idxLolos)
+      const endPenyisihan = idxLolos !== -1 ? idxLolos : rows.length;
+      for (let i = 0; i < endPenyisihan; i++) {
         const row = rows[i];
         if (row && row.c) {
           const kode = row.c[1] && row.c[1].v ? row.c[1].v.toString().trim() : '';
           const nama = row.c[2] && row.c[2].v ? row.c[2].v.toString().trim() : '';
           const totalRaw = row.c[3] ? row.c[3].v : 0;
           const rankRaw = row.c[4] ? row.c[4].v : 1;
-          const status = row.c[5] && row.c[5].v ? row.c[5].v.toString().trim() : 'FINALIS';
+          const status = row.c[5] && row.c[5].v ? row.c[5].v.toString().trim() : '';
 
-          if (kode && kode !== '') {
+          if (kode && kode !== '' && kode !== 'Kode') {
             let total = parseFloat(totalRaw);
             if (isNaN(total)) total = 0;
-            
             let rank = parseInt(rankRaw);
             if (isNaN(rank)) rank = 1;
 
-            finalists.push({
+            result.penyisihan.push({
               kode: kode,
               nama: nama,
               total: total,
@@ -1594,7 +1741,98 @@
           }
         }
       }
-      return finalists;
+
+      // B. BABAK SEMIFINAL I & II (Baris idxLolos + 1 sampai sebelum idxFinal)
+      if (idxLolos !== -1) {
+        const endSemifinal = idxFinal !== -1 ? idxFinal : rows.length;
+        for (let i = idxLolos + 1; i < endSemifinal; i++) {
+          const row = rows[i];
+          if (row && row.c) {
+            const kode = row.c[1] && row.c[1].v ? row.c[1].v.toString().trim() : '';
+            const nama = row.c[2] && row.c[2].v ? row.c[2].v.toString().trim() : '';
+            const grupRaw = row.c[3] ? row.c[3].v : 0; // 1 = Semifinal I, 2 = Semifinal II
+            const totalRaw = row.c[4] ? row.c[4].v : 0;
+            const rankRaw = row.c[5] ? row.c[5].v : 1;
+            const status = row.c[6] && row.c[6].v ? row.c[6].v.toString().trim() : '';
+
+            if (kode && kode !== '' && kode !== 'Kode') {
+              let total = parseFloat(totalRaw);
+              if (isNaN(total)) total = 0;
+              let rank = parseInt(rankRaw);
+              if (isNaN(rank)) rank = 1;
+              let grup = parseInt(grupRaw);
+
+              const item = {
+                kode: kode,
+                nama: nama,
+                total: total,
+                rank: rank,
+                status: status
+              };
+
+              if (grup === 1) {
+                result.semifinal1.push(item);
+              } else if (grup === 2) {
+                result.semifinal2.push(item);
+              }
+            }
+          }
+        }
+      }
+
+      // C. BABAK FINAL & RANKING AKHIR (Baris idxFinal + 1 sampai akhir)
+      if (idxFinal !== -1) {
+        for (let i = idxFinal + 1; i < rows.length; i++) {
+          const row = rows[i];
+          if (row && row.c) {
+            const kode = row.c[1] && row.c[1].v ? row.c[1].v.toString().trim() : '';
+            const nama = row.c[2] && row.c[2].v ? row.c[2].v.toString().trim() : '';
+            const totalRaw = row.c[3] ? row.c[3].v : 0;
+            const rankRaw = row.c[4] ? row.c[4].v : 1;
+            const status = row.c[5] && row.c[5].v ? row.c[5].v.toString().trim() : '';
+
+            if (kode && kode !== '' && kode !== 'Kode') {
+              let total = parseFloat(totalRaw);
+              if (isNaN(total)) total = 0;
+              let rank = parseInt(rankRaw);
+              if (isNaN(rank)) rank = 1;
+
+              result.final.push({
+                kode: kode,
+                nama: nama,
+                total: total,
+                rank: rank,
+                status: 'FINALIS'
+              });
+
+              result.ranking_akhir.push({
+                kode: kode,
+                nama: nama,
+                total: total,
+                rank: rank,
+                status: status || 'FINALIS'
+              });
+            }
+          }
+        }
+      }
+
+      // Urutkan secara descending berdasarkan total skor
+      result.penyisihan.sort((a, b) => b.total - a.total);
+      result.semifinal1.sort((a, b) => b.total - a.total);
+      result.semifinal2.sort((a, b) => b.total - a.total);
+      result.final.sort((a, b) => b.total - a.total);
+      result.ranking_akhir.sort((a, b) => b.total - a.total);
+
+      // Perbarui properti rank setelah diurutkan
+      const applyRank = (arr) => arr.forEach((item, idx) => item.rank = idx + 1);
+      applyRank(result.penyisihan);
+      applyRank(result.semifinal1);
+      applyRank(result.semifinal2);
+      applyRank(result.final);
+      applyRank(result.ranking_akhir);
+
+      return result;
     }
 
     function syncSheetsData() {
@@ -1622,9 +1860,9 @@
             
             cachedPreviousData = JSON.parse(JSON.stringify(liveScoreboardData));
             
-            liveScoreboardData.mula = extractFinalistsFromTable(tableMula);
-            liveScoreboardData.madya = extractFinalistsFromTable(tableMadya);
-            liveScoreboardData.wira = extractFinalistsFromTable(tableWira);
+            liveScoreboardData.mula = parseAllRoundsFromTable(tableMula);
+            liveScoreboardData.madya = parseAllRoundsFromTable(tableMadya);
+            liveScoreboardData.wira = parseAllRoundsFromTable(tableWira);
             
             reorderCategories();
             renderViewPort();
@@ -1671,8 +1909,13 @@
       if (!cachedPreviousData) return;
 
       ['mula', 'madya', 'wira'].forEach(cat => {
-        liveScoreboardData[cat].forEach(item => {
-          const prevItem = cachedPreviousData[cat].find(x => x.kode === item.kode);
+        const currentList = liveScoreboardData[cat] ? liveScoreboardData[cat][activeRound] : [];
+        const prevList = cachedPreviousData[cat] ? cachedPreviousData[cat][activeRound] : [];
+
+        if (!currentList || !prevList) return;
+
+        currentList.forEach(item => {
+          const prevItem = prevList.find(x => x.kode === item.kode);
           if (prevItem && prevItem.total !== item.total) {
             const numEl = document.getElementById(`scoreval-${cat}-${item.kode}`);
             if (numEl) {
@@ -1690,8 +1933,8 @@
       const dot = document.getElementById('apiStatusPing');
       const label = document.getElementById('apiStatusMsg');
       
-      dot.className = 'status-ping ' + state;
-      label.innerText = msg;
+      if (dot) dot.className = 'status-ping ' + state;
+      if (label) label.innerText = msg;
     }
 
     // ==========================================
@@ -1743,23 +1986,24 @@
 
         if (autoRefreshTimer) clearInterval(autoRefreshTimer);
 
-        // Simulasi persaingan nilai finalis bertambah/berkurang acak
+        // Simulasi persaingan nilai secara real-time pada babak yang aktif
         simTimer = setInterval(() => {
           const cats = ['mula', 'madya', 'wira'];
           const randomCat = cats[Math.floor(Math.random() * cats.length)];
-          const group = liveScoreboardData[randomCat];
+          const roundList = liveScoreboardData[randomCat] ? liveScoreboardData[randomCat][activeRound] : null;
           
-          if (group && group.length > 0) {
-            const index = Math.floor(Math.random() * group.length);
+          if (roundList && roundList.length > 0) {
+            const index = Math.floor(Math.random() * roundList.length);
             const correctOption = Math.random() > 0.35; 
             
+            cachedPreviousData = JSON.parse(JSON.stringify(liveScoreboardData));
+            
             if (correctOption) {
-              group[index].total += 100;
+              roundList[index].total += 100;
             } else {
-              group[index].total = Math.max(group[index].total - 50, 0); 
+              roundList[index].total = Math.max(roundList[index].total - 50, 0); 
             }
             
-            cachedPreviousData = JSON.parse(JSON.stringify(liveScoreboardData));
             reorderCategory(randomCat);
             renderViewPort();
             animateScoreChanges();
