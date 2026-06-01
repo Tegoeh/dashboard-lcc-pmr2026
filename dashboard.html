@@ -1036,71 +1036,227 @@
     // ==========================================
     // RENDER VIEWPORT DOM ENGINE
     // ==========================================
-    function renderViewPort() {
-      const viewport = document.getElementById('dashboardViewport');
-      viewport.innerHTML = '';
-
-      if (allCategoriesMode) {
-        viewport.className = 'dashboard-view-wrapper view-grid-all';
-        viewport.appendChild(buildBoardDOM('mula', 'PMR Mula (SD)', 'fa-graduation-cap'));
-        viewport.appendChild(buildBoardDOM('madya', 'PMR Madya (SMP)', 'fa-school'));
-        viewport.appendChild(buildBoardDOM('wira', 'PMR Wira (SMA)', 'fa-building-columns'));
-      } else {
-        viewport.className = 'dashboard-view-wrapper view-focus';
-        
-        let label = '';
-        let icon = '';
-        if (activeCategory === 'mula') { label = 'PMR Mula (Tingkat SD)'; icon = 'fa-graduation-cap'; }
-        else if (activeCategory === 'madya') { label = 'PMR Madya (Tingkat SMP)'; icon = 'fa-school'; }
-        else { label = 'PMR Wira (Tingkat SMA)'; icon = 'fa-building-columns'; }
-
-        // Tambahkan Leaderboard Board Utama
-        viewport.appendChild(buildBoardDOM(activeCategory, label, icon));
-
-        // Tambahkan Panel Maskot Terintegrasi secara Mewah di Samping Leaderboard
-        const mascotSidePanel = document.createElement('div');
-        mascotSidePanel.className = 'mascot-board-wrapper';
-        mascotSidePanel.innerHTML = `
-          <!-- INTEGRATED PREMIUM MASCOT CARD -->
-          <div class="mascot-card-premium">
-            <img class="floating-mascot-img" src="LOGO-LOGO DAN CONTOH/JALLA (1).png" alt="Maskot Jalla" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?w=400&q=80'">
-            <div class="mascot-title-group">
-              <div class="mascot-heading-name">SI JALLA</div>
-              <span class="mascot-badge-name">Maskot Kebanggaan PMI Jembrana</span>
-            </div>
-            <p class="mascot-text-info">
-              Si Jalla merepresentasikan ketangkasan, kerelaan, dan kepedulian yang tinggi relawan PMR Satuan Inti PMI Kabupaten Jembrana.
-            </p>
-          </div>
-          
-          <!-- PODIUM INFO CARD -->
-          <div class="podium-explain-card">
-            <h4><i class="fa-solid fa-trophy" style="color: var(--neon-gold); filter: drop-shadow(0 0 4px var(--neon-gold-glow));"></i> Penentuan Juara Final</h4>
-            <div class="podium-mini-row">
-              <span class="podium-mini-index" style="background: var(--neon-gold); color: black;"><i class="fa-solid fa-medal"></i></span>
-              <div style="flex:1; font-weight:700; font-size:0.85rem; color: white;">Juara I</div>
-              <div style="font-size:0.75rem; color:#9ca3af;">Podium Tertinggi 1</div>
-            </div>
-            <div class="podium-mini-row">
-              <span class="podium-mini-index" style="background: #cbd5e1; color: black;"><i class="fa-solid fa-medal"></i></span>
-              <div style="flex:1; font-weight:700; font-size:0.85rem; color: white;">Juara II</div>
-              <div style="font-size:0.75rem; color:#9ca3af;">Podium Tertinggi 2</div>
-            </div>
-            <div class="podium-mini-row">
-              <span class="podium-mini-index" style="background: #b45309; color: white;"><i class="fa-solid fa-medal"></i></span>
-              <div style="flex:1; font-weight:700; font-size:0.85rem; color: white;">Juara III</div>
-              <div style="font-size:0.75rem; color:#9ca3af;">Podium Tertinggi 3</div>
-            </div>
+    // Update data kartu di setiap list kontestan yang terpasang di DOM menggunakan FLIP (First, Last, Invert, Play)
+    function updateCategoryBoard(cat, listContainer) {
+      if (!listContainer) return;
+      
+      const items = liveScoreboardData[cat];
+      if (!items || items.length === 0) {
+        listContainer.innerHTML = `
+          <div class="empty-board-state">
+            <i class="fa-solid fa-folder-open"></i>
+            <div>Belum ada data finalis.<br><span style="font-size:0.75rem; color: #9ca3af;">Hubungkan API Sheets untuk sinkronisasi.</span></div>
           </div>
         `;
-        viewport.appendChild(mascotSidePanel);
+        return;
+      }
+
+      // 1. FIRST: Catat posisi koordinat awal semua card sebelum reorder
+      const firstPositions = {};
+      const existingCards = listContainer.querySelectorAll('.contestant-card');
+      existingCards.forEach(card => {
+        const kode = card.getAttribute('data-kode');
+        if (kode) {
+          firstPositions[kode] = card.getBoundingClientRect();
+        }
+      });
+
+      // Bersihkan empty state jika ada
+      const emptyState = listContainer.querySelector('.empty-board-state');
+      if (emptyState) emptyState.remove();
+
+      // 2. Perbarui konten, skor, dan peringkat kontestan secara dinamis
+      const topScore = Math.max(...items.map(i => i.total), 1);
+      const newCardElements = [];
+
+      items.forEach((item, index) => {
+        const rank = index + 1;
+        let card = listContainer.querySelector(`.contestant-card[data-kode="${item.kode}"]`);
+
+        if (!card) {
+          // Buat card baru jika belum terpasang di DOM
+          card = document.createElement('div');
+          card.className = `contestant-card top-${rank}`;
+          card.setAttribute('data-kode', item.kode);
+        } else {
+          // Perbarui kelas peringkat agar styling medal berpindah secara dinamis
+          card.className = `contestant-card top-${rank}`;
+        }
+
+        const fillWidth = Math.max((item.total / topScore) * 100, 8);
+        let badgeMedal = rank;
+        if (rank === 1) badgeMedal = '<i class="fa-solid fa-crown"></i>';
+        else if (rank === 2) badgeMedal = '<i class="fa-solid fa-medal"></i>';
+        else if (rank === 3) badgeMedal = '<i class="fa-solid fa-medal"></i>';
+
+        card.innerHTML = `
+          <div class="medal-icon-wrapper">${badgeMedal}</div>
+          <div class="info-container">
+            <div class="team-name">${item.nama}</div>
+            <div class="team-meta">
+              <span><i class="fa-solid fa-qrcode" style="color: var(--neon-blue);"></i> ${item.kode}</span>
+              <span style="opacity:0.3;">|</span>
+              <span class="badge-status"><i class="fa-solid fa-shield-heart"></i> ${item.status || 'FINALIS'}</span>
+            </div>
+          </div>
+          <div class="score-wrapper">
+            <div class="score-val" id="scoreval-${cat}-${item.kode}">${item.total}</div>
+            <div class="score-lbl">Skor</div>
+          </div>
+          <div class="indicator-bar-bg">
+            <div class="indicator-bar-fill" style="width: ${fillWidth}%"></div>
+          </div>
+        `;
+
+        newCardElements.push(card);
+      });
+
+      // Bersihkan kontestan lama yang tersisa dari list
+      existingCards.forEach(card => {
+        const kode = card.getAttribute('data-kode');
+        if (!items.find(item => item.kode === kode)) {
+          card.remove();
+        }
+      });
+
+      // 3. REORDER DOM: Susun kembali kartu kontestan sesuai urutan peringkat baru
+      newCardElements.forEach(card => {
+        listContainer.appendChild(card);
+      });
+
+      // 4. LAST, INVERT, PLAY (FLIP Animation Loop)
+      requestAnimationFrame(() => {
+        newCardElements.forEach(card => {
+          const kode = card.getAttribute('data-kode');
+          const firstRect = firstPositions[kode];
+          
+          if (firstRect) {
+            const lastRect = card.getBoundingClientRect();
+            const deltaY = firstRect.top - lastRect.top;
+
+            if (deltaY !== 0) {
+              // INVERT: Kembalikan kartu secara instan ke posisi koordinat lamanya
+              card.style.transition = 'none';
+              card.style.transform = `translateY(${deltaY}px)`;
+              
+              // Memicu reflow layout browser
+              card.offsetHeight; 
+
+              // PLAY: Jalankan animasi meluncur mulus (ease-out) ke koordinat barunya
+              card.style.transition = 'transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.4s, border-color 0.4s, box-shadow 0.4s';
+              card.style.transform = '';
+            }
+          } else {
+            // Animasi Fade-in meluncur untuk kartu baru yang baru bergabung
+            card.style.transition = 'none';
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(15px)';
+            card.offsetHeight;
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            card.style.opacity = '1';
+            card.style.transform = '';
+          }
+        });
+      });
+    }
+
+    // Inisialisasi awal atau perubahan mode layout utama (Grid vs Focus)
+    function renderViewPort() {
+      const viewport = document.getElementById('dashboardViewport');
+      
+      const hasGridStructure = viewport.classList.contains('view-grid-all');
+      const hasFocusStructure = viewport.classList.contains('view-focus');
+      const needRebuild = (allCategoriesMode && !hasGridStructure) || (!allCategoriesMode && !hasFocusStructure) || (viewport.innerHTML.trim() === '');
+
+      if (needRebuild) {
+        viewport.innerHTML = '';
+        if (allCategoriesMode) {
+          viewport.className = 'dashboard-view-wrapper view-grid-all';
+          viewport.appendChild(createStaticBoardDOM('mula', 'PMR Mula (SD)', 'fa-graduation-cap'));
+          viewport.appendChild(createStaticBoardDOM('madya', 'PMR Madya (SMP)', 'fa-school'));
+          viewport.appendChild(createStaticBoardDOM('wira', 'PMR Wira (SMA)', 'fa-building-columns'));
+        } else {
+          viewport.className = 'dashboard-view-wrapper view-focus';
+          
+          let label = '';
+          let icon = '';
+          if (activeCategory === 'mula') { label = 'PMR Mula (Tingkat SD)'; icon = 'fa-graduation-cap'; }
+          else if (activeCategory === 'madya') { label = 'PMR Madya (Tingkat SMP)'; icon = 'fa-school'; }
+          else { label = 'PMR Wira (Tingkat SMA)'; icon = 'fa-building-columns'; }
+
+          viewport.appendChild(createStaticBoardDOM(activeCategory, label, icon));
+
+          // Panel Maskot Kebanggaan (Sisi Kanan)
+          const mascotSidePanel = document.createElement('div');
+          mascotSidePanel.className = 'mascot-board-wrapper';
+          mascotSidePanel.innerHTML = `
+            <div class="mascot-card-premium">
+              <img class="floating-mascot-img" src="LOGO-LOGO DAN CONTOH/JALLA (1).png" alt="Maskot Jalla" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?w=400&q=80'">
+              <div class="mascot-title-group">
+                <div class="mascot-heading-name">SI JALLA</div>
+                <span class="mascot-badge-name">Maskot Kebanggaan PMI Jembrana</span>
+              </div>
+              <p class="mascot-text-info">
+                Si Jalla merepresentasikan ketangkasan, kerelaan, dan kepedulian yang tinggi relawan PMR Satuan Inti PMI Kabupaten Jembrana.
+              </p>
+            </div>
+            
+            <div class="podium-explain-card">
+              <h4><i class="fa-solid fa-trophy" style="color: var(--neon-gold); filter: drop-shadow(0 0 4px var(--neon-gold-glow));"></i> Penentuan Juara Final</h4>
+              <div class="podium-mini-row">
+                <span class="podium-mini-index" style="background: var(--neon-gold); color: black;"><i class="fa-solid fa-medal"></i></span>
+                <div style="flex:1; font-weight:700; font-size:0.85rem; color: white;">Juara I</div>
+                <div style="font-size:0.75rem; color:#9ca3af;">Podium Tertinggi 1</div>
+              </div>
+              <div class="podium-mini-row">
+                <span class="podium-mini-index" style="background: #cbd5e1; color: black;"><i class="fa-solid fa-medal"></i></span>
+                <div style="flex:1; font-weight:700; font-size:0.85rem; color: white;">Juara II</div>
+                <div style="font-size:0.75rem; color:#9ca3af;">Podium Tertinggi 2</div>
+              </div>
+              <div class="podium-mini-row">
+                <span class="podium-mini-index" style="background: #b45309; color: white;"><i class="fa-solid fa-medal"></i></span>
+                <div style="flex:1; font-weight:700; font-size:0.85rem; color: white;">Juara III</div>
+                <div style="font-size:0.75rem; color:#9ca3af;">Podium Tertinggi 3</div>
+              </div>
+            </div>
+          `;
+          viewport.appendChild(mascotSidePanel);
+        }
+      } else if (!allCategoriesMode) {
+        // Jika kategori aktif berganti saat mode fokus, ganti board utama secara presisi
+        const boardContainer = viewport.querySelector('.board-container');
+        const currentCatAttribute = boardContainer ? boardContainer.getAttribute('data-cat') : '';
+        
+        if (currentCatAttribute !== activeCategory) {
+          const mascotSide = viewport.querySelector('.mascot-board-wrapper');
+          viewport.innerHTML = '';
+          
+          let label = '';
+          let icon = '';
+          if (activeCategory === 'mula') { label = 'PMR Mula (Tingkat SD)'; icon = 'fa-graduation-cap'; }
+          else if (activeCategory === 'madya') { label = 'PMR Madya (Tingkat SMP)'; icon = 'fa-school'; }
+          else { label = 'PMR Wira (Tingkat SMA)'; icon = 'fa-building-columns'; }
+
+          viewport.appendChild(createStaticBoardDOM(activeCategory, label, icon));
+          if (mascotSide) viewport.appendChild(mascotSide);
+        }
+      }
+
+      // Update data kartu di setiap list kontestan yang terpasang di DOM
+      if (allCategoriesMode) {
+        updateCategoryBoard('mula', viewport.querySelector('.board-container[data-cat="mula"] .contestant-list'));
+        updateCategoryBoard('madya', viewport.querySelector('.board-container[data-cat="madya"] .contestant-list'));
+        updateCategoryBoard('wira', viewport.querySelector('.board-container[data-cat="wira"] .contestant-list'));
+      } else {
+        updateCategoryBoard(activeCategory, viewport.querySelector(`.board-container[data-cat="${activeCategory}"] .contestant-list`));
       }
     }
 
-    // Builder Elemen DOM Leaderboard Board
-    function buildBoardDOM(cat, title, iconClass) {
+    // Membuat kerangka statis Board Leaderboard (Card kontestan di-update secara terpisah)
+    function createStaticBoardDOM(cat, title, iconClass) {
       const cardContainer = document.createElement('div');
       cardContainer.className = 'board-container';
+      cardContainer.setAttribute('data-cat', cat);
 
       const header = document.createElement('div');
       header.className = 'board-header';
@@ -1118,56 +1274,8 @@
 
       const listDiv = document.createElement('div');
       listDiv.className = 'contestant-list';
-
-      const items = liveScoreboardData[cat];
-
-      if (!items || items.length === 0) {
-        const empty = document.createElement('div');
-        empty.className = 'empty-board-state';
-        empty.innerHTML = `
-          <i class="fa-solid fa-folder-open"></i>
-          <div>Belum ada data finalis.<br><span style="font-size:0.75rem; color: #9ca3af;">Hubungkan API Sheets untuk sinkronisasi.</span></div>
-        `;
-        listDiv.appendChild(empty);
-      } else {
-        const topScore = Math.max(...items.map(i => i.total), 1);
-
-        items.forEach((item, index) => {
-          const rank = index + 1;
-          const card = document.createElement('div');
-          card.className = `contestant-card top-${rank}`;
-          card.id = `card-${cat}-${item.kode}`;
-          
-          const fillWidth = Math.max((item.total / topScore) * 100, 8);
-
-          let badgeMedal = rank;
-          if (rank === 1) badgeMedal = '<i class="fa-solid fa-crown"></i>';
-          else if (rank === 2) badgeMedal = '<i class="fa-solid fa-medal"></i>';
-          else if (rank === 3) badgeMedal = '<i class="fa-solid fa-medal"></i>';
-
-          card.innerHTML = `
-            <div class="medal-icon-wrapper">${badgeMedal}</div>
-            <div class="info-container">
-              <div class="team-name">${item.nama}</div>
-              <div class="team-meta">
-                <span><i class="fa-solid fa-qrcode" style="color: var(--neon-blue);"></i> ${item.kode}</span>
-                <span style="opacity:0.3;">|</span>
-                <span class="badge-status"><i class="fa-solid fa-shield-heart"></i> ${item.status || 'FINALIS'}</span>
-              </div>
-            </div>
-            <div class="score-wrapper">
-              <div class="score-val" id="scoreval-${cat}-${item.kode}">${item.total}</div>
-              <div class="score-lbl">Skor</div>
-            </div>
-            <div class="indicator-bar-bg">
-              <div class="indicator-bar-fill" style="width: ${fillWidth}%"></div>
-            </div>
-          `;
-          listDiv.appendChild(card);
-        });
-      }
-
       cardContainer.appendChild(listDiv);
+
       return cardContainer;
     }
 
