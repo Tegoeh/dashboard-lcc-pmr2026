@@ -918,40 +918,92 @@
     }
 
     /* ==========================================
-       7.5 COMPACT VIEW FOR PENYISIHAN (ANTI-SCROLL)
+       7.5 RADICAL COMPACT VIEW FOR PENYISIHAN (ANTI-SCROLL)
        ========================================== */
+    /* Global Shrinkage under Penyisihan Mode */
+    body.round-penyisihan header {
+      padding: 0.35rem 2rem;
+    }
+    
+    body.round-penyisihan .logo-img-wrapper {
+      height: 34px;
+      padding: 2px 6px;
+    }
+    
+    body.round-penyisihan .header-center-info h1 {
+      font-size: 1.25rem;
+    }
+    
+    body.round-penyisihan .live-indicator-wrapper {
+      font-size: 0.78rem;
+    }
+    
+    body.round-penyisihan .controls-wrapper {
+      padding: 0.6rem 2rem 0.2rem;
+      gap: 0.5rem;
+    }
+    
+    body.round-penyisihan .tab-trigger {
+      padding: 0.4rem 0.9rem;
+      font-size: 0.8rem;
+    }
+    
+    body.round-penyisihan .btn-control {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+    }
+    
+    body.round-penyisihan .sync-status {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.78rem;
+    }
+    
+    body.round-penyisihan .dashboard-view-wrapper {
+      padding: 0.4rem 2rem 1.2rem;
+    }
+    
+    /* Board Card Shrinkage */
     .board-container.round-penyisihan {
-      padding: 1.1rem 1.6rem;
-      gap: 0.7rem;
+      padding: 0.8rem 1.2rem;
+      gap: 0.5rem;
     }
 
     .board-container.round-penyisihan .board-header {
-      padding-bottom: 0.5rem;
+      padding-bottom: 0.3rem;
     }
 
     .board-container.round-penyisihan .contestant-list {
-      gap: 0.45rem;
+      gap: 0.35rem;
     }
 
     .board-container.round-penyisihan .contestant-card {
-      padding: 0.5rem 1rem;
-      border-radius: 12px;
-      gap: 0.8rem;
+      padding: 0.35rem 0.8rem;
+      border-radius: 8px;
+      gap: 0.6rem;
     }
 
     .board-container.round-penyisihan .medal-icon-wrapper {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      font-size: 0.95rem;
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      font-size: 0.8rem;
     }
 
     .board-container.round-penyisihan .team-name {
-      font-size: 0.98rem;
+      font-size: 0.88rem;
+    }
+    
+    .board-container.round-penyisihan .team-meta {
+      font-size: 0.68rem;
+      gap: 0.4rem;
     }
 
     .board-container.round-penyisihan .score-val {
-      font-size: 1.55rem;
+      font-size: 1.35rem;
+    }
+    
+    .board-container.round-penyisihan .score-lbl {
+      font-size: 0.62rem;
     }
 
     /* ==========================================
@@ -1652,6 +1704,13 @@
           board.classList.remove('round-penyisihan');
         }
       });
+
+      // Menambahkan/menghapus kelas round-penyisihan di BODY secara global demi penyusutan navigasi & header
+      if (activeRound === 'penyisihan') {
+        document.body.classList.add('round-penyisihan');
+      } else {
+        document.body.classList.remove('round-penyisihan');
+      }
 
       // Update data kartu di setiap list kontestan yang terpasang di DOM
       if (allCategoriesMode) {
