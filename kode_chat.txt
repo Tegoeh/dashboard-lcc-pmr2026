@@ -2,4 +2,4 @@ KODE CHAT / CONVERSATION ID SESI INI:
 1f27dd45-31c5-4edb-9166-baa1ca17869b
 
 Tanggal Diperbarui: 2026-06-02
-Deskripsi: Sesi ini berhasil membangun Sistem Update Nomor Undi Semifinal langsung dari Website Dashboard ke Google Sheets secara real-time! Dibuatkan modal premium "Atur Nomor Undi" di website dengan tombol "🎯 Undi: X" atau "🎯 Belum Diundi" pada kontestan yang lolos semifinal. Saat diklik dan disimpan, data dikirim secara aman menggunakan metode JSONP callback ke doPost/doGet Google Apps Script Web App untuk ditulis langsung ke kolom penyisihan di Google Sheets.
+Deskripsi: Sesi ini berhasil menyetel URL Aplikasi Web Google Apps Script (`https://script.google.com/macros/s/AKfycbx7-HeqQPWQsf1DTpkp8Ybl4HuGxWTOQQ5KgpOynzlpZ3CV8mNZAd_ZCIRjV5hKBEFF/exec`) sebagai URL default utama di website dashboard panggung. Dibuatkan juga skema migrasi otomatis di local storage browser agar bila pengguna membuka website kembali, browser akan otomatis bermigrasi dari tautan spreadsheet lama ke tautan Web App baru tanpa perlu setup ulang.
