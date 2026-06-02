@@ -88,17 +88,17 @@ function initMula() {
   for (var r = 24; r <= 33; r++) {
     sheetPmr.getRange("B" + r).setFormula('=IFERROR(INDEX(SORT(FILTER($B$6:$B$19, $F$6:$F$19 = "LOLOS SEMIFINAL"), FILTER($E$6:$E$19, $F$6:$F$19 = "LOLOS SEMIFINAL"), TRUE), A' + r + '), "")');
     sheetPmr.getRange("C" + r).setFormula('=IFERROR(VLOOKUP(B' + r + ', $B$6:$C$19, 2, FALSE), "")');
-    sheetPmr.getRange("D" + r).setFormula('=IF(COUNTIF(\'LIVE BEL MULA\'!$C$9:$C$13, B' + r + ')>0, 1, IF(COUNTIF(\'LIVE BEL MULA\'!$C$19:$C$23, B' + r + ')>0, 2, ""))');
-    sheetPmr.getRange("E" + r).setFormula('=IF(B' + r + '="", "", SUM(IFERROR(FILTER(\'LIVE BEL MULA\'!$V$9:$V$13, \'LIVE BEL MULA\'!$C$9:$C$13 = B' + r + '), 0)) + SUM(IFERROR(FILTER(\'LIVE BEL MULA\'!$V$19:$V$23, \'LIVE BEL MULA\'!$C$19:$C$23 = B' + r + '), 0)))');
+    sheetPmr.getRange("D" + r).setFormula('=IF(COUNTIF(\'LIVE BEL MULA\'!$C$8:$C$12, B' + r + ')>0, 1, IF(COUNTIF(\'LIVE BEL MULA\'!$C$18:$C$22, B' + r + ')>0, 2, ""))');
+    sheetPmr.getRange("E" + r).setFormula('=IF(B' + r + '="", "", SUM(IFERROR(FILTER(\'LIVE BEL MULA\'!$V$8:$V$12, \'LIVE BEL MULA\'!$C$8:$C$12 = B' + r + '), 0)) + SUM(IFERROR(FILTER(\'LIVE BEL MULA\'!$V$18:$V$22, \'LIVE BEL MULA\'!$C$18:$C$22 = B' + r + '), 0)))');
     sheetPmr.getRange("F" + r).setFormula('=IF(ISNUMBER(E' + r + '), RANK(E' + r + ', $E$24:$E$33), "")');
     sheetPmr.getRange("G" + r).setFormula('=IF(F' + r + '="", "", IF(F' + r + '<=5, "LOLOS FINAL", ""))');
   }
   
   // 3. Babak Final (Rows 37-41)
   for (var r = 37; r <= 41; r++) {
-    sheetPmr.getRange("B" + r).setFormula('=IF(SUM(\'LIVE BEL MULA\'!$Z$29:$Z$33)=0, \'LIVE BEL MULA\'!C29, IFERROR(INDEX(SORT(\'LIVE BEL MULA\'!$C$29:$C$33, \'LIVE BEL MULA\'!$Z$29:$Z$33, FALSE), A' + r + '), ""))');
+    sheetPmr.getRange("B" + r).setFormula('=IF(SUM(\'LIVE BEL MULA\'!$Z$24:$Z$28)=0, \'LIVE BEL MULA\'!C24, IFERROR(INDEX(SORT(\'LIVE BEL MULA\'!$C$24:$C$28, \'LIVE BEL MULA\'!$Z$24:$Z$28, FALSE), A' + r + '), ""))');
     sheetPmr.getRange("C" + r).setFormula('=IFERROR(VLOOKUP(B' + r + ', $B$6:$C$19, 2, FALSE), "")');
-    sheetPmr.getRange("D" + r).setFormula('=SUMIF(\'LIVE BEL MULA\'!$C$29:$C$33, B' + r + ', \'LIVE BEL MULA\'!$Z$29:$Z$33)');
+    sheetPmr.getRange("D" + r).setFormula('=SUMIF(\'LIVE BEL MULA\'!$C$24:$C$28, B' + r + ', \'LIVE BEL MULA\'!$Z$24:$Z$28)');
     sheetPmr.getRange("E" + r).setFormula('=IF(ISNUMBER(D' + r + '), RANK(D' + r + ', $D$37:$D$41), "")');
     sheetPmr.getRange("F" + r).setFormula('=IF(E' + r + '="", "", IF(E' + r + '=1, "JUARA 1", IF(E' + r + '=2, "JUARA 2", IF(E' + r + '=3, "JUARA 3", IF(E' + r + '=4, "JUARA HARAPAN 1", "JUARA HARAPAN 2")))))');
   }
@@ -108,17 +108,17 @@ function initMula() {
   // ==========================================
   
   // Proaktif bersihkan Data Validation & Konten di Kolom C & D (Kelompok 1, Kelompok 2 & Final) agar bebas dari error
-  sheetLive.getRange("C9:D13").clearDataValidations().clearContent();
-  sheetLive.getRange("C19:D23").clearDataValidations().clearContent();
-  sheetLive.getRange("C29:D33").clearDataValidations().clearContent();
+  sheetLive.getRange("C8:D12").clearDataValidations().clearContent();
+  sheetLive.getRange("C18:D22").clearDataValidations().clearContent();
+  sheetLive.getRange("C24:D28").clearDataValidations().clearContent();
   
   // Bersihkan juga validasi data di kolom Rank & Status agar penulisan rumus tidak ditolak oleh Google Sheets
-  sheetLive.getRange("X9:X13").clearDataValidations();
-  sheetLive.getRange("Y9:Y13").clearDataValidations();
-  sheetLive.getRange("X19:X23").clearDataValidations();
-  sheetLive.getRange("Y19:Y23").clearDataValidations();
-  sheetLive.getRange("AA29:AA33").clearDataValidations();
-  sheetLive.getRange("AB29:AB33").clearDataValidations();
+  sheetLive.getRange("X8:X12").clearDataValidations();
+  sheetLive.getRange("Y8:Y12").clearDataValidations();
+  sheetLive.getRange("X18:X22").clearDataValidations();
+  sheetLive.getRange("Y18:Y22").clearDataValidations();
+  sheetLive.getRange("AA24:AA28").clearDataValidations();
+  sheetLive.getRange("AB24:AB28").clearDataValidations();
   
   // Set header kolom undian semifinal & final (Bisa diisi manual oleh panitia untuk mengacak grup)
   sheetPmr.getRange("G5").setValue("No. Undi SF");
@@ -126,33 +126,33 @@ function initMula() {
   sheetPmr.getRange("H5").setValue("No. Undi Final");
   sheetPmr.getRange("H5").setFontWeight("bold").setHorizontalAlignment("center");
 
-  // 1. Semifinal Kelompok 1 (Rows 9-13) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
-  for (var r = 9; r <= 13; r++) {
-    var rank = r - 8; // No. Undi 1 s.d 5
+  // 1. Semifinal Kelompok 1 (Rows 8-12) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
+  for (var r = 8; r <= 12; r++) {
+    var rank = r - 7; // No. Undi 1 s.d 5
     sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(FILTER(\'PMR MULA\'!$B$6:$B$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), MATCH(\'PMR MULA\'!$G' + (rank+5) + ', FILTER(\'PMR MULA\'!$G$6:$G$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), 0)), INDEX(SORT(FILTER(\'PMR MULA\'!$B$6:$B$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), FILTER(\'PMR MULA\'!$E$6:$E$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), TRUE), ' + rank + ')), "")');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MULA\'!$B$6:$C$19, 2, FALSE), "")');
     sheetLive.getRange("V" + r).setFormula('=SUM(G' + r + ':U' + r + ')');
-    sheetLive.getRange("X" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$9:$V$13), "")');
+    sheetLive.getRange("X" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$8:$V$12), "")');
     sheetLive.getRange("Y" + r).setFormula('=IF(X' + r + '<=3, "Lolos Final", "-")');
   }
   
-  // 2. Semifinal Kelompok 2 (Rows 19-23) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
-  for (var r = 19; r <= 23; r++) {
-    var rank = r - 13; // No. Undi 6 s.d 10
+  // 2. Semifinal Kelompok 2 (Rows 18-22) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
+  for (var r = 18; r <= 22; r++) {
+    var rank = r - 17; // No. Undi 6 s.d 10
     sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(FILTER(\'PMR MULA\'!$B$6:$B$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), MATCH(\'PMR MULA\'!$G' + (rank+5) + ', FILTER(\'PMR MULA\'!$G$6:$G$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), 0)), INDEX(SORT(FILTER(\'PMR MULA\'!$B$6:$B$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), FILTER(\'PMR MULA\'!$E$6:$E$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), TRUE), ' + rank + ')), "")');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MULA\'!$B$6:$C$19, 2, FALSE), "")');
     sheetLive.getRange("V" + r).setFormula('=SUM(G' + r + ':U' + r + ')');
-    sheetLive.getRange("X" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$19:$V$23), "")');
+    sheetLive.getRange("X" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$18:$V$22), "")');
     sheetLive.getRange("Y" + r).setFormula('=IF(X' + r + '<=3, "Lolos Final", "-")');
   }
   
-  // 3. Final Kelompok (Rows 29-33) - Mengambil 5 tim yang berstatus "LOLOS FINAL" di Semifinal PMR MULA.
-  for (var r = 29; r <= 33; r++) {
-    var itemIndex = r - 28; // Index 1 s.d 5
+  // 3. Final Kelompok (Rows 24-28) - Mengambil 5 tim yang berstatus "LOLOS FINAL" di Semifinal PMR MULA.
+  for (var r = 24; r <= 28; r++) {
+    var itemIndex = r - 23; // Index 1 s.d 5
     sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(FILTER(\'PMR MULA\'!$B$6:$B$19, COUNTIF(FILTER(\'PMR MULA\'!$B$24:$B$33, \'PMR MULA\'!$G$24:$G$33 = "LOLOS FINAL"), \'PMR MULA\'!$B$6:$B$19) > 0), MATCH(\'PMR MULA\'!$H' + (itemIndex+5) + ', FILTER(\'PMR MULA\'!$H$6:$H$19, COUNTIF(FILTER(\'PMR MULA\'!$B$24:$B$33, \'PMR MULA\'!$G$24:$G$33 = "LOLOS FINAL"), \'PMR MULA\'!$B$6:$B$19) > 0), 0)), INDEX(SORT(FILTER(\'PMR MULA\'!$B$24:$B$33, \'PMR MULA\'!$G$24:$G$33 = "LOLOS FINAL"), FILTER(\'PMR MULA\'!$F$24:$F$33, \'PMR MULA\'!$G$24:$G$33 = "LOLOS FINAL"), TRUE), ' + itemIndex + ')), "")');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MULA\'!$B$6:$C$19, 2, FALSE), "")');
     sheetLive.getRange("Z" + r).setFormula('=SUM(F' + r + ':Y' + r + ')');
-    sheetLive.getRange("AA" + r).setFormula('=IF(ISNUMBER(Z' + r + '), RANK(Z' + r + ', $Z$29:$Z$33), "")');
+    sheetLive.getRange("AA" + r).setFormula('=IF(ISNUMBER(Z' + r + '), RANK(Z' + r + ', $Z$24:$Z$28), "")');
     sheetLive.getRange("AB" + r).setFormula('=IF(AA' + r + '="", "", IF(AA' + r + '=1, "JUARA 1", IF(AA' + r + '=2, "JUARA 2", IF(AA' + r + '=3, "JUARA 3", IF(AA' + r + '=4, "JUARA HARAPAN 1", "JUARA HARAPAN 2")))))');
   }
   
@@ -162,9 +162,9 @@ function initMula() {
   applyTieWarning(sheetPmr, "E24:E33", "=AND(E24>0, COUNTIF($E$24:$E$33, E24)>1)");
   applyTieWarning(sheetPmr, "D37:D41", "=AND(D37<>-5250, D37<>0, COUNTIF($D$37:$D$41, D37)>1)");
   
-  applyTieWarning(sheetLive, "V9:V13", "=AND(V9>0, COUNTIF($V$9:$V$13, V9)>1)");
-  applyTieWarning(sheetLive, "V19:V23", "=AND(V19>0, COUNTIF($V$19:$V$23, V19)>1)");
-  applyTieWarning(sheetLive, "Z29:Z33", "=AND(Z29<>-5250, Z29<>0, COUNTIF($Z$29:$Z$33, Z29)>1)");
+  applyTieWarning(sheetLive, "V8:V12", "=AND(V8>0, COUNTIF($V$8:$V$12, V8)>1)");
+  applyTieWarning(sheetLive, "V18:V22", "=AND(V18>0, COUNTIF($V$18:$V$22, V18)>1)");
+  applyTieWarning(sheetLive, "Z24:Z28", "=AND(Z24<>-5250, Z24<>0, COUNTIF($Z$24:$Z$28, Z24)>1)");
   
   ss.toast("Rumus PMR MULA & LIVE BEL MULA berhasil diinisialisasi!", "Sukses", 3);
 }
@@ -204,17 +204,17 @@ function initMadya() {
   for (var r = 28; r <= 37; r++) {
     sheetPmr.getRange("B" + r).setFormula('=IFERROR(INDEX(SORT(FILTER($B$6:$B$23, $G$6:$G$23 = "LOLOS SEMIFINAL"), FILTER($F$6:$F$23, $G$6:$G$23 = "LOLOS SEMIFINAL"), TRUE), A' + r + '), "")');
     sheetPmr.getRange("C" + r).setFormula('=IFERROR(VLOOKUP(B' + r + ', $B$6:$C$23, 2, FALSE), "")');
-    sheetPmr.getRange("D" + r).setFormula('=IF(COUNTIF(\'LIVE BEL MADYA\'!$C$9:$C$13, B' + r + ')>0, 1, IF(COUNTIF(\'LIVE BEL MADYA\'!$C$19:$C$23, B' + r + ')>0, 2, ""))');
-    sheetPmr.getRange("E" + r).setFormula('=IF(B' + r + '="", "", SUM(IFERROR(FILTER(\'LIVE BEL MADYA\'!$V$9:$V$13, \'LIVE BEL MADYA\'!$C$9:$C$13 = B' + r + '), 0)) + SUM(IFERROR(FILTER(\'LIVE BEL MADYA\'!$V$19:$V$23, \'LIVE BEL MADYA\'!$C$19:$C$23 = B' + r + '), 0)))');
+    sheetPmr.getRange("D" + r).setFormula('=IF(COUNTIF(\'LIVE BEL MADYA\'!$C$7:$C$11, B' + r + ')>0, 1, IF(COUNTIF(\'LIVE BEL MADYA\'!$C$17:$C$21, B' + r + ')>0, 2, ""))');
+    sheetPmr.getRange("E" + r).setFormula('=IF(B' + r + '="", "", SUM(IFERROR(FILTER(\'LIVE BEL MADYA\'!$V$7:$V$11, \'LIVE BEL MADYA\'!$C$7:$C$11 = B' + r + '), 0)) + SUM(IFERROR(FILTER(\'LIVE BEL MADYA\'!$V$17:$V$21, \'LIVE BEL MADYA\'!$C$17:$C$21 = B' + r + '), 0)))');
     sheetPmr.getRange("F" + r).setFormula('=IF(ISNUMBER(E' + r + '), RANK(E' + r + ', $E$28:$E$37), "")');
     sheetPmr.getRange("G" + r).setFormula('=IF(F' + r + '="", "", IF(F' + r + '<=5, "LOLOS FINAL", ""))');
   }
   
   // 3. Babak Final (Rows 41-45)
   for (var r = 41; r <= 45; r++) {
-    sheetPmr.getRange("B" + r).setFormula('=IF(SUM(\'LIVE BEL MADYA\'!$Z$29:$Z$33)=0, \'LIVE BEL MADYA\'!C29, IFERROR(INDEX(SORT(\'LIVE BEL MADYA\'!$C$29:$C$33, \'LIVE BEL MADYA\'!$Z$29:$Z$33, FALSE), A' + r + '), ""))');
+    sheetPmr.getRange("B" + r).setFormula('=IF(SUM(\'LIVE BEL MADYA\'!$Z$23:$Z$27)=0, \'LIVE BEL MADYA\'!C23, IFERROR(INDEX(SORT(\'LIVE BEL MADYA\'!$C$23:$C$27, \'LIVE BEL MADYA\'!$Z$23:$Z$27, FALSE), A' + r + '), ""))');
     sheetPmr.getRange("C" + r).setFormula('=IFERROR(VLOOKUP(B' + r + ', $B$6:$C$23, 2, FALSE), "")');
-    sheetPmr.getRange("D" + r).setFormula('=SUMIF(\'LIVE BEL MADYA\'!$C$29:$C$33, B' + r + ', \'LIVE BEL MADYA\'!$Z$29:$Z$33)');
+    sheetPmr.getRange("D" + r).setFormula('=SUMIF(\'LIVE BEL MADYA\'!$C$23:$C$27, B' + r + ', \'LIVE BEL MADYA\'!$Z$23:$Z$27)');
     sheetPmr.getRange("E" + r).setFormula('=IF(ISNUMBER(D' + r + '), RANK(D' + r + ', $D$41:$D$45), "")');
     sheetPmr.getRange("F" + r).setFormula('=IF(E' + r + '="", "", IF(E' + r + '=1, "JUARA 1", IF(E' + r + '=2, "JUARA 2", IF(E' + r + '=3, "JUARA 3", IF(E' + r + '=4, "JUARA HARAPAN 1", "JUARA HARAPAN 2")))))');
   }
@@ -224,17 +224,17 @@ function initMadya() {
   // ==========================================
   
   // Proaktif bersihkan Data Validation & Konten di Kolom C & D (Kelompok 1, Kelompok 2 & Final) agar bebas dari error
-  sheetLive.getRange("C9:D13").clearDataValidations().clearContent();
-  sheetLive.getRange("C19:D23").clearDataValidations().clearContent();
-  sheetLive.getRange("C29:D33").clearDataValidations().clearContent();
+  sheetLive.getRange("C7:D11").clearDataValidations().clearContent();
+  sheetLive.getRange("C17:D21").clearDataValidations().clearContent();
+  sheetLive.getRange("C23:D27").clearDataValidations().clearContent();
   
   // Bersihkan juga validasi data di kolom Rank & Status agar penulisan rumus tidak ditolak oleh Google Sheets
-  sheetLive.getRange("X9:X13").clearDataValidations();
-  sheetLive.getRange("Y9:Y13").clearDataValidations();
-  sheetLive.getRange("X19:X23").clearDataValidations();
-  sheetLive.getRange("Y19:Y23").clearDataValidations();
-  sheetLive.getRange("AA29:AA33").clearDataValidations();
-  sheetLive.getRange("AB29:AB33").clearDataValidations();
+  sheetLive.getRange("X7:X11").clearDataValidations();
+  sheetLive.getRange("Y7:Y11").clearDataValidations();
+  sheetLive.getRange("X17:X21").clearDataValidations();
+  sheetLive.getRange("Y17:Y21").clearDataValidations();
+  sheetLive.getRange("AA23:AA27").clearDataValidations();
+  sheetLive.getRange("AB23:AB27").clearDataValidations();
   
   // Set header kolom undian semifinal & final (Bisa diisi manual oleh panitia untuk mengacak grup)
   sheetPmr.getRange("H5").setValue("No. Undi SF");
@@ -242,33 +242,33 @@ function initMadya() {
   sheetPmr.getRange("I5").setValue("No. Undi Final");
   sheetPmr.getRange("I5").setFontWeight("bold").setHorizontalAlignment("center");
 
-  // 1. Semifinal Kelompok 1 (Rows 9-13) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
-  for (var r = 9; r <= 13; r++) {
-    var rank = r - 8; // No. Undi 1 s.d 5
+  // 1. Semifinal Kelompok 1 (Rows 7-11) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
+  for (var r = 7; r <= 11; r++) {
+    var rank = r - 6; // No. Undi 1 s.d 5
     sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(FILTER(\'PMR MADYA\'!$B$6:$B$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), MATCH(\'PMR MADYA\'!$H' + (rank+5) + ', FILTER(\'PMR MADYA\'!$H$6:$H$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), 0)), INDEX(SORT(FILTER(\'PMR MADYA\'!$B$6:$B$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), FILTER(\'PMR MADYA\'!$F$6:$F$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), TRUE), ' + rank + ')), "")');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MADYA\'!$B$6:$C$23, 2, FALSE), "")');
     sheetLive.getRange("V" + r).setFormula('=SUM(G' + r + ':U' + r + ')');
-    sheetLive.getRange("X" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$9:$V$13), "")');
+    sheetLive.getRange("X" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$7:$V$11), "")');
     sheetLive.getRange("Y" + r).setFormula('=IF(X' + r + '<=3, "Lolos Final", "-")');
   }
   
-  // 2. Semifinal Kelompok 2 (Rows 19-23) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
-  for (var r = 19; r <= 23; r++) {
-    var rank = r - 13; // No. Undi 6 s.d 10
+  // 2. Semifinal Kelompok 2 (Rows 17-21) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
+  for (var r = 17; r <= 21; r++) {
+    var rank = r - 16; // No. Undi 6 s.d 10
     sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(FILTER(\'PMR MADYA\'!$B$6:$B$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), MATCH(\'PMR MADYA\'!$H' + (rank+5) + ', FILTER(\'PMR MADYA\'!$H$6:$H$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), 0)), INDEX(SORT(FILTER(\'PMR MADYA\'!$B$6:$B$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), FILTER(\'PMR MADYA\'!$F$6:$F$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), TRUE), ' + rank + ')), "")');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MADYA\'!$B$6:$C$23, 2, FALSE), "")');
     sheetLive.getRange("V" + r).setFormula('=SUM(G' + r + ':U' + r + ')');
-    sheetLive.getRange("X" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$19:$V$23), "")');
+    sheetLive.getRange("X" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$17:$V$21), "")');
     sheetLive.getRange("Y" + r).setFormula('=IF(X' + r + '<=3, "Lolos Final", "-")');
   }
   
-  // 3. Final Kelompok (Rows 29-33) - Mengambil 5 tim yang berstatus "LOLOS FINAL" di Semifinal PMR MADYA.
-  for (var r = 29; r <= 33; r++) {
-    var itemIndex = r - 28; // Index 1 s.d 5
+  // 3. Final Kelompok (Rows 23-27) - Mengambil 5 tim yang berstatus "LOLOS FINAL" di Semifinal PMR MADYA.
+  for (var r = 23; r <= 27; r++) {
+    var itemIndex = r - 22; // Index 1 s.d 5
     sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(FILTER(\'PMR MADYA\'!$B$6:$B$23, COUNTIF(FILTER(\'PMR MADYA\'!$B$28:$B$37, \'PMR MADYA\'!$G$28:$G$37 = "LOLOS FINAL"), \'PMR MADYA\'!$B$6:$B$23) > 0), MATCH(\'PMR MADYA\'!$I' + (itemIndex+5) + ', FILTER(\'PMR MADYA\'!$I$6:$I$23, COUNTIF(FILTER(\'PMR MADYA\'!$B$28:$B$37, \'PMR MADYA\'!$G$28:$G$37 = "LOLOS FINAL"), \'PMR MADYA\'!$B$6:$B$23) > 0), 0)), INDEX(SORT(FILTER(\'PMR MADYA\'!$B$28:$B$37, \'PMR MADYA\'!$G$28:$G$37 = "LOLOS FINAL"), FILTER(\'PMR MADYA\'!$F$28:$F$37, \'PMR MADYA\'!$G$28:$G$37 = "LOLOS FINAL"), TRUE), ' + itemIndex + ')), "")');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MADYA\'!$B$6:$C$23, 2, FALSE), "")');
     sheetLive.getRange("Z" + r).setFormula('=SUM(F' + r + ':Y' + r + ')');
-    sheetLive.getRange("AA" + r).setFormula('=IF(ISNUMBER(Z' + r + '), RANK(Z' + r + ', $Z$29:$Z$33), "")');
+    sheetLive.getRange("AA" + r).setFormula('=IF(ISNUMBER(Z' + r + '), RANK(Z' + r + ', $Z$23:$Z$27), "")');
     sheetLive.getRange("AB" + r).setFormula('=IF(AA' + r + '="", "", IF(AA' + r + '=1, "JUARA 1", IF(AA' + r + '=2, "JUARA 2", IF(AA' + r + '=3, "JUARA 3", IF(AA' + r + '=4, "JUARA HARAPAN 1", "JUARA HARAPAN 2")))))');
   }
   
@@ -278,9 +278,9 @@ function initMadya() {
   applyTieWarning(sheetPmr, "E28:E37", "=AND(E28>0, COUNTIF($E$28:$E$37, E28)>1)");
   applyTieWarning(sheetPmr, "D41:D45", "=AND(D41<>-5250, D41<>0, COUNTIF($D$41:$D$45, D41)>1)");
   
-  applyTieWarning(sheetLive, "V9:V13", "=AND(V9>0, COUNTIF($V$9:$V$13, V9)>1)");
-  applyTieWarning(sheetLive, "V19:V23", "=AND(V19>0, COUNTIF($V$19:$V$23, V19)>1)");
-  applyTieWarning(sheetLive, "Z29:Z33", "=AND(Z29<>-5250, Z29<>0, COUNTIF($Z$29:$Z$33, Z29)>1)");
+  applyTieWarning(sheetLive, "V7:V11", "=AND(V7>0, COUNTIF($V$7:$V$11, V7)>1)");
+  applyTieWarning(sheetLive, "V17:V21", "=AND(V17>0, COUNTIF($V$17:$V$21, V17)>1)");
+  applyTieWarning(sheetLive, "Z23:Z27", "=AND(Z23<>-5250, Z23<>0, COUNTIF($Z$23:$Z$27, Z23)>1)");
   
   ss.toast("Rumus PMR MADYA & LIVE BEL MADYA berhasil diinisialisasi!", "Sukses", 3);
 }
@@ -319,17 +319,17 @@ function initWira() {
   for (var r = 24; r <= 33; r++) {
     sheetPmr.getRange("B" + r).setFormula('=IFERROR(INDEX(SORT(FILTER($B$6:$B$19, $F$6:$F$19 = "LOLOS SEMIFINAL"), FILTER($E$6:$E$19, $F$6:$F$19 = "LOLOS SEMIFINAL"), TRUE), A' + r + '), "")');
     sheetPmr.getRange("C" + r).setFormula('=IFERROR(VLOOKUP(B' + r + ', $B$6:$C$19, 2, FALSE), "")');
-    sheetPmr.getRange("D" + r).setFormula('=IF(COUNTIF(\'LIVE BEL WIRA\'!$C$9:$C$13, B' + r + ')>0, 1, IF(COUNTIF(\'LIVE BEL WIRA\'!$C$19:$C$23, B' + r + ')>0, 2, ""))');
-    sheetPmr.getRange("E" + r).setFormula('=IF(B' + r + '="", "", SUM(IFERROR(FILTER(\'LIVE BEL WIRA\'!$V$9:$V$13, \'LIVE BEL WIRA\'!$C$9:$C$13 = B' + r + '), 0)) + SUM(IFERROR(FILTER(\'LIVE BEL WIRA\'!$V$19:$V$23, \'LIVE BEL WIRA\'!$C$19:$C$23 = B' + r + '), 0)))');
+    sheetPmr.getRange("D" + r).setFormula('=IF(COUNTIF(\'LIVE BEL WIRA\'!$C$7:$C$11, B' + r + ')>0, 1, IF(COUNTIF(\'LIVE BEL WIRA\'!$C$17:$C$21, B' + r + ')>0, 2, ""))');
+    sheetPmr.getRange("E" + r).setFormula('=IF(B' + r + '="", "", SUM(IFERROR(FILTER(\'LIVE BEL WIRA\'!$V$7:$V$11, \'LIVE BEL WIRA\'!$C$7:$C$11 = B' + r + '), 0)) + SUM(IFERROR(FILTER(\'LIVE BEL WIRA\'!$V$17:$V$21, \'LIVE BEL WIRA\'!$C$17:$C$21 = B' + r + '), 0)))');
     sheetPmr.getRange("F" + r).setFormula('=IF(ISNUMBER(E' + r + '), RANK(E' + r + ', $E$24:$E$33), "")');
     sheetPmr.getRange("G" + r).setFormula('=IF(F' + r + '="", "", IF(F' + r + '<=5, "LOLOS FINAL", ""))');
   }
   
   // 3. Babak Final (Rows 37-41)
   for (var r = 37; r <= 41; r++) {
-    sheetPmr.getRange("B" + r).setFormula('=IF(SUM(\'LIVE BEL WIRA\'!$Z$29:$Z$33)=0, \'LIVE BEL WIRA\'!C29, IFERROR(INDEX(SORT(\'LIVE BEL WIRA\'!$C$29:$C$33, \'LIVE BEL WIRA\'!$Z$29:$Z$33, FALSE), A' + r + '), ""))');
+    sheetPmr.getRange("B" + r).setFormula('=IF(SUM(\'LIVE BEL WIRA\'!$Z$23:$Z$27)=0, \'LIVE BEL WIRA\'!C23, IFERROR(INDEX(SORT(\'LIVE BEL WIRA\'!$C$23:$C$27, \'LIVE BEL WIRA\'!$Z$23:$Z$27, FALSE), A' + r + '), ""))');
     sheetPmr.getRange("C" + r).setFormula('=IFERROR(VLOOKUP(B' + r + ', $B$6:$C$19, 2, FALSE), "")');
-    sheetPmr.getRange("D" + r).setFormula('=SUMIF(\'LIVE BEL WIRA\'!$C$29:$C$33, B' + r + ', \'LIVE BEL WIRA\'!$Z$29:$Z$33)');
+    sheetPmr.getRange("D" + r).setFormula('=SUMIF(\'LIVE BEL WIRA\'!$C$23:$C$27, B' + r + ', \'LIVE BEL WIRA\'!$Z$23:$Z$27)');
     sheetPmr.getRange("E" + r).setFormula('=IF(ISNUMBER(D' + r + '), RANK(D' + r + ', $D$37:$D$41), "")');
     sheetPmr.getRange("F" + r).setFormula('=IF(E' + r + '="", "", IF(E' + r + '=1, "JUARA 1", IF(E' + r + '=2, "JUARA 2", IF(E' + r + '=3, "JUARA 3", IF(E' + r + '=4, "JUARA HARAPAN 1", "JUARA HARAPAN 2")))))');
   }
@@ -339,17 +339,17 @@ function initWira() {
   // ==========================================
   
   // Proaktif bersihkan Data Validation & Konten di Kolom C & D (Kelompok 1, Kelompok 2 & Final) agar bebas dari error
-  sheetLive.getRange("C9:D13").clearDataValidations().clearContent();
-  sheetLive.getRange("C19:D23").clearDataValidations().clearContent();
-  sheetLive.getRange("C29:D33").clearDataValidations().clearContent();
+  sheetLive.getRange("C7:D11").clearDataValidations().clearContent();
+  sheetLive.getRange("C17:D21").clearDataValidations().clearContent();
+  sheetLive.getRange("C23:D27").clearDataValidations().clearContent();
   
   // Bersihkan juga validasi data di kolom Rank & Status agar penulisan rumus tidak ditolak oleh Google Sheets
-  sheetLive.getRange("X9:X13").clearDataValidations();
-  sheetLive.getRange("Y9:Y13").clearDataValidations();
-  sheetLive.getRange("X19:X23").clearDataValidations();
-  sheetLive.getRange("Y19:Y23").clearDataValidations();
-  sheetLive.getRange("AA29:AA33").clearDataValidations();
-  sheetLive.getRange("AB29:AB33").clearDataValidations();
+  sheetLive.getRange("X7:X11").clearDataValidations();
+  sheetLive.getRange("Y7:Y11").clearDataValidations();
+  sheetLive.getRange("X17:X21").clearDataValidations();
+  sheetLive.getRange("Y17:Y21").clearDataValidations();
+  sheetLive.getRange("AA23:AA27").clearDataValidations();
+  sheetLive.getRange("AB23:AB27").clearDataValidations();
   
   // Set header kolom undian semifinal & final (Bisa diisi manual oleh panitia untuk mengacak grup)
   sheetPmr.getRange("G5").setValue("No. Undi SF");
@@ -357,33 +357,33 @@ function initWira() {
   sheetPmr.getRange("H5").setValue("No. Undi Final");
   sheetPmr.getRange("H5").setFontWeight("bold").setHorizontalAlignment("center");
 
-  // 1. Semifinal Kelompok 1 (Rows 9-13) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
-  for (var r = 9; r <= 13; r++) {
-    var rank = r - 8; // No. Undi 1 s.d 5
+  // 1. Semifinal Kelompok 1 (Rows 7-11) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
+  for (var r = 7; r <= 11; r++) {
+    var rank = r - 6; // No. Undi 1 s.d 5
     sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(FILTER(\'PMR WIRA\'!$B$6:$B$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), MATCH(\'PMR WIRA\'!$G' + (rank+5) + ', FILTER(\'PMR WIRA\'!$G$6:$G$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), 0)), INDEX(SORT(FILTER(\'PMR WIRA\'!$B$6:$B$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), FILTER(\'PMR WIRA\'!$E$6:$E$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), TRUE), ' + rank + ')), "")');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR WIRA\'!$B$6:$C$19, 2, FALSE), "")');
     sheetLive.getRange("V" + r).setFormula('=SUM(G' + r + ':U' + r + ')');
-    sheetLive.getRange("X" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$9:$V$13), "")');
+    sheetLive.getRange("X" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$7:$V$11), "")');
     sheetLive.getRange("Y" + r).setFormula('=IF(X' + r + '<=3, "Lolos Final", "-")');
   }
   
-  // 2. Semifinal Kelompok 2 (Rows 19-23) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
-  for (var r = 19; r <= 23; r++) {
-    var rank = r - 13; // No. Undi 6 s.d 10
+  // 2. Semifinal Kelompok 2 (Rows 17-21) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
+  for (var r = 17; r <= 21; r++) {
+    var rank = r - 16; // No. Undi 6 s.d 10
     sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(FILTER(\'PMR WIRA\'!$B$6:$B$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), MATCH(\'PMR WIRA\'!$G' + (rank+5) + ', FILTER(\'PMR WIRA\'!$G$6:$G$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), 0)), INDEX(SORT(FILTER(\'PMR WIRA\'!$B$6:$B$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), FILTER(\'PMR WIRA\'!$E$6:$E$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), TRUE), ' + rank + ')), "")');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR WIRA\'!$B$6:$C$19, 2, FALSE), "")');
     sheetLive.getRange("V" + r).setFormula('=SUM(G' + r + ':U' + r + ')');
-    sheetLive.getRange("X" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$19:$V$23), "")');
+    sheetLive.getRange("X" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$17:$V$21), "")');
     sheetLive.getRange("Y" + r).setFormula('=IF(X' + r + '<=3, "Lolos Final", "-")');
   }
   
-  // 3. Final Kelompok (Rows 29-33) - Mengambil 5 tim yang berstatus "LOLOS FINAL" di Semifinal PMR WIRA
-  for (var r = 29; r <= 33; r++) {
-    var itemIndex = r - 28; // Index 1 s.d 5
+  // 3. Final Kelompok (Rows 23-27) - Mengambil 5 tim yang berstatus "LOLOS FINAL" di Semifinal PMR WIRA
+  for (var r = 23; r <= 27; r++) {
+    var itemIndex = r - 22; // Index 1 s.d 5
     sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(FILTER(\'PMR WIRA\'!$B$6:$B$19, COUNTIF(FILTER(\'PMR WIRA\'!$B$24:$B$33, \'PMR WIRA\'!$G$24:$G$33 = "LOLOS FINAL"), \'PMR WIRA\'!$B$6:$B$19) > 0), MATCH(\'PMR WIRA\'!$H' + (itemIndex+5) + ', FILTER(\'PMR WIRA\'!$H$6:$H$19, COUNTIF(FILTER(\'PMR WIRA\'!$B$24:$B$33, \'PMR WIRA\'!$G$24:$G$33 = "LOLOS FINAL"), \'PMR WIRA\'!$B$6:$B$19) > 0), 0)), INDEX(SORT(FILTER(\'PMR WIRA\'!$B$24:$B$33, \'PMR WIRA\'!$G$24:$G$33 = "LOLOS FINAL"), FILTER(\'PMR WIRA\'!$F$24:$F$33, \'PMR WIRA\'!$G$24:$G$33 = "LOLOS FINAL"), TRUE), ' + itemIndex + ')), "")');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR WIRA\'!$B$6:$C$19, 2, FALSE), "")');
     sheetLive.getRange("Z" + r).setFormula('=SUM(F' + r + ':Y' + r + ')');
-    sheetLive.getRange("AA" + r).setFormula('=IF(ISNUMBER(Z' + r + '), RANK(Z' + r + ', $Z$29:$Z$33), "")');
+    sheetLive.getRange("AA" + r).setFormula('=IF(ISNUMBER(Z' + r + '), RANK(Z' + r + ', $Z$23:$Z$27), "")');
     sheetLive.getRange("AB" + r).setFormula('=IF(AA' + r + '="", "", IF(AA' + r + '=1, "JUARA 1", IF(AA' + r + '=2, "JUARA 2", IF(AA' + r + '=3, "JUARA 3", IF(AA' + r + '=4, "JUARA HARAPAN 1", "JUARA HARAPAN 2")))))');
   }
   
@@ -393,9 +393,9 @@ function initWira() {
   applyTieWarning(sheetPmr, "E24:E33", "=AND(E24>0, COUNTIF($E$24:$E$33, E24)>1)");
   applyTieWarning(sheetPmr, "D37:D41", "=AND(D37<>-5250, D37<>0, COUNTIF($D$37:$D$41, D37)>1)");
   
-  applyTieWarning(sheetLive, "V9:V13", "=AND(V9>0, COUNTIF($V$9:$V$13, V9)>1)");
-  applyTieWarning(sheetLive, "V19:V23", "=AND(V19>0, COUNTIF($V$19:$V$23, V19)>1)");
-  applyTieWarning(sheetLive, "Z29:Z33", "=AND(Z29<>-5250, Z29<>0, COUNTIF($Z$29:$Z$33, Z29)>1)");
+  applyTieWarning(sheetLive, "V7:V11", "=AND(V7>0, COUNTIF($V$7:$V$11, V7)>1)");
+  applyTieWarning(sheetLive, "V17:V21", "=AND(V17>0, COUNTIF($V$17:$V$21, V17)>1)");
+  applyTieWarning(sheetLive, "Z23:Z27", "=AND(Z23<>-5250, Z23<>0, COUNTIF($Z$23:$Z$27, Z23)>1)");
   
   ss.toast("Rumus PMR WIRA & LIVE BEL WIRA berhasil diinisialisasi!", "Sukses", 3);
 }
@@ -550,12 +550,12 @@ function debugTabulasi() {
   }
   pushLog([]);
   
-  // 2. Periksa Sheet LIVE BEL MULA Semifinal Kelompok 1 (Rows 9-13), Kelompok 2 (Rows 19-23) & Final (Rows 29-33)
+  // 2. Periksa Sheet LIVE BEL MULA Semifinal Kelompok 1 (Rows 8-12), Kelompok 2 (Rows 18-22) & Final (Rows 24-28)
   var sheetLive = ss.getSheetByName("LIVE BEL MULA");
   if (sheetLive) {
-    pushLog(["--- DATA LIVE BEL MULA (Semifinal Kelompok 1 Rows 9-13) ---"]);
+    pushLog(["--- DATA LIVE BEL MULA (Semifinal Kelompok 1 Rows 8-12) ---"]);
     pushLog(["Row", "Col C (Kode)", "Col D (Nama)", "Col V (Total)", "Col X (Rank SF)", "Col Y (Status)"]);
-    for (var r = 9; r <= 13; r++) {
+    for (var r = 8; r <= 12; r++) {
       var rowVals = [];
       rowVals.push("Row " + r);
       rowVals.push(sheetLive.getRange("C" + r).getValue() + " (" + sheetLive.getRange("C" + r).getFormula() + ")");
@@ -567,9 +567,9 @@ function debugTabulasi() {
     }
     pushLog([]);
     
-    pushLog(["--- DATA LIVE BEL MULA (Semifinal Kelompok 2 Rows 19-23) ---"]);
+    pushLog(["--- DATA LIVE BEL MULA (Semifinal Kelompok 2 Rows 18-22) ---"]);
     pushLog(["Row", "Col C (Kode)", "Col D (Nama)", "Col V (Total)", "Col X (Rank SF)", "Col Y (Status)"]);
-    for (var r = 19; r <= 23; r++) {
+    for (var r = 18; r <= 22; r++) {
       var rowVals = [];
       rowVals.push("Row " + r);
       rowVals.push(sheetLive.getRange("C" + r).getValue() + " (" + sheetLive.getRange("C" + r).getFormula() + ")");
@@ -580,9 +580,9 @@ function debugTabulasi() {
       pushLog(rowVals);
     }
     pushLog([]);
-    pushLog(["--- DATA LIVE BEL MULA (Final Rows 29-33) ---"]);
+    pushLog(["--- DATA LIVE BEL MULA (Final Rows 24-28) ---"]);
     pushLog(["Row", "Col C (Kode)", "Col D (Nama)", "Col Z (Total)", "Col AA (Rank Final)", "Col AB (Keterangan)"]);
-    for (var r = 29; r <= 33; r++) {
+    for (var r = 24; r <= 28; r++) {
       var rowVals = [];
       rowVals.push("Row " + r);
       rowVals.push(sheetLive.getRange("C" + r).getValue() + " (" + sheetLive.getRange("C" + r).getFormula() + ")");
