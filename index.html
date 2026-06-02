@@ -1468,11 +1468,17 @@
       }
     }
 
-    // URL default spreadsheet pengguna untuk koneksi instan
-    const DEFAULT_SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/1V0TX1XM8sT2nto1S0AhfQEDNC7g4D6cTLg1sOWxiZ0U/edit';
+    // URL default spreadsheet pengguna untuk koneksi instan (Sekarang default menggunakan Web App URL untuk integrasi dua arah)
+    const DEFAULT_SPREADSHEET_URL = 'https://script.google.com/macros/s/AKfycbx7-HeqQPWQsf1DTpkp8Ybl4HuGxWTOQQ5KgpOynzlpZ3CV8mNZAd_ZCIRjV5hKBEFF/exec';
 
     // Ambil Simpanan API URL
     let sheetsApiEndpoint = localStorage.getItem('LCC_API_ENDPOINT') || DEFAULT_SPREADSHEET_URL;
+
+    // Migrasi otomatis ke URL Web App baru jika browser masih menyimpan URL spreadsheet lama
+    if (sheetsApiEndpoint.includes('docs.google.com/spreadsheets')) {
+      sheetsApiEndpoint = DEFAULT_SPREADSHEET_URL;
+      localStorage.setItem('LCC_API_ENDPOINT', DEFAULT_SPREADSHEET_URL);
+    }
 
     // Data Awal Mock/Demo yang Diuji secara Visual
     let liveScoreboardData = {
