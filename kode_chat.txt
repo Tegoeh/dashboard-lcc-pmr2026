@@ -2,4 +2,4 @@ KODE CHAT / CONVERSATION ID SESI INI:
 1f27dd45-31c5-4edb-9166-baa1ca17869b
 
 Tanggal Diperbarui: 2026-06-02
-Deskripsi: Sesi ini berhasil menambahkan fitur Premium Hide/Reveal nama kontestan di Babak Penyisihan. Nama peserta disembunyikan menggunakan efek CSS Blur 10px premium dan lencana gembok interaktif, serta dilengkapi tombol "Buka Semua Nama" dan "Tutup Semua Nama" global di header papan peringkat.
+Deskripsi: Sesi ini berhasil menambahkan sistem pengacakan Nomor Undi Semifinal. Di sheets PMR Mula, Madya, dan Wira, ditambahkan kolom khusus "No. Undi SF" (Col G/H) yang dapat diisi manual oleh panitia untuk menentukan posisi semifinal grup. Dibuatkan formula fallback pintar di live bel agar otomatis menggunakan urutan Rank Penyisihan bila nomor undian belum diisi, dan langsung berganti mengikuti undian baru ketika panitia mengeditnya.
