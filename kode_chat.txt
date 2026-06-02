@@ -2,4 +2,4 @@ KODE CHAT / CONVERSATION ID SESI INI:
 1f27dd45-31c5-4edb-9166-baa1ca17869b
 
 Tanggal Diperbarui: 2026-06-02
-Deskripsi: Sesi ini berhasil menambahkan sistem pengacakan Nomor Undi Semifinal. Di sheets PMR Mula, Madya, dan Wira, ditambahkan kolom khusus "No. Undi SF" (Col G/H) yang dapat diisi manual oleh panitia untuk menentukan posisi semifinal grup. Dibuatkan formula fallback pintar di live bel agar otomatis menggunakan urutan Rank Penyisihan bila nomor undian belum diisi, dan langsung berganti mengikuti undian baru ketika panitia mengeditnya.
+Deskripsi: Sesi ini berhasil membangun Sistem Update Nomor Undi Semifinal langsung dari Website Dashboard ke Google Sheets secara real-time! Dibuatkan modal premium "Atur Nomor Undi" di website dengan tombol "🎯 Undi: X" atau "🎯 Belum Diundi" pada kontestan yang lolos semifinal. Saat diklik dan disimpan, data dikirim secara aman menggunakan metode JSONP callback ke doPost/doGet Google Apps Script Web App untuk ditulis langsung ke kolom penyisihan di Google Sheets.
