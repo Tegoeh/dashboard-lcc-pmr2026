@@ -681,6 +681,7 @@ function updateUndiInSheet(ss, cat, kode, undi, isFinal) {
   var valuesB = rangeB.getValues();
   
   for (var i = 0; i < valuesB.length; i++) {
+    if (valuesB[i][0] === null || valuesB[i][0] === undefined || valuesB[i][0] === "") continue;
     var cellValue = valuesB[i][0].toString().trim();
     if (cellValue === kode.trim()) {
       var row = startRow + i;
