@@ -130,6 +130,7 @@ function initMula() {
     var rank = r; // No. Undi 1 s.d 5
     sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR MULA\'!$B$6:$B$19, MATCH(' + rank + ', \'PMR MULA\'!$G$6:$G$19, 0)), INDEX(SORT(FILTER(\'PMR MULA\'!$B$6:$B$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), FILTER(\'PMR MULA\'!$E$6:$E$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), TRUE), ' + rank + ')), "")');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MULA\'!$B$6:$C$19, 2, FALSE), "")');
+    sheetLive.getRange("V" + r).setFormula('=SUM(G' + r + ':U' + r + ')');
     sheetLive.getRange("W" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$1:$V$5), "")');
     sheetLive.getRange("Y" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
   }
@@ -139,6 +140,7 @@ function initMula() {
     var rank = r - 1; // No. Undi 6 s.d 10
     sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR MULA\'!$B$6:$B$19, MATCH(' + rank + ', \'PMR MULA\'!$G$6:$G$19, 0)), INDEX(SORT(FILTER(\'PMR MULA\'!$B$6:$B$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), FILTER(\'PMR MULA\'!$E$6:$E$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), TRUE), ' + rank + ')), "")');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MULA\'!$B$6:$C$19, 2, FALSE), "")');
+    sheetLive.getRange("V" + r).setFormula('=SUM(G' + r + ':U' + r + ')');
     sheetLive.getRange("W" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$7:$V$11), "")');
     sheetLive.getRange("Y" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
   }
@@ -148,6 +150,7 @@ function initMula() {
     var itemIndex = r - 12; // Index 1 s.d 5
     sheetLive.getRange("D" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR MULA\'!$B$6:$B$19, MATCH(' + itemIndex + ', \'PMR MULA\'!$H$6:$H$19, 0)), INDEX(SORT(FILTER(\'PMR MULA\'!$B$24:$B$33, \'PMR MULA\'!$G$24:$G$33 = "LOLOS FINAL"), FILTER(\'PMR MULA\'!$F$24:$F$33, \'PMR MULA\'!$G$24:$G$33 = "LOLOS FINAL"), TRUE), ' + itemIndex + ')), "")');
     sheetLive.getRange("E" + r).setFormula('=IFERROR(VLOOKUP(D' + r + ', \'PMR MULA\'!$B$6:$C$19, 2, FALSE), "")');
+    sheetLive.getRange("Y" + r).setFormula('=SUM(F' + r + ':X' + r + ')');
     sheetLive.getRange("Z" + r).setFormula('=IF(ISNUMBER(Y' + r + '), RANK(Y' + r + ', $Y$13:$Y$17), "")');
   }
   
@@ -241,6 +244,7 @@ function initMadya() {
     var rank = r; // No. Undi 1 s.d 5
     sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR MADYA\'!$B$6:$B$23, MATCH(' + rank + ', \'PMR MADYA\'!$H$6:$H$23, 0)), INDEX(SORT(FILTER(\'PMR MADYA\'!$B$6:$B$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), FILTER(\'PMR MADYA\'!$F$6:$F$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), TRUE), ' + rank + ')), "")');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MADYA\'!$B$6:$C$23, 2, FALSE), "")');
+    sheetLive.getRange("V" + r).setFormula('=SUM(G' + r + ':U' + r + ')');
     sheetLive.getRange("W" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$1:$V$5), "")');
     sheetLive.getRange("X" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
   }
@@ -250,6 +254,7 @@ function initMadya() {
     var rank = r - 1; // No. Undi 6 s.d 10
     sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR MADYA\'!$B$6:$B$23, MATCH(' + rank + ', \'PMR MADYA\'!$H$6:$H$23, 0)), INDEX(SORT(FILTER(\'PMR MADYA\'!$B$6:$B$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), FILTER(\'PMR MADYA\'!$F$6:$F$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), TRUE), ' + rank + ')), "")');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MADYA\'!$B$6:$C$23, 2, FALSE), "")');
+    sheetLive.getRange("V" + r).setFormula('=SUM(G' + r + ':U' + r + ')');
     sheetLive.getRange("W" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$7:$V$11), "")');
     sheetLive.getRange("X" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
   }
@@ -259,6 +264,7 @@ function initMadya() {
     var itemIndex = r - 12; // Index 1 s.d 5
     sheetLive.getRange("D" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR MADYA\'!$B$6:$B$23, MATCH(' + itemIndex + ', \'PMR MADYA\'!$I$6:$I$23, 0)), INDEX(SORT(FILTER(\'PMR MADYA\'!$B$28:$B$37, \'PMR MADYA\'!$G$28:$G$37 = "LOLOS FINAL"), FILTER(\'PMR MADYA\'!$F$28:$F$37, \'PMR MADYA\'!$G$28:$G$37 = "LOLOS FINAL"), TRUE), ' + itemIndex + ')), "")');
     sheetLive.getRange("E" + r).setFormula('=IFERROR(VLOOKUP(D' + r + ', \'PMR MADYA\'!$B$6:$C$23, 2, FALSE), "")');
+    sheetLive.getRange("Y" + r).setFormula('=SUM(F' + r + ':X' + r + ')');
     sheetLive.getRange("Z" + r).setFormula('=IF(ISNUMBER(Y' + r + '), RANK(Y' + r + ', $Y$13:$Y$17), "")');
   }
   
@@ -351,6 +357,7 @@ function initWira() {
     var rank = r; // No. Undi 1 s.d 5
     sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR WIRA\'!$B$6:$B$19, MATCH(' + rank + ', \'PMR WIRA\'!$G$6:$G$19, 0)), INDEX(SORT(FILTER(\'PMR WIRA\'!$B$6:$B$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), FILTER(\'PMR WIRA\'!$E$6:$E$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), TRUE), ' + rank + ')), "")');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR WIRA\'!$B$6:$C$19, 2, FALSE), "")');
+    sheetLive.getRange("V" + r).setFormula('=SUM(G' + r + ':U' + r + ')');
     sheetLive.getRange("W" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$1:$V$5), "")');
     sheetLive.getRange("X" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
   }
@@ -360,6 +367,7 @@ function initWira() {
     var rank = r - 1; // No. Undi 6 s.d 10
     sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR WIRA\'!$B$6:$B$19, MATCH(' + rank + ', \'PMR WIRA\'!$G$6:$G$19, 0)), INDEX(SORT(FILTER(\'PMR WIRA\'!$B$6:$B$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), FILTER(\'PMR WIRA\'!$E$6:$E$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), TRUE), ' + rank + ')), "")');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR WIRA\'!$B$6:$C$19, 2, FALSE), "")');
+    sheetLive.getRange("V" + r).setFormula('=SUM(G' + r + ':U' + r + ')');
     sheetLive.getRange("W" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$7:$V$11), "")');
     sheetLive.getRange("X" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
   }
@@ -369,6 +377,7 @@ function initWira() {
     var itemIndex = r - 12; // Index 1 s.d 5
     sheetLive.getRange("D" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR WIRA\'!$B$6:$B$19, MATCH(' + itemIndex + ', \'PMR WIRA\'!$H$6:$H$19, 0)), INDEX(SORT(FILTER(\'PMR WIRA\'!$B$24:$B$33, \'PMR WIRA\'!$G$24:$G$33 = "LOLOS FINAL"), FILTER(\'PMR WIRA\'!$F$24:$F$33, \'PMR WIRA\'!$G$24:$G$33 = "LOLOS FINAL"), TRUE), ' + itemIndex + ')), "")');
     sheetLive.getRange("E" + r).setFormula('=IFERROR(VLOOKUP(D' + r + ', \'PMR WIRA\'!$B$6:$C$19, 2, FALSE), "")');
+    sheetLive.getRange("Y" + r).setFormula('=SUM(F' + r + ':X' + r + ')');
     sheetLive.getRange("Z" + r).setFormula('=IF(ISNUMBER(Y' + r + '), RANK(Y' + r + ', $Y$13:$Y$17), "")');
   }
   
@@ -496,7 +505,7 @@ function debugTabulasi() {
     logData.push(row);
   }
   
-  pushLog(["=== DEBUG TABULASI LCC PMR ==="]);
+  pushLog(["[DEBUG TABULASI LCC PMR]"]);
   pushLog(["Tanggal/Waktu: " + new Date().toString()]);
   pushLog([]);
   
