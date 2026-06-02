@@ -1398,14 +1398,30 @@
       renderViewPort();
     }
 
-    // Fungsi Pengendali Undian Semifinal dari Website
+    // Fungsi Pengendali Undian Semifinal & Final dari Website
     let currentEditLotteryCat = '';
     let currentEditLotteryKode = '';
+    let currentEditLotteryRoundType = ''; // 'semifinal' atau 'final'
 
-    function editSchoolUndi(cat, kode, nama, currentUndi) {
+    function editSchoolUndi(cat, kode, nama, currentUndi, roundType = 'semifinal') {
       currentEditLotteryCat = cat;
       currentEditLotteryKode = kode;
+      currentEditLotteryRoundType = roundType;
       
+      const titleEl = document.querySelector('#lotteryModalBackdrop .settings-title');
+      const labelEl = document.querySelector('#lotteryModalBackdrop label');
+      const descEl = document.querySelector('#lotteryModalBackdrop p');
+      
+      if (roundType === 'final') {
+        if (titleEl) titleEl.innerHTML = '<i class="fa-solid fa-ticket" style="color: var(--neon-blue);"></i> Atur Nomor Undi Final';
+        if (labelEl) labelEl.innerText = 'Masukkan Nomor Undi Final (1 - 5):';
+        if (descEl) descEl.innerHTML = 'Nomor undi 1 s.d 5 untuk mengacak urutan podium/tampil babak Final. Data akan otomatis disinkronkan langsung ke Google Sheets Anda!';
+      } else {
+        if (titleEl) titleEl.innerHTML = '<i class="fa-solid fa-ticket" style="color: var(--neon-blue);"></i> Atur Nomor Undi Semifinal';
+        if (labelEl) labelEl.innerText = 'Masukkan Nomor Undi Semifinal (1 - 10):';
+        if (descEl) descEl.innerHTML = 'Nomor undi 1 s.d 5 otomatis masuk <strong>Semifinal Grup I</strong>, angka 6 s.d 10 otomatis masuk <strong>Semifinal Grup II</strong>. Data akan otomatis disinkronkan langsung ke Google Sheets Anda!';
+      }
+
       document.getElementById('lotterySchoolName').innerText = nama;
       document.getElementById('lotterySchoolKode').innerText = kode;
       document.getElementById('lotteryNumberInput').value = currentUndi || '';
@@ -1423,9 +1439,16 @@
       
       if (undiVal !== '') {
         const undiNum = parseInt(undiVal);
-        if (isNaN(undiNum) || undiNum < 1 || undiNum > 10) {
-          alert('Nomor undi harus berupa angka dari 1 sampai 10!');
-          return;
+        if (currentEditLotteryRoundType === 'final') {
+          if (isNaN(undiNum) || undiNum < 1 || undiNum > 5) {
+            alert('Nomor undi final harus berupa angka dari 1 sampai 5!');
+            return;
+          }
+        } else {
+          if (isNaN(undiNum) || undiNum < 1 || undiNum > 10) {
+            alert('Nomor undi semifinal harus berupa angka dari 1 sampai 10!');
+            return;
+          }
         }
       }
 
@@ -1457,7 +1480,7 @@
 
       const script = document.createElement('script');
       script.id = `script_${callbackName}`;
-      script.src = `${appsScriptEndpoint}?action=updateUndi&cat=${currentEditLotteryCat}&kode=${currentEditLotteryKode}&undi=${undiVal}&callback=${callbackName}&t=${Date.now()}`;
+      script.src = `${appsScriptEndpoint}?action=updateUndi&cat=${currentEditLotteryCat}&kode=${currentEditLotteryKode}&undi=${undiVal}&round=${currentEditLotteryRoundType}&callback=${callbackName}&t=${Date.now()}`;
       
       script.onerror = function() {
         btnSave.disabled = false;
@@ -1801,19 +1824,33 @@
         // Penentuan Visibilitas Nama Kontestan (Khusus Babak Penyisihan)
         const isNameVisible = (activeRound !== 'penyisihan') || showAllNames || revealedSchools.has(item.kode);
         
-        // Render lencana nomor undi di sebelah nama kontestan yang lolos semifinal
-        const undiBadgeHTML = (activeRound === 'penyisihan') && item.undi !== undefined
-          ? (item.undi !== ''
-              ? `<span class="lock-badge" style="background: rgba(0, 240, 255, 0.12); border-color: rgba(0, 240, 255, 0.25); color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue-glow); margin-left:0.5rem; cursor:pointer;" onclick="event.stopPropagation(); editSchoolUndi('${cat}', '${item.kode}', '${item.nama}', '${item.undi}')" title="Klik untuk edit No. Undian">
+        // Render lencana nomor undi di sebelah nama kontestan yang lolos semifinal / final
+        let undiBadgeHTML = '';
+        if (activeRound === 'penyisihan') {
+          if (item.undi !== undefined) {
+            if (item.undi !== '') {
+              undiBadgeHTML = `<span class="lock-badge" style="background: rgba(0, 240, 255, 0.12); border-color: rgba(0, 240, 255, 0.25); color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue-glow); margin-left:0.5rem; cursor:pointer;" onclick="event.stopPropagation(); editSchoolUndi('${cat}', '${item.kode}', '${item.nama}', '${item.undi}', 'semifinal')" title="Klik untuk edit No. Undian Semifinal">
                    <i class="fa-solid fa-ticket"></i> Undi: ${item.undi}
-                 </span>`
-              : (item.status === 'LOLOS SEMIFINAL'
-                  ? `<span class="lock-badge" style="background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.25); color: var(--neon-gold); box-shadow: 0 0 8px var(--neon-gold-glow); margin-left:0.5rem; cursor:pointer;" onclick="event.stopPropagation(); editSchoolUndi('${cat}', '${item.kode}', '${item.nama}', '')" title="Klik untuk set No. Undian">
+                 </span>`;
+            } else if (item.status === 'LOLOS SEMIFINAL') {
+              undiBadgeHTML = `<span class="lock-badge" style="background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.25); color: var(--neon-gold); box-shadow: 0 0 8px var(--neon-gold-glow); margin-left:0.5rem; cursor:pointer;" onclick="event.stopPropagation(); editSchoolUndi('${cat}', '${item.kode}', '${item.nama}', '', 'semifinal')" title="Klik untuk set No. Undian Semifinal">
                        <i class="fa-solid fa-ticket"></i> Belum Diundi
-                     </span>`
-                  : '')
-            )
-          : '';
+                     </span>`;
+            }
+          }
+        } else if (activeRound === 'final') {
+          if (item.undiFinal !== undefined) {
+            if (item.undiFinal !== '') {
+              undiBadgeHTML = `<span class="lock-badge" style="background: rgba(0, 240, 255, 0.12); border-color: rgba(0, 240, 255, 0.25); color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue-glow); margin-left:0.5rem; cursor:pointer;" onclick="event.stopPropagation(); editSchoolUndi('${cat}', '${item.kode}', '${item.nama}', '${item.undiFinal}', 'final')" title="Klik untuk edit No. Undian Final">
+                   <i class="fa-solid fa-ticket"></i> Undi: ${item.undiFinal}
+                 </span>`;
+            } else {
+              undiBadgeHTML = `<span class="lock-badge" style="background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.25); color: var(--neon-gold); box-shadow: 0 0 8px var(--neon-gold-glow); margin-left:0.5rem; cursor:pointer;" onclick="event.stopPropagation(); editSchoolUndi('${cat}', '${item.kode}', '${item.nama}', '', 'final')" title="Klik untuk set No. Undian Final">
+                       <i class="fa-solid fa-ticket"></i> Belum Diundi
+                     </span>`;
+            }
+          }
+        }
 
         const nameHTML = isNameVisible
           ? `<div class="team-name name-unlocked" onclick="toggleSchoolName('${item.kode}')" title="Klik untuk menyembunyikan nama">
@@ -2098,14 +2135,21 @@
           const rankRaw = row.c[4] ? row.c[4].v : 1;
           const status = row.c[5] && row.c[5].v ? row.c[5].v.toString().trim() : '';
           
-          // Ambil undian sesuai urutan kolom kategori
+          // Ambil undian sesuai urutan kolom kategori (No. Undi Semifinal & No. Undi Final)
           let undiRaw = '';
+          let undiFinalRaw = '';
           if (cat === 'mula') {
             undiRaw = row.c[6] ? row.c[6].v : '';
-          } else if (cat === 'madya' || cat === 'wira') {
+            undiFinalRaw = row.c[7] ? row.c[7].v : '';
+          } else if (cat === 'madya') {
             undiRaw = row.c[7] ? row.c[7].v : '';
+            undiFinalRaw = row.c[8] ? row.c[8].v : '';
+          } else if (cat === 'wira') {
+            undiRaw = row.c[6] ? row.c[6].v : '';
+            undiFinalRaw = row.c[7] ? row.c[7].v : '';
           }
           const undi = undiRaw !== null && undiRaw !== undefined ? undiRaw.toString().trim() : '';
+          const undiFinal = undiFinalRaw !== null && undiFinalRaw !== undefined ? undiFinalRaw.toString().trim() : '';
 
           if (kode && kode !== '' && kode !== 'Kode') {
             let total = parseFloat(totalRaw);
@@ -2119,7 +2163,8 @@
               total: total,
               rank: rank,
               status: status,
-              undi: undi
+              undi: undi,
+              undiFinal: undiFinal
             });
           }
         }
@@ -2187,21 +2232,23 @@
               let rank = parseInt(rankRaw);
               if (isNaN(rank)) rank = 1;
 
-              result.final.push({
-                kode: kode,
-                nama: nama,
-                total: total,
-                rank: rank,
-                status: 'FINALIS'
-              });
+              // Cari info undi final dari hasil penyisihan
+              const penyisihanInfo = result.penyisihan.find(p => p.kode === kode);
+              const undiFinalStr = penyisihanInfo ? penyisihanInfo.undiFinal : '';
+              const penyisihanRank = penyisihanInfo ? penyisihanInfo.rank : 99;
 
-              result.ranking_akhir.push({
+              const item = {
                 kode: kode,
                 nama: nama,
                 total: total,
                 rank: rank,
-                status: status || 'FINALIS'
-              });
+                status: status || 'FINALIS',
+                undiFinal: undiFinalStr,
+                penyisihanRank: penyisihanRank
+              };
+
+              result.final.push(item);
+              result.ranking_akhir.push({...item});
             }
           }
         }
@@ -2226,11 +2273,30 @@
         return a.penyisihanRank - b.penyisihanRank; // Peringkat terkecil (1, 2, 3...) dahulu
       };
 
+      // Urutkan secara descending berdasarkan total skor. Jika total skor sama (atau masih 0 sebelum final),
+      // urutkan berdasarkan Nomor Undi Final ascending (1-5), dan fallback ke Peringkat Penyisihan/Semifinal ascending.
+      const sortFinal = (a, b) => {
+        if (b.total !== a.total) {
+          return b.total - a.total; // Skor tertinggi dahulu
+        }
+        
+        // Jika skor sama, gunakan No. Undi Final
+        const undiFinalA = a.undiFinal !== '' ? parseInt(a.undiFinal) : Infinity;
+        const undiFinalB = b.undiFinal !== '' ? parseInt(b.undiFinal) : Infinity;
+        
+        if (undiFinalA !== undiFinalB) {
+          return undiFinalA - undiFinalB; // Undi terkecil (1, 2, 3...) terlebih dahulu
+        }
+        
+        // Jika Undi sama/kosong, gunakan Rank Penyisihan
+        return a.penyisihanRank - b.penyisihanRank; // Peringkat terkecil (1, 2, 3...) dahulu
+      };
+
       result.penyisihan.sort((a, b) => b.total - a.total);
       result.semifinal1.sort(sortSemifinal);
       result.semifinal2.sort(sortSemifinal);
-      result.final.sort((a, b) => b.total - a.total);
-      result.ranking_akhir.sort((a, b) => b.total - a.total);
+      result.final.sort(sortFinal);
+      result.ranking_akhir.sort(sortFinal);
 
       // Perbarui properti rank setelah diurutkan
       const applyRank = (arr) => arr.forEach((item, idx) => item.rank = idx + 1);

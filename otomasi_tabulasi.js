@@ -119,9 +119,11 @@ function initMula() {
   sheetLive.getRange("X18:X22").clearDataValidations();
   sheetLive.getRange("Z28:Z32").clearDataValidations();
   
-  // Set header kolom undian semifinal (Bisa diisi manual oleh panitia untuk mengacak grup)
+  // Set header kolom undian semifinal & final (Bisa diisi manual oleh panitia untuk mengacak grup)
   sheetPmr.getRange("G5").setValue("No. Undi SF");
   sheetPmr.getRange("G5").setFontWeight("bold").setHorizontalAlignment("center");
+  sheetPmr.getRange("H5").setValue("No. Undi Final");
+  sheetPmr.getRange("H5").setFontWeight("bold").setHorizontalAlignment("center");
 
   // 1. Semifinal Kelompok 1 (Rows 8-12) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
   for (var r = 8; r <= 12; r++) {
@@ -144,7 +146,7 @@ function initMula() {
   // 3. Final Kelompok (Rows 28-32) - Mengambil 5 tim yang berstatus "LOLOS FINAL" di Semifinal PMR MULA.
   for (var r = 28; r <= 32; r++) {
     var itemIndex = r - 27; // Index 1 s.d 5
-    sheetLive.getRange("D" + r).setFormula('=IFERROR(INDEX(QUERY(\'PMR MULA\'!$B$24:$G$33, "select B where G = \'LOLOS FINAL\'", 0), ' + itemIndex + '), "")');
+    sheetLive.getRange("D" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR MULA\'!$B$6:$B$19, MATCH(' + itemIndex + ', \'PMR MULA\'!$H$6:$H$19, 0)), INDEX(QUERY(\'PMR MULA\'!$B$24:$G$33, "select B where G = \'LOLOS FINAL\'", 0), ' + itemIndex + ')), "")');
     sheetLive.getRange("E" + r).setFormula('=IFERROR(VLOOKUP(D' + r + ', \'PMR MULA\'!$B$6:$C$19, 2, FALSE), "")');
     sheetLive.getRange("Z" + r).setFormula('=IF(ISNUMBER(Y' + r + '), RANK(Y' + r + ', $Y$28:$Y$32), "")');
   }
@@ -228,9 +230,11 @@ function initMadya() {
   sheetLive.getRange("X18:X22").clearDataValidations();
   sheetLive.getRange("Z28:Z32").clearDataValidations();
   
-  // Set header kolom undian semifinal (Bisa diisi manual oleh panitia untuk mengacak grup)
+  // Set header kolom undian semifinal & final (Bisa diisi manual oleh panitia untuk mengacak grup)
   sheetPmr.getRange("H5").setValue("No. Undi SF");
   sheetPmr.getRange("H5").setFontWeight("bold").setHorizontalAlignment("center");
+  sheetPmr.getRange("I5").setValue("No. Undi Final");
+  sheetPmr.getRange("I5").setFontWeight("bold").setHorizontalAlignment("center");
 
   // 1. Semifinal Kelompok 1 (Rows 8-12) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
   for (var r = 8; r <= 12; r++) {
@@ -253,7 +257,7 @@ function initMadya() {
   // 3. Final Kelompok (Rows 28-32) - Mengambil 5 tim yang berstatus "LOLOS FINAL" di Semifinal PMR MADYA.
   for (var r = 28; r <= 32; r++) {
     var itemIndex = r - 27; // Index 1 s.d 5
-    sheetLive.getRange("D" + r).setFormula('=IFERROR(INDEX(QUERY(\'PMR MADYA\'!$B$28:$G$37, "select B where G = \'LOLOS FINAL\'", 0), ' + itemIndex + '), "")');
+    sheetLive.getRange("D" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR MADYA\'!$B$6:$B$23, MATCH(' + itemIndex + ', \'PMR MADYA\'!$I$6:$I$23, 0)), INDEX(QUERY(\'PMR MADYA\'!$B$28:$G$37, "select B where G = \'LOLOS FINAL\'", 0), ' + itemIndex + ')), "")');
     sheetLive.getRange("E" + r).setFormula('=IFERROR(VLOOKUP(D' + r + ', \'PMR MADYA\'!$B$6:$C$23, 2, FALSE), "")');
     sheetLive.getRange("Z" + r).setFormula('=IF(ISNUMBER(Y' + r + '), RANK(Y' + r + ', $Y$28:$Y$32), "")');
   }
@@ -336,9 +340,11 @@ function initWira() {
   sheetLive.getRange("X18:X22").clearDataValidations();
   sheetLive.getRange("Z28:Z32").clearDataValidations();
   
-  // Set header kolom undian semifinal (Bisa diisi manual oleh panitia untuk mengacak grup)
+  // Set header kolom undian semifinal & final (Bisa diisi manual oleh panitia untuk mengacak grup)
   sheetPmr.getRange("G5").setValue("No. Undi SF");
   sheetPmr.getRange("G5").setFontWeight("bold").setHorizontalAlignment("center");
+  sheetPmr.getRange("H5").setValue("No. Undi Final");
+  sheetPmr.getRange("H5").setFontWeight("bold").setHorizontalAlignment("center");
 
   // 1. Semifinal Kelompok 1 (Rows 8-12) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
   for (var r = 8; r <= 12; r++) {
@@ -361,7 +367,7 @@ function initWira() {
   // 3. Final Kelompok (Rows 28-32) - Mengambil 5 tim yang berstatus "LOLOS FINAL" di Semifinal PMR WIRA
   for (var r = 28; r <= 32; r++) {
     var itemIndex = r - 27; // Index 1 s.d 5
-    sheetLive.getRange("D" + r).setFormula('=IFERROR(INDEX(QUERY(\'PMR WIRA\'!$B$24:$G$33, "select B where G = \'LOLOS FINAL\'", 0), ' + itemIndex + '), "")');
+    sheetLive.getRange("D" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR WIRA\'!$B$6:$B$19, MATCH(' + itemIndex + ', \'PMR WIRA\'!$H$6:$H$19, 0)), INDEX(QUERY(\'PMR WIRA\'!$B$24:$G$33, "select B where G = \'LOLOS FINAL\'", 0), ' + itemIndex + ')), "")');
     sheetLive.getRange("E" + r).setFormula('=IFERROR(VLOOKUP(D' + r + ', \'PMR WIRA\'!$B$6:$C$19, 2, FALSE), "")');
     sheetLive.getRange("Z" + r).setFormula('=IF(ISNUMBER(Y' + r + '), RANK(Y' + r + ', $Y$28:$Y$32), "")');
   }
@@ -600,9 +606,10 @@ function doGet(e) {
     var cat = e.parameter.cat;   // 'mula', 'madya', 'wira'
     var kode = e.parameter.kode; // e.g., 'MU12'
     var undi = e.parameter.undi; // e.g., '3' or '' to clear
+    var isFinal = e.parameter.round === 'final' || e.parameter.isFinal === 'true';
     
     try {
-      var success = updateUndiInSheet(ss, cat, kode, undi);
+      var success = updateUndiInSheet(ss, cat, kode, undi, isFinal);
       var responseObj = { success: success, message: success ? "Nomor undian berhasil diperbarui di Google Sheets!" : "Kode sekolah tidak ditemukan di babak penyisihan." };
       
       // Support JSONP callback jika dipanggil via JSONP script tag
@@ -642,24 +649,24 @@ function doGet(e) {
 /**
  * Helper untuk menulis nilai undian ke sheet penyisihan secara real-time
  */
-function updateUndiInSheet(ss, cat, kode, undi) {
+function updateUndiInSheet(ss, cat, kode, undi, isFinal) {
   var sheetName = "";
   var startRow = 6;
   var endRow = 19;
-  var undiColName = ""; // Column letter: 'G' or 'H'
+  var undiColName = ""; // Column letter: 'G', 'H', or 'I'
   
   if (cat === "mula") {
     sheetName = "PMR MULA";
     endRow = 19;
-    undiColName = "G";
+    undiColName = isFinal ? "H" : "G";
   } else if (cat === "madya") {
     sheetName = "PMR MADYA";
     endRow = 23;
-    undiColName = "H";
+    undiColName = isFinal ? "I" : "H";
   } else if (cat === "wira") {
     sheetName = "PMR WIRA";
     endRow = 19;
-    undiColName = "G";
+    undiColName = isFinal ? "H" : "G";
   } else {
     return false;
   }
