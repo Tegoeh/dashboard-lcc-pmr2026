@@ -1292,6 +1292,33 @@
   </div>
 
   <!-- ==========================================
+       LOTTERY EDIT MODAL BOX (PREMIUM)
+       ========================================== -->
+  <div class="settings-backdrop" id="lotteryModalBackdrop">
+    <div class="settings-modal">
+      <div class="settings-title-group">
+        <h2 class="settings-title"><i class="fa-solid fa-ticket" style="color: var(--neon-blue);"></i> Atur Nomor Undi Semifinal</h2>
+        <button class="close-modal-btn" onclick="hideLotteryModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div style="margin-bottom: 1.5rem;">
+        <h4 id="lotterySchoolName" style="font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 0.4rem;">Nama Sekolah</h4>
+        <p style="font-size: 0.8rem; color: #9ca3af;">Kode Kontingen: <strong id="lotterySchoolKode" style="color: var(--neon-blue);">MU12</strong></p>
+      </div>
+      <div class="form-input-box">
+        <label for="lotteryNumberInput">Masukkan Nomor Undi Semifinal (1 - 10):</label>
+        <input type="number" id="lotteryNumberInput" min="1" max="10" placeholder="Contoh: 3 (Kosongkan untuk hapus)">
+        <p style="font-size: 0.75rem; color: #9ca3af; margin-top: 0.4rem; line-height: 1.4;">
+          Nomor undi 1 s.d 5 otomatis masuk **Semifinal Grup I**, angka 6 s.d 10 otomatis masuk **Semifinal Grup II**. Data akan otomatis disinkronkan langsung ke Google Sheets Anda!
+        </p>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 0.8rem; margin-top: 1.8rem;">
+        <button class="btn-control" onclick="hideLotteryModal()">Batal</button>
+        <button class="btn-control btn-primary" id="btnSaveLottery" onclick="saveLotterySetting()">Simpan Perubahan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
        JAVASCRIPT DYNAMIC ENGINE
        ========================================== -->
   <script>
@@ -1362,6 +1389,83 @@
         revealedSchools.clear();
       }
       renderViewPort();
+    }
+
+    // Fungsi Pengendali Undian Semifinal dari Website
+    let currentEditLotteryCat = '';
+    let currentEditLotteryKode = '';
+
+    function editSchoolUndi(cat, kode, nama, currentUndi) {
+      currentEditLotteryCat = cat;
+      currentEditLotteryKode = kode;
+      
+      document.getElementById('lotterySchoolName').innerText = nama;
+      document.getElementById('lotterySchoolKode').innerText = kode;
+      document.getElementById('lotteryNumberInput').value = currentUndi || '';
+      
+      document.getElementById('lotteryModalBackdrop').classList.add('active');
+      document.getElementById('lotteryNumberInput').focus();
+    }
+
+    function hideLotteryModal() {
+      document.getElementById('lotteryModalBackdrop').classList.remove('active');
+    }
+
+    function saveLotterySetting() {
+      const undiVal = document.getElementById('lotteryNumberInput').value.trim();
+      
+      if (undiVal !== '') {
+        const undiNum = parseInt(undiVal);
+        if (isNaN(undiNum) || undiNum < 1 || undiNum > 10) {
+          alert('Nomor undi harus berupa angka dari 1 sampai 10!');
+          return;
+        }
+      }
+
+      if (!sheetsApiEndpoint || !sheetsApiEndpoint.startsWith('https://script.google.com')) {
+        alert('Untuk memperbarui langsung dari website ke Google Sheets, Anda HARUS menghubungkan URL Google Apps Script Web App di tombol "Sambungkan" (bukan tautan spreadsheet biasa).');
+        return;
+      }
+
+      const btnSave = document.getElementById('btnSaveLottery');
+      btnSave.disabled = true;
+      btnSave.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+
+      // Kirim data menggunakan metode JSONP callback agar bebas CORS!
+      const callbackName = 'cb_update_undi_' + Date.now();
+      
+      window[callbackName] = function(response) {
+        btnSave.disabled = false;
+        btnSave.innerText = 'Simpan Perubahan';
+        hideLotteryModal();
+        cleanup();
+        
+        if (response && response.success) {
+          alert(response.message || 'Nomor undian berhasil disimpan ke Google Sheets!');
+          syncSheetsData(); // Segera sinkronkan ulang data dari sheet
+        } else {
+          alert('Gagal menyimpan: ' + (response ? response.error : 'Respons kosong'));
+        }
+      };
+
+      const script = document.createElement('script');
+      script.id = `script_${callbackName}`;
+      script.src = `${sheetsApiEndpoint}?action=updateUndi&cat=${currentEditLotteryCat}&kode=${currentEditLotteryKode}&undi=${undiVal}&callback=${callbackName}&t=${Date.now()}`;
+      
+      script.onerror = function() {
+        btnSave.disabled = false;
+        btnSave.innerText = 'Simpan Perubahan';
+        cleanup();
+        alert('Gagal menghubungi Web App Google Apps Script. Silakan periksa koneksi internet atau status deployment web app Anda.');
+      };
+
+      document.body.appendChild(script);
+
+      function cleanup() {
+        const el = document.getElementById(`script_${callbackName}`);
+        if (el) el.remove();
+        delete window[callbackName];
+      }
     }
 
     // URL default spreadsheet pengguna untuk koneksi instan
@@ -1683,13 +1787,30 @@
 
         // Penentuan Visibilitas Nama Kontestan (Khusus Babak Penyisihan)
         const isNameVisible = (activeRound !== 'penyisihan') || showAllNames || revealedSchools.has(item.kode);
+        
+        // Render lencana nomor undi di sebelah nama kontestan yang lolos semifinal
+        const undiBadgeHTML = (activeRound === 'penyisihan') && item.undi !== undefined
+          ? (item.undi !== ''
+              ? `<span class="lock-badge" style="background: rgba(0, 240, 255, 0.12); border-color: rgba(0, 240, 255, 0.25); color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue-glow); margin-left:0.5rem; cursor:pointer;" onclick="event.stopPropagation(); editSchoolUndi('${cat}', '${item.kode}', '${item.nama}', '${item.undi}')" title="Klik untuk edit No. Undian">
+                   <i class="fa-solid fa-ticket"></i> Undi: ${item.undi}
+                 </span>`
+              : (item.status === 'LOLOS SEMIFINAL'
+                  ? `<span class="lock-badge" style="background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.25); color: var(--neon-gold); box-shadow: 0 0 8px var(--neon-gold-glow); margin-left:0.5rem; cursor:pointer;" onclick="event.stopPropagation(); editSchoolUndi('${cat}', '${item.kode}', '${item.nama}', '')" title="Klik untuk set No. Undian">
+                       <i class="fa-solid fa-ticket"></i> Belum Diundi
+                     </span>`
+                  : '')
+            )
+          : '';
+
         const nameHTML = isNameVisible
           ? `<div class="team-name name-unlocked" onclick="toggleSchoolName('${item.kode}')" title="Klik untuk menyembunyikan nama">
                <span class="team-name-text">${item.nama}</span>
+               ${undiBadgeHTML}
              </div>`
           : `<div class="team-name name-locked" onclick="toggleSchoolName('${item.kode}')" title="Klik untuk membuka nama">
                <span class="lock-badge"><i class="fa-solid fa-lock"></i> Terkunci</span>
                <span class="team-name-text">${item.nama}</span>
+               ${undiBadgeHTML}
              </div>`;
 
         card.innerHTML = `
@@ -1926,8 +2047,7 @@
       });
     }
 
-    // Mengurai seluruh babak secara otomatis dari tabel visualisasi Google Sheets
-    function parseAllRoundsFromTable(table) {
+    function parseAllRoundsFromTable(table, cat) {
       const result = {
         penyisihan: [],
         semifinal1: [],
@@ -1964,6 +2084,15 @@
           const totalRaw = row.c[3] ? row.c[3].v : 0;
           const rankRaw = row.c[4] ? row.c[4].v : 1;
           const status = row.c[5] && row.c[5].v ? row.c[5].v.toString().trim() : '';
+          
+          // Ambil undian sesuai urutan kolom kategori
+          let undiRaw = '';
+          if (cat === 'mula') {
+            undiRaw = row.c[6] ? row.c[6].v : '';
+          } else if (cat === 'madya' || cat === 'wira') {
+            undiRaw = row.c[7] ? row.c[7].v : '';
+          }
+          const undi = undiRaw !== null && undiRaw !== undefined ? undiRaw.toString().trim() : '';
 
           if (kode && kode !== '' && kode !== 'Kode') {
             let total = parseFloat(totalRaw);
@@ -1976,7 +2105,8 @@
               nama: nama,
               total: total,
               rank: rank,
-              status: status
+              status: status,
+              undi: undi
             });
           }
         }
@@ -2100,9 +2230,9 @@
             
             cachedPreviousData = JSON.parse(JSON.stringify(liveScoreboardData));
             
-            liveScoreboardData.mula = parseAllRoundsFromTable(tableMula);
-            liveScoreboardData.madya = parseAllRoundsFromTable(tableMadya);
-            liveScoreboardData.wira = parseAllRoundsFromTable(tableWira);
+            liveScoreboardData.mula = parseAllRoundsFromTable(tableMula, 'mula');
+            liveScoreboardData.madya = parseAllRoundsFromTable(tableMadya, 'madya');
+            liveScoreboardData.wira = parseAllRoundsFromTable(tableWira, 'wira');
             
             reorderCategories();
             renderViewPort();

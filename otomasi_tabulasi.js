@@ -590,9 +590,44 @@ function debugTabulasi() {
 /**
  * API Web Service - Mengekspos data Final secara real-time dalam format JSON
  * Digunakan oleh website dashboard offline/online untuk memantau skor.
+ * Juga mendukung aksi edit No. Undian secara real-time dari website.
  */
 function doGet(e) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
+  
+  // Deteksi Aksi Update Undian dari Website
+  if (e && e.parameter && e.parameter.action === 'updateUndi') {
+    var cat = e.parameter.cat;   // 'mula', 'madya', 'wira'
+    var kode = e.parameter.kode; // e.g., 'MU12'
+    var undi = e.parameter.undi; // e.g., '3' or '' to clear
+    
+    try {
+      var success = updateUndiInSheet(ss, cat, kode, undi);
+      var responseObj = { success: success, message: success ? "Nomor undian berhasil diperbarui di Google Sheets!" : "Kode sekolah tidak ditemukan di babak penyisihan." };
+      
+      // Support JSONP callback jika dipanggil via JSONP script tag
+      if (e.parameter.callback) {
+        var callback = e.parameter.callback;
+        return ContentService.createTextOutput(callback + "(" + JSON.stringify(responseObj) + ")")
+          .setMimeType(ContentService.MimeType.JAVASCRIPT);
+      }
+      
+      return ContentService.createTextOutput(JSON.stringify(responseObj))
+        .setMimeType(ContentService.MimeType.JSON)
+        .setHeaders({ 'Access-Control-Allow-Origin': '*' });
+    } catch (err) {
+      var errObj = { success: false, error: err.toString() };
+      if (e.parameter.callback) {
+        return ContentService.createTextOutput(e.parameter.callback + "(" + JSON.stringify(errObj) + ")")
+          .setMimeType(ContentService.MimeType.JAVASCRIPT);
+      }
+      return ContentService.createTextOutput(JSON.stringify(errObj))
+        .setMimeType(ContentService.MimeType.JSON)
+        .setHeaders({ 'Access-Control-Allow-Origin': '*' });
+    }
+  }
+
+  // Aksi default: mengambil data live untuk dashboard
   var result = {
     mula: getFinalData(ss.getSheetByName("PMR MULA"), 37, 41),
     madya: getFinalData(ss.getSheetByName("PMR MADYA"), 41, 45),
@@ -602,6 +637,54 @@ function doGet(e) {
   
   return ContentService.createTextOutput(JSON.stringify(result))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+/**
+ * Helper untuk menulis nilai undian ke sheet penyisihan secara real-time
+ */
+function updateUndiInSheet(ss, cat, kode, undi) {
+  var sheetName = "";
+  var startRow = 6;
+  var endRow = 19;
+  var undiColName = ""; // Column letter: 'G' or 'H'
+  
+  if (cat === "mula") {
+    sheetName = "PMR MULA";
+    endRow = 19;
+    undiColName = "G";
+  } else if (cat === "madya") {
+    sheetName = "PMR MADYA";
+    endRow = 23;
+    undiColName = "H";
+  } else if (cat === "wira") {
+    sheetName = "PMR WIRA";
+    endRow = 19;
+    undiColName = "G";
+  } else {
+    return false;
+  }
+  
+  var sheet = ss.getSheetByName(sheetName);
+  if (!sheet) return false;
+  
+  var rangeB = sheet.getRange("B" + startRow + ":B" + endRow);
+  var valuesB = rangeB.getValues();
+  
+  for (var i = 0; i < valuesB.length; i++) {
+    var cellValue = valuesB[i][0].toString().trim();
+    if (cellValue === kode.trim()) {
+      var row = startRow + i;
+      // Set nilai undian (konversi ke angka jika ada nilainya, atau kosongkan)
+      if (undi !== null && undi !== undefined && undi !== "") {
+        sheet.getRange(undiColName + row).setValue(parseInt(undi));
+      } else {
+        sheet.getRange(undiColName + row).setValue("");
+      }
+      return true;
+    }
+  }
+  
+  return false;
 }
 
 /**
