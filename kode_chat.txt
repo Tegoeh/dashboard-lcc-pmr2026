@@ -2,4 +2,4 @@ KODE CHAT / CONVERSATION ID SESI INI:
 1f27dd45-31c5-4edb-9166-baa1ca17869b
 
 Tanggal Diperbarui: 2026-06-02
-Deskripsi: Sesi ini berhasil menyetel URL Aplikasi Web Google Apps Script (`https://script.google.com/macros/s/AKfycbx7-HeqQPWQsf1DTpkp8Ybl4HuGxWTOQQ5KgpOynzlpZ3CV8mNZAd_ZCIRjV5hKBEFF/exec`) sebagai URL default utama di website dashboard panggung. Dibuatkan juga skema migrasi otomatis di local storage browser agar bila pengguna membuka website kembali, browser akan otomatis bermigrasi dari tautan spreadsheet lama ke tautan Web App baru tanpa perlu setup ulang.
+Deskripsi: Memperbaiki error koneksi database dengan memisahkan koneksi menjadi Dual Connection Model di index.html dan dashboard.html. Membaca data live tetap langsung dari Google Sheets URL via Google Visualization API (mencegah error CORS/format), sementara penulisan nomor undi dikirim secara aman ke Google Apps Script Web App URL via JSONP. Menambahkan modal pengaturan dengan dua input input terpisah demi keandalan sistem.

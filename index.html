@@ -1272,16 +1272,23 @@
        SETTINGS MODAL BOX
        ========================================== -->
   <div class="settings-backdrop" id="modalBackdrop">
-    <div class="settings-modal">
+    <div class="settings-modal" style="width: 520px; max-width: 95%;">
       <div class="settings-title-group">
-        <h2 class="settings-title"><i class="fa-solid fa-link" style="color: var(--neon-blue);"></i> Hubungkan Google Sheets</h2>
+        <h2 class="settings-title"><i class="fa-solid fa-link" style="color: var(--neon-blue);"></i> Hubungkan Sistem LCC</h2>
         <button class="close-modal-btn" onclick="hideSettingsModal()"><i class="fa-solid fa-xmark"></i></button>
       </div>
+      <div class="form-input-box" style="margin-bottom: 1rem;">
+        <label for="spreadsheetUrlInput">1. Tautan Google Sheets (Pembacaan Data Live):</label>
+        <input type="text" id="spreadsheetUrlInput" placeholder="https://docs.google.com/spreadsheets/d/...">
+        <p style="font-size: 0.75rem; color: #9ca3af; line-height: 1.4;">
+          Tautan spreadsheet utama Anda untuk membaca live score dan semua babak secara langsung.
+        </p>
+      </div>
       <div class="form-input-box">
-        <label for="appsScriptUrl">Tautan Google Sheets atau Web App URL:</label>
-        <input type="text" id="appsScriptUrl" placeholder="https://docs.google.com/spreadsheets/d/... atau https://script.google.com/macros/s/...">
-        <p style="font-size: 0.75rem; color: #9ca3af; margin-top: 0.4rem; line-height: 1.4;">
-          Tempelkan langsung tautan **Google Sheets** Anda atau URL **Google Apps Script Web App** untuk memulai sinkronisasi real-time.
+        <label for="appsScriptUrlInput">2. Tautan Apps Script Web App (Penulisan Nomor Undi):</label>
+        <input type="text" id="appsScriptUrlInput" placeholder="https://script.google.com/macros/s/.../exec">
+        <p style="font-size: 0.75rem; color: #9ca3af; line-height: 1.4;">
+          Tautan Web App hasil Deployment Apps Script untuk mengirim pembaruan nomor undian secara langsung.
         </p>
       </div>
       <div style="display: flex; justify-content: flex-end; gap: 0.8rem; margin-top: 1.8rem;">
@@ -1422,8 +1429,8 @@
         }
       }
 
-      if (!sheetsApiEndpoint || !sheetsApiEndpoint.startsWith('https://script.google.com')) {
-        alert('Untuk memperbarui langsung dari website ke Google Sheets, Anda HARUS menghubungkan URL Google Apps Script Web App di tombol "Sambungkan" (bukan tautan spreadsheet biasa).');
+      if (!appsScriptEndpoint || !appsScriptEndpoint.startsWith('https://script.google.com')) {
+        alert('Tautan Google Apps Script Web App belum diatur atau tidak valid. Silakan atur di tombol "Sambungkan" terlebih dahulu.');
         return;
       }
 
@@ -1450,7 +1457,7 @@
 
       const script = document.createElement('script');
       script.id = `script_${callbackName}`;
-      script.src = `${sheetsApiEndpoint}?action=updateUndi&cat=${currentEditLotteryCat}&kode=${currentEditLotteryKode}&undi=${undiVal}&callback=${callbackName}&t=${Date.now()}`;
+      script.src = `${appsScriptEndpoint}?action=updateUndi&cat=${currentEditLotteryCat}&kode=${currentEditLotteryKode}&undi=${undiVal}&callback=${callbackName}&t=${Date.now()}`;
       
       script.onerror = function() {
         btnSave.disabled = false;
@@ -1468,14 +1475,16 @@
       }
     }
 
-    // URL default spreadsheet pengguna untuk koneksi instan (Sekarang default menggunakan Web App URL untuk integrasi dua arah)
-    const DEFAULT_SPREADSHEET_URL = 'https://script.google.com/macros/s/AKfycbx7-HeqQPWQsf1DTpkp8Ybl4HuGxWTOQQ5KgpOynzlpZ3CV8mNZAd_ZCIRjV5hKBEFF/exec';
+    // URL default spreadsheet dan Apps Script Web App
+    const DEFAULT_SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/1V0TX1XM8sT2nto1S0AhfQEDNC7g4D6cTLg1sOWxiZ0U/edit';
+    const DEFAULT_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx7-HeqQPWQsf1DTpkp8Ybl4HuGxWTOQQ5KgpOynzlpZ3CV8mNZAd_ZCIRjV5hKBEFF/exec';
 
     // Ambil Simpanan API URL
     let sheetsApiEndpoint = localStorage.getItem('LCC_API_ENDPOINT') || DEFAULT_SPREADSHEET_URL;
+    let appsScriptEndpoint = localStorage.getItem('LCC_APPS_SCRIPT_URL') || DEFAULT_APPS_SCRIPT_URL;
 
-    // Migrasi otomatis ke URL Web App baru jika browser masih menyimpan URL spreadsheet lama
-    if (sheetsApiEndpoint.includes('docs.google.com/spreadsheets')) {
+    // Reset otomatis jika browser menyimpan URL Apps Script di LCC_API_ENDPOINT demi keamanan koneksi
+    if (sheetsApiEndpoint.includes('script.google.com')) {
       sheetsApiEndpoint = DEFAULT_SPREADSHEET_URL;
       localStorage.setItem('LCC_API_ENDPOINT', DEFAULT_SPREADSHEET_URL);
     }
@@ -1608,7 +1617,7 @@
       // Terapkan tema tersimpan
       applyTheme();
 
-      document.getElementById('appsScriptUrl').value = sheetsApiEndpoint;
+      // (Tautan input diset dinamis saat modal dibuka demi kerapian)
       
       // Update tulisan babak live di sub-header PMI
       changeRound(activeRound);
@@ -2317,6 +2326,8 @@
     // SETTINGS MODAL SYSTEM
     // ==========================================
     function showSettingsModal() {
+      document.getElementById('spreadsheetUrlInput').value = sheetsApiEndpoint;
+      document.getElementById('appsScriptUrlInput').value = appsScriptEndpoint;
       document.getElementById('modalBackdrop').classList.add('active');
     }
 
@@ -2329,12 +2340,18 @@
     }
 
     function saveConnectionSettings() {
-      const rawUrl = document.getElementById('appsScriptUrl').value.trim();
-      sheetsApiEndpoint = rawUrl;
-      localStorage.setItem('LCC_API_ENDPOINT', rawUrl);
+      const sheetUrl = document.getElementById('spreadsheetUrlInput').value.trim();
+      const scriptUrl = document.getElementById('appsScriptUrlInput').value.trim();
+      
+      sheetsApiEndpoint = sheetUrl;
+      appsScriptEndpoint = scriptUrl;
+      
+      localStorage.setItem('LCC_API_ENDPOINT', sheetUrl);
+      localStorage.setItem('LCC_APPS_SCRIPT_URL', scriptUrl);
+      
       hideSettingsModal();
 
-      if (rawUrl) {
+      if (sheetUrl) {
         if (simulationActive) toggleSimulation(false);
         if (autoRefreshTimer) clearInterval(autoRefreshTimer);
         
