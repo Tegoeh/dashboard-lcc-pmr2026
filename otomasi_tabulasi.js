@@ -126,20 +126,20 @@ function initMula() {
   sheetPmr.getRange("H5").setValue("No. Undi Final");
   sheetPmr.getRange("H5").setFontWeight("bold").setHorizontalAlignment("center");
 
-  // 1. Semifinal Kelompok 1 (Rows 8-12) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
+  // 1. Semifinal Kelompok 1 (Rows 8-12) - Mengambil berdasarkan No. Undi SF (Fallback ke Peringkat Penyisihan)
   for (var r = 8; r <= 12; r++) {
-    var rank = r - 7; // No. Undi 1 s.d 5
-    sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(FILTER(\'PMR MULA\'!$B$6:$B$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), MATCH(\'PMR MULA\'!$G' + (rank+5) + ', FILTER(\'PMR MULA\'!$G$6:$G$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), 0)), INDEX(SORT(FILTER(\'PMR MULA\'!$B$6:$B$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), FILTER(\'PMR MULA\'!$E$6:$E$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), TRUE), ' + rank + ')), "")');
+    var rank = r - 7; // No. Undi SF 1 s.d 5
+    sheetLive.getRange("C" + r).setFormula('=IFERROR(INDEX(FILTER(\'PMR MULA\'!$B$6:$B$19, (\'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL") * (\'PMR MULA\'!$G$6:$G$19 = ' + rank + ')), 1), IFERROR(INDEX(SORT(FILTER(\'PMR MULA\'!$B$6:$B$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), FILTER(\'PMR MULA\'!$E$6:$E$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), TRUE), ' + rank + '), ""))');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MULA\'!$B$6:$C$19, 2, FALSE), "")');
     sheetLive.getRange("V" + r).setFormula('=SUM(G' + r + ':U' + r + ')');
     sheetLive.getRange("X" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$8:$V$12), "")');
     sheetLive.getRange("Y" + r).setFormula('=IF(X' + r + '<=3, "Lolos Final", "-")');
   }
   
-  // 2. Semifinal Kelompok 2 (Rows 18-22) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
+  // 2. Semifinal Kelompok 2 (Rows 18-22) - Mengambil berdasarkan No. Undi SF (Fallback ke Peringkat Penyisihan)
   for (var r = 18; r <= 22; r++) {
-    var rank = r - 17; // No. Undi 6 s.d 10
-    sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(FILTER(\'PMR MULA\'!$B$6:$B$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), MATCH(\'PMR MULA\'!$G' + (rank+5) + ', FILTER(\'PMR MULA\'!$G$6:$G$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), 0)), INDEX(SORT(FILTER(\'PMR MULA\'!$B$6:$B$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), FILTER(\'PMR MULA\'!$E$6:$E$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), TRUE), ' + rank + ')), "")');
+    var rank = r - 12; // No. Undi SF 6 s.d 10 (r=18 -> 6, r=22 -> 10)
+    sheetLive.getRange("C" + r).setFormula('=IFERROR(INDEX(FILTER(\'PMR MULA\'!$B$6:$B$19, (\'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL") * (\'PMR MULA\'!$G$6:$G$19 = ' + rank + ')), 1), IFERROR(INDEX(SORT(FILTER(\'PMR MULA\'!$B$6:$B$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), FILTER(\'PMR MULA\'!$E$6:$E$19, \'PMR MULA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), TRUE), ' + rank + '), ""))');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MULA\'!$B$6:$C$19, 2, FALSE), "")');
     sheetLive.getRange("V" + r).setFormula('=SUM(G' + r + ':U' + r + ')');
     sheetLive.getRange("X" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$18:$V$22), "")');
@@ -149,7 +149,7 @@ function initMula() {
   // 3. Final Kelompok (Rows 24-28) - Mengambil 5 tim yang berstatus "LOLOS FINAL" di Semifinal PMR MULA.
   for (var r = 24; r <= 28; r++) {
     var itemIndex = r - 23; // Index 1 s.d 5
-    sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(FILTER(\'PMR MULA\'!$B$6:$B$19, COUNTIF(FILTER(\'PMR MULA\'!$B$24:$B$33, \'PMR MULA\'!$G$24:$G$33 = "LOLOS FINAL"), \'PMR MULA\'!$B$6:$B$19) > 0), MATCH(\'PMR MULA\'!$H' + (itemIndex+5) + ', FILTER(\'PMR MULA\'!$H$6:$H$19, COUNTIF(FILTER(\'PMR MULA\'!$B$24:$B$33, \'PMR MULA\'!$G$24:$G$33 = "LOLOS FINAL"), \'PMR MULA\'!$B$6:$B$19) > 0), 0)), INDEX(SORT(FILTER(\'PMR MULA\'!$B$24:$B$33, \'PMR MULA\'!$G$24:$G$33 = "LOLOS FINAL"), FILTER(\'PMR MULA\'!$F$24:$F$33, \'PMR MULA\'!$G$24:$G$33 = "LOLOS FINAL"), TRUE), ' + itemIndex + ')), "")');
+    sheetLive.getRange("C" + r).setFormula('=IFERROR(INDEX(FILTER(\'PMR MULA\'!$B$24:$B$33, (\'PMR MULA\'!$G$24:$G$33 = "LOLOS FINAL") * (IFERROR(VLOOKUP(\'PMR MULA\'!$B$24:$B$33, \'PMR MULA\'!$B$6:$H$19, 7, FALSE), 0) = ' + itemIndex + ')), 1), IFERROR(INDEX(SORT(FILTER(\'PMR MULA\'!$B$24:$B$33, \'PMR MULA\'!$G$24:$G$33 = "LOLOS FINAL"), FILTER(\'PMR MULA\'!$F$24:$F$33, \'PMR MULA\'!$G$24:$G$33 = "LOLOS FINAL"), TRUE), ' + itemIndex + '), ""))');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MULA\'!$B$6:$C$19, 2, FALSE), "")');
     sheetLive.getRange("Z" + r).setFormula('=SUM(F' + r + ':Y' + r + ')');
     sheetLive.getRange("AA" + r).setFormula('=IF(ISNUMBER(Z' + r + '), RANK(Z' + r + ', $Z$24:$Z$28), "")');
@@ -242,20 +242,20 @@ function initMadya() {
   sheetPmr.getRange("I5").setValue("No. Undi Final");
   sheetPmr.getRange("I5").setFontWeight("bold").setHorizontalAlignment("center");
 
-  // 1. Semifinal Kelompok 1 (Rows 7-11) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
+  // 1. Semifinal Kelompok 1 (Rows 7-11) - Mengambil berdasarkan No. Undi SF (Fallback ke Peringkat Penyisihan)
   for (var r = 7; r <= 11; r++) {
-    var rank = r - 6; // No. Undi 1 s.d 5
-    sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(FILTER(\'PMR MADYA\'!$B$6:$B$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), MATCH(\'PMR MADYA\'!$H' + (rank+5) + ', FILTER(\'PMR MADYA\'!$H$6:$H$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), 0)), INDEX(SORT(FILTER(\'PMR MADYA\'!$B$6:$B$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), FILTER(\'PMR MADYA\'!$F$6:$F$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), TRUE), ' + rank + ')), "")');
+    var rank = r - 6; // No. Undi SF 1 s.d 5
+    sheetLive.getRange("C" + r).setFormula('=IFERROR(INDEX(FILTER(\'PMR MADYA\'!$B$6:$B$23, (\'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL") * (\'PMR MADYA\'!$H$6:$H$23 = ' + rank + ')), 1), IFERROR(INDEX(SORT(FILTER(\'PMR MADYA\'!$B$6:$B$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), FILTER(\'PMR MADYA\'!$F$6:$F$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), TRUE), ' + rank + '), ""))');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MADYA\'!$B$6:$C$23, 2, FALSE), "")');
     sheetLive.getRange("V" + r).setFormula('=SUM(G' + r + ':U' + r + ')');
     sheetLive.getRange("X" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$7:$V$11), "")');
     sheetLive.getRange("Y" + r).setFormula('=IF(X' + r + '<=3, "Lolos Final", "-")');
   }
   
-  // 2. Semifinal Kelompok 2 (Rows 17-21) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
+  // 2. Semifinal Kelompok 2 (Rows 17-21) - Mengambil berdasarkan No. Undi SF (Fallback ke Peringkat Penyisihan)
   for (var r = 17; r <= 21; r++) {
-    var rank = r - 16; // No. Undi 6 s.d 10
-    sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(FILTER(\'PMR MADYA\'!$B$6:$B$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), MATCH(\'PMR MADYA\'!$H' + (rank+5) + ', FILTER(\'PMR MADYA\'!$H$6:$H$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), 0)), INDEX(SORT(FILTER(\'PMR MADYA\'!$B$6:$B$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), FILTER(\'PMR MADYA\'!$F$6:$F$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), TRUE), ' + rank + ')), "")');
+    var rank = r - 11; // No. Undi SF 6 s.d 10 (r=17 -> 6, r=21 -> 10)
+    sheetLive.getRange("C" + r).setFormula('=IFERROR(INDEX(FILTER(\'PMR MADYA\'!$B$6:$B$23, (\'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL") * (\'PMR MADYA\'!$H$6:$H$23 = ' + rank + ')), 1), IFERROR(INDEX(SORT(FILTER(\'PMR MADYA\'!$B$6:$B$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), FILTER(\'PMR MADYA\'!$F$6:$F$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), TRUE), ' + rank + '), ""))');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MADYA\'!$B$6:$C$23, 2, FALSE), "")');
     sheetLive.getRange("V" + r).setFormula('=SUM(G' + r + ':U' + r + ')');
     sheetLive.getRange("X" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$17:$V$21), "")');
@@ -265,7 +265,7 @@ function initMadya() {
   // 3. Final Kelompok (Rows 23-27) - Mengambil 5 tim yang berstatus "LOLOS FINAL" di Semifinal PMR MADYA.
   for (var r = 23; r <= 27; r++) {
     var itemIndex = r - 22; // Index 1 s.d 5
-    sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(FILTER(\'PMR MADYA\'!$B$6:$B$23, COUNTIF(FILTER(\'PMR MADYA\'!$B$28:$B$37, \'PMR MADYA\'!$G$28:$G$37 = "LOLOS FINAL"), \'PMR MADYA\'!$B$6:$B$23) > 0), MATCH(\'PMR MADYA\'!$I' + (itemIndex+5) + ', FILTER(\'PMR MADYA\'!$I$6:$I$23, COUNTIF(FILTER(\'PMR MADYA\'!$B$28:$B$37, \'PMR MADYA\'!$G$28:$G$37 = "LOLOS FINAL"), \'PMR MADYA\'!$B$6:$B$23) > 0), 0)), INDEX(SORT(FILTER(\'PMR MADYA\'!$B$28:$B$37, \'PMR MADYA\'!$G$28:$G$37 = "LOLOS FINAL"), FILTER(\'PMR MADYA\'!$F$28:$F$37, \'PMR MADYA\'!$G$28:$G$37 = "LOLOS FINAL"), TRUE), ' + itemIndex + ')), "")');
+    sheetLive.getRange("C" + r).setFormula('=IFERROR(INDEX(FILTER(\'PMR MADYA\'!$B$28:$B$37, (\'PMR MADYA\'!$G$28:$G$37 = "LOLOS FINAL") * (IFERROR(VLOOKUP(\'PMR MADYA\'!$B$28:$B$37, \'PMR MADYA\'!$B$6:$I$23, 8, FALSE), 0) = ' + itemIndex + ')), 1), IFERROR(INDEX(SORT(FILTER(\'PMR MADYA\'!$B$28:$B$37, \'PMR MADYA\'!$G$28:$G$37 = "LOLOS FINAL"), FILTER(\'PMR MADYA\'!$F$28:$F$37, \'PMR MADYA\'!$G$28:$G$37 = "LOLOS FINAL"), TRUE), ' + itemIndex + '), ""))');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MADYA\'!$B$6:$C$23, 2, FALSE), "")');
     sheetLive.getRange("Z" + r).setFormula('=SUM(F' + r + ':Y' + r + ')');
     sheetLive.getRange("AA" + r).setFormula('=IF(ISNUMBER(Z' + r + '), RANK(Z' + r + ', $Z$23:$Z$27), "")');
@@ -357,20 +357,20 @@ function initWira() {
   sheetPmr.getRange("H5").setValue("No. Undi Final");
   sheetPmr.getRange("H5").setFontWeight("bold").setHorizontalAlignment("center");
 
-  // 1. Semifinal Kelompok 1 (Rows 7-11) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
+  // 1. Semifinal Kelompok 1 (Rows 7-11) - Mengambil berdasarkan No. Undi SF (Fallback ke Peringkat Penyisihan)
   for (var r = 7; r <= 11; r++) {
-    var rank = r - 6; // No. Undi 1 s.d 5
-    sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(FILTER(\'PMR WIRA\'!$B$6:$B$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), MATCH(\'PMR WIRA\'!$G' + (rank+5) + ', FILTER(\'PMR WIRA\'!$G$6:$G$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), 0)), INDEX(SORT(FILTER(\'PMR WIRA\'!$B$6:$B$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), FILTER(\'PMR WIRA\'!$E$6:$E$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), TRUE), ' + rank + ')), "")');
+    var rank = r - 6; // No. Undi SF 1 s.d 5
+    sheetLive.getRange("C" + r).setFormula('=IFERROR(INDEX(FILTER(\'PMR WIRA\'!$B$6:$B$19, (\'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL") * (\'PMR WIRA\'!$G$6:$G$19 = ' + rank + ')), 1), IFERROR(INDEX(SORT(FILTER(\'PMR WIRA\'!$B$6:$B$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), FILTER(\'PMR WIRA\'!$E$6:$E$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), TRUE), ' + rank + '), ""))');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR WIRA\'!$B$6:$C$19, 2, FALSE), "")');
     sheetLive.getRange("V" + r).setFormula('=SUM(G' + r + ':U' + r + ')');
     sheetLive.getRange("X" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$7:$V$11), "")');
     sheetLive.getRange("Y" + r).setFormula('=IF(X' + r + '<=3, "Lolos Final", "-")');
   }
   
-  // 2. Semifinal Kelompok 2 (Rows 17-21) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
+  // 2. Semifinal Kelompok 2 (Rows 17-21) - Mengambil berdasarkan No. Undi SF (Fallback ke Peringkat Penyisihan)
   for (var r = 17; r <= 21; r++) {
-    var rank = r - 16; // No. Undi 6 s.d 10
-    sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(FILTER(\'PMR WIRA\'!$B$6:$B$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), MATCH(\'PMR WIRA\'!$G' + (rank+5) + ', FILTER(\'PMR WIRA\'!$G$6:$G$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), 0)), INDEX(SORT(FILTER(\'PMR WIRA\'!$B$6:$B$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), FILTER(\'PMR WIRA\'!$E$6:$E$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), TRUE), ' + rank + ')), "")');
+    var rank = r - 11; // No. Undi SF 6 s.d 10 (r=17 -> 6, r=21 -> 10)
+    sheetLive.getRange("C" + r).setFormula('=IFERROR(INDEX(FILTER(\'PMR WIRA\'!$B$6:$B$19, (\'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL") * (\'PMR WIRA\'!$G$6:$G$19 = ' + rank + ')), 1), IFERROR(INDEX(SORT(FILTER(\'PMR WIRA\'!$B$6:$B$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), FILTER(\'PMR WIRA\'!$E$6:$E$19, \'PMR WIRA\'!$F$6:$F$19 = "LOLOS SEMIFINAL"), TRUE), ' + rank + '), ""))');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR WIRA\'!$B$6:$C$19, 2, FALSE), "")');
     sheetLive.getRange("V" + r).setFormula('=SUM(G' + r + ':U' + r + ')');
     sheetLive.getRange("X" + r).setFormula('=IF(ISNUMBER(V' + r + '), RANK(V' + r + ', $V$17:$V$21), "")');
@@ -380,7 +380,7 @@ function initWira() {
   // 3. Final Kelompok (Rows 23-27) - Mengambil 5 tim yang berstatus "LOLOS FINAL" di Semifinal PMR WIRA
   for (var r = 23; r <= 27; r++) {
     var itemIndex = r - 22; // Index 1 s.d 5
-    sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(FILTER(\'PMR WIRA\'!$B$6:$B$19, COUNTIF(FILTER(\'PMR WIRA\'!$B$24:$B$33, \'PMR WIRA\'!$G$24:$G$33 = "LOLOS FINAL"), \'PMR WIRA\'!$B$6:$B$19) > 0), MATCH(\'PMR WIRA\'!$H' + (itemIndex+5) + ', FILTER(\'PMR WIRA\'!$H$6:$H$19, COUNTIF(FILTER(\'PMR WIRA\'!$B$24:$B$33, \'PMR WIRA\'!$G$24:$G$33 = "LOLOS FINAL"), \'PMR WIRA\'!$B$6:$B$19) > 0), 0)), INDEX(SORT(FILTER(\'PMR WIRA\'!$B$24:$B$33, \'PMR WIRA\'!$G$24:$G$33 = "LOLOS FINAL"), FILTER(\'PMR WIRA\'!$F$24:$F$33, \'PMR WIRA\'!$G$24:$G$33 = "LOLOS FINAL"), TRUE), ' + itemIndex + ')), "")');
+    sheetLive.getRange("C" + r).setFormula('=IFERROR(INDEX(FILTER(\'PMR WIRA\'!$B$24:$B$33, (\'PMR WIRA\'!$G$24:$G$33 = "LOLOS FINAL") * (IFERROR(VLOOKUP(\'PMR WIRA\'!$B$24:$B$33, \'PMR WIRA\'!$B$6:$H$19, 7, FALSE), 0) = ' + itemIndex + ')), 1), IFERROR(INDEX(SORT(FILTER(\'PMR WIRA\'!$B$24:$B$33, \'PMR WIRA\'!$G$24:$G$33 = "LOLOS FINAL"), FILTER(\'PMR WIRA\'!$F$24:$F$33, \'PMR WIRA\'!$G$24:$G$33 = "LOLOS FINAL"), TRUE), ' + itemIndex + '), ""))');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR WIRA\'!$B$6:$C$19, 2, FALSE), "")');
     sheetLive.getRange("Z" + r).setFormula('=SUM(F' + r + ':Y' + r + ')');
     sheetLive.getRange("AA" + r).setFormula('=IF(ISNUMBER(Z' + r + '), RANK(Z' + r + ', $Z$23:$Z$27), "")');
