@@ -488,9 +488,9 @@ function debugTabulasi() {
   
   var logData = [];
   
-  // Helper untuk melakukan padding baris data agar selalu memiliki tepat 8 kolom
+  // Helper untuk melakukan padding baris data agar selalu memiliki tepat 10 kolom
   function pushLog(row) {
-    while (row.length < 8) {
+    while (row.length < 10) {
       row.push("");
     }
     logData.push(row);
