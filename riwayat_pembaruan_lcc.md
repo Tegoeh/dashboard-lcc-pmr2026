@@ -29,6 +29,16 @@ Berikut adalah ringkasan masalah teknis yang berhasil diselesaikan untuk memasti
 * **Masalah:** Kebutuhan input jawaban netral/belum mulai agar tidak kosong atau error.
 * **Solusi:** User telah menambahkan manual opsi dropdown `0` di sheet `LIVE BEL MADYA` Babak Final (E28:X32). Kami memverifikasi bahwa formula total skor final (`=IF(E28=1, 50, IF(E28=-1, -25, 0)) + ...`) sangat kompatibel dengan angka `0` maupun sel kosong, dan akan dihitung sebagai `0` poin (netral) secara aman.
 
+### D. Duplikasi Nama Finalis saat Skor 0 (Babak Final)
+* **Masalah:** Ketika seluruh skor final masih bernilai `0` (sebelum lomba dimulai), tabel final di Live Dashboard hanya menampilkan satu nama sekolah (Juara 1) sebanyak 5 kali. Ketika ada minimal 1 poin masuk, kelima finalis baru tampil dengan benar.
+* **Penyebab:** Pada skrip inisialisasi formula `otomasi_tabulasi.js`, rumus cell fallback saat total skor panggung final bernilai `0` (`SUM(LIVE BEL ... = 0`) ditulis secara hardcoded mengarah ke `LIVE BEL MADYA!C28` untuk kelima baris finalis. Di sisi website, parser DOM me-reuse elemen card dengan `data-kode` yang sama sehingga hanya menampilkan satu baris di layar.
+* **Solusi:** Kami memperbaiki logika penulisan formula di `otomasi_tabulasi.js` dengan membuat referensi fallback baris bersifat dinamis:
+  * **PMR MULA:** Referensi fallback menggunakan `LIVE BEL MULA!D' + (r - 9)` (untuk baris 28-32).
+  * **PMR MADYA:** Referensi fallback menggunakan `LIVE BEL MADYA!C' + (r - 13)` (untuk baris 28-32).
+  * **PMR WIRA:** Referensi fallback menggunakan `LIVE BEL WIRA!C' + (r - 9)` (untuk baris 28-32).
+  * Kami juga telah menjalankan skrip perbaikan langsung untuk memperbarui sel-sel formula final di Google Spreadsheet aktif (`PMR MULA B37:B41`, `PMR MADYA B41:B45`, `PMR WIRA B37:B41`) sehingga saat ini Google Sheets Anda sudah 100% normal dan siap digunakan.
+* **Status:** Sukses diperbaiki di Google Sheets aktif dan kode repositori lokal.
+
 ---
 
 ## 🛠️ 2. Salinan Kode Apps Script Terbaru (`otomasi_tabulasi.js`)

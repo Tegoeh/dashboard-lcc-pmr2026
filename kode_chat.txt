@@ -1,5 +1,5 @@
 KODE CHAT / CONVERSATION ID SESI INI:
-1f27dd45-31c5-4edb-9166-baa1ca17869b
+4804b350-ad6a-41d4-a310-f79e6bbd432e
 
-Tanggal Diperbarui: 2026-06-02
-Deskripsi: Memperbaiki error koneksi database dengan memisahkan koneksi menjadi Dual Connection Model di index.html dan dashboard.html. Membaca data live tetap langsung dari Google Sheets URL via Google Visualization API (mencegah error CORS/format), sementara penulisan nomor undi dikirim secara aman ke Google Apps Script Web App URL via JSONP. Menambahkan modal pengaturan dengan dua input input terpisah demi keandalan sistem.
+Tanggal Diperbarui: 2026-06-03
+Deskripsi: Memperbaiki formula Babak Final di sheet PMR Mula, Madya, dan Wira yang sebelumnya bernilai hardcoded untuk sel fallback baris 28 (C28/D28) ketika akumulasi skor 0. Ini menyebabkan website hanya menampilkan satu peserta pertama yang terulang lima kali di tabel final jika perlombaan belum dimulai (skor masih 0). Kini formula tersebut diubah menjadi dinamis (menggunakan r - 9 untuk Mula & Wira, dan r - 13 untuk Madya) sehingga seluruh lima finalis tampil dengan benar sejak awal.

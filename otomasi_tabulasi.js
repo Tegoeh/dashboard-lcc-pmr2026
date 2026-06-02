@@ -108,7 +108,7 @@ function initMula() {
   
   // 3. Babak Final (Rows 37-41)
   for (var r = 37; r <= 41; r++) {
-    sheetPmr.getRange("B" + r).setFormula('=IF(SUM(\'LIVE BEL MULA\'!$AA$28:$AA$32)=0, \'LIVE BEL MULA\'!D28, IFERROR(INDEX(SORT(\'LIVE BEL MULA\'!$D$28:$D$32, \'LIVE BEL MULA\'!$AA$28:$AA$32, FALSE), A' + r + '), ""))');
+    sheetPmr.getRange("B" + r).setFormula('=IF(SUM(\'LIVE BEL MULA\'!$AA$28:$AA$32)=0, \'LIVE BEL MULA\'!D' + (r - 9) + ', IFERROR(INDEX(SORT(\'LIVE BEL MULA\'!$D$28:$D$32, \'LIVE BEL MULA\'!$AA$28:$AA$32, FALSE), A' + r + '), ""))');
     sheetPmr.getRange("C" + r).setFormula('=IFERROR(VLOOKUP(B' + r + ', $B$6:$C$19, 2, FALSE), "")');
     sheetPmr.getRange("D" + r).setFormula('=SUMIF(\'LIVE BEL MULA\'!$D$28:$D$32, B' + r + ', \'LIVE BEL MULA\'!$AA$28:$AA$32)');
     sheetPmr.getRange("E" + r).setFormula('=IF(ISNUMBER(D' + r + '), RANK(D' + r + ', $D$37:$D$41), "")');
@@ -228,7 +228,7 @@ function initMadya() {
   
   // 3. Babak Final (Rows 41-45)
   for (var r = 41; r <= 45; r++) {
-    sheetPmr.getRange("B" + r).setFormula('=IF(SUM(\'LIVE BEL MADYA\'!$Y$28:$Y$32)=0, \'LIVE BEL MADYA\'!C28, IFERROR(INDEX(SORT(\'LIVE BEL MADYA\'!$C$28:$C$32, \'LIVE BEL MADYA\'!$Y$28:$Y$32, FALSE), A' + r + '), ""))');
+    sheetPmr.getRange("B" + r).setFormula('=IF(SUM(\'LIVE BEL MADYA\'!$Y$28:$Y$32)=0, \'LIVE BEL MADYA\'!C' + (r - 13) + ', IFERROR(INDEX(SORT(\'LIVE BEL MADYA\'!$C$28:$C$32, \'LIVE BEL MADYA\'!$Y$28:$Y$32, FALSE), A' + r + '), ""))');
     sheetPmr.getRange("C" + r).setFormula('=IFERROR(VLOOKUP(B' + r + ', $B$6:$C$23, 2, FALSE), "")');
     sheetPmr.getRange("D" + r).setFormula('=SUMIF(\'LIVE BEL MADYA\'!$C$28:$C$32, B' + r + ', \'LIVE BEL MADYA\'!$Y$28:$Y$32)');
     sheetPmr.getRange("E" + r).setFormula('=IF(ISNUMBER(D' + r + '), RANK(D' + r + ', $D$41:$D$45), "")');
@@ -352,7 +352,7 @@ function initWira() {
   
   // 3. Babak Final (Rows 37-41)
   for (var r = 37; r <= 41; r++) {
-    sheetPmr.getRange("B" + r).setFormula('=IF(SUM(\'LIVE BEL WIRA\'!$Y$28:$Y$32)=0, \'LIVE BEL WIRA\'!C28, IFERROR(INDEX(SORT(\'LIVE BEL WIRA\'!$C$28:$C$32, \'LIVE BEL WIRA\'!$Y$28:$Y$32, FALSE), A' + r + '), ""))');
+    sheetPmr.getRange("B" + r).setFormula('=IF(SUM(\'LIVE BEL WIRA\'!$Y$28:$Y$32)=0, \'LIVE BEL WIRA\'!C' + (r - 9) + ', IFERROR(INDEX(SORT(\'LIVE BEL WIRA\'!$C$28:$C$32, \'LIVE BEL WIRA\'!$Y$28:$Y$32, FALSE), A' + r + '), ""))');
     sheetPmr.getRange("C" + r).setFormula('=IFERROR(VLOOKUP(B' + r + ', $B$6:$C$19, 2, FALSE), "")');
     sheetPmr.getRange("D" + r).setFormula('=SUMIF(\'LIVE BEL WIRA\'!$C$28:$C$32, B' + r + ', \'LIVE BEL WIRA\'!$Y$28:$Y$32)');
     sheetPmr.getRange("E" + r).setFormula('=IF(ISNUMBER(D' + r + '), RANK(D' + r + ', $D$37:$D$41), "")');
