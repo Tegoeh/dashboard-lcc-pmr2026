@@ -218,7 +218,7 @@ function initMadya() {
   
   // 2. Babak Semifinal (Rows 28-37)
   for (var r = 28; r <= 37; r++) {
-    sheetPmr.getRange("B" + r).setFormula('=IFERROR(INDEX(SORT(FILTER($B$6:$B$23, $G$6:$G$23 = "LOLOS SEMIFINAL"), FILTER($F$6:$F$23, $G$6:$G$23 = "LOLOS SEMIFINAL"), TRUE), A' + r + '), "")');
+    sheetPmr.getRange("B" + r).setFormula('=IFERROR(INDEX(SORT(FILTER($B$6:$B$23, $G$6:$G$23 = "LOLOS SEMIFINAL"), FILTER($H$6:$H$23, $G$6:$G$23 = "LOLOS SEMIFINAL"), TRUE), A' + r + '), "")');
     sheetPmr.getRange("C" + r).setFormula('=IFERROR(VLOOKUP(B' + r + ', $B$6:$C$23, 2, FALSE), "")');
     sheetPmr.getRange("D" + r).setFormula('=IF(COUNTIF(\'LIVE BEL MADYA\'!$C$8:$C$12, B' + r + ')>0, 1, IF(COUNTIF(\'LIVE BEL MADYA\'!$C$18:$C$22, B' + r + ')>0, 2, ""))');
     sheetPmr.getRange("E" + r).setFormula('=IF(B' + r + '="", "", SUM(IFERROR(FILTER(\'LIVE BEL MADYA\'!$U$8:$U$12, \'LIVE BEL MADYA\'!$C$8:$C$12 = B' + r + '), 0)) + SUM(IFERROR(FILTER(\'LIVE BEL MADYA\'!$U$18:$U$22, \'LIVE BEL MADYA\'!$C$18:$C$22 = B' + r + '), 0)))');
@@ -342,7 +342,7 @@ function initWira() {
   
   // 2. Babak Semifinal (Rows 24-33)
   for (var r = 24; r <= 33; r++) {
-    sheetPmr.getRange("B" + r).setFormula('=IFERROR(INDEX(SORT(FILTER($B$6:$B$19, $G$6:$G$19 = "LOLOS SEMIFINAL"), FILTER($F$6:$F$19, $G$6:$G$19 = "LOLOS SEMIFINAL"), TRUE), A' + r + '), "")');
+    sheetPmr.getRange("B" + r).setFormula('=IFERROR(INDEX(SORT(FILTER($B$6:$B$19, $G$6:$G$19 = "LOLOS SEMIFINAL"), FILTER($H$6:$H$19, $G$6:$G$19 = "LOLOS SEMIFINAL"), TRUE), A' + r + '), "")');
     sheetPmr.getRange("C" + r).setFormula('=IFERROR(VLOOKUP(B' + r + ', $B$6:$C$19, 2, FALSE), "")');
     sheetPmr.getRange("D" + r).setFormula('=IF(COUNTIF(\'LIVE BEL WIRA\'!$C$8:$C$12, B' + r + ')>0, 1, IF(COUNTIF(\'LIVE BEL WIRA\'!$C$18:$C$22, B' + r + ')>0, 2, ""))');
     sheetPmr.getRange("E" + r).setFormula('=IF(B' + r + '="", "", SUM(IFERROR(FILTER(\'LIVE BEL WIRA\'!$U$8:$U$12, \'LIVE BEL WIRA\'!$C$8:$C$12 = B' + r + '), 0)) + SUM(IFERROR(FILTER(\'LIVE BEL WIRA\'!$U$18:$U$22, \'LIVE BEL WIRA\'!$C$18:$C$22 = B' + r + '), 0)))');
