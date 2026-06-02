@@ -2191,11 +2191,30 @@
               let rank = parseInt(rankRaw);
               if (isNaN(rank)) rank = 1;
               let grup = parseInt(grupRaw);
-
+              
               // Cari info undi dan rank penyisihan dari hasil penyisihan
               const penyisihanInfo = result.penyisihan.find(p => p.kode === kode);
               const undiStr = penyisihanInfo ? penyisihanInfo.undi : '';
               const penyisihanRank = penyisihanInfo ? penyisihanInfo.rank : 99;
+
+              // Fallback 100% foolproof jika kolom grup di spreadsheet kosong/eror (akibat bug tie-rank sheet)
+              if (isNaN(grup) || grup === 0) {
+                if (undiStr !== '') {
+                  const uNum = parseInt(undiStr);
+                  grup = (uNum >= 1 && uNum <= 5) ? 1 : 2;
+                } else {
+                  // Fallback ke urutan kelulusan 10 besar lolos semifinal
+                  const lolosList = result.penyisihan
+                    .filter(p => p.status === 'LOLOS SEMIFINAL')
+                    .sort((a, b) => a.rank - b.rank);
+                  const idxLolos = lolosList.findIndex(p => p.kode === kode);
+                  if (idxLolos !== -1) {
+                    grup = (idxLolos < 5) ? 1 : 2;
+                  } else {
+                    grup = 1;
+                  }
+                }
+              }
 
               const item = {
                 kode: kode,

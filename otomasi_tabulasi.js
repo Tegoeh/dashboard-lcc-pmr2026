@@ -128,7 +128,7 @@ function initMula() {
   // 1. Semifinal Kelompok 1 (Rows 8-12) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
   for (var r = 8; r <= 12; r++) {
     var rank = r - 7; // No. Undi 1 s.d 5
-    sheetLive.getRange("D" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR MULA\'!$B$6:$B$19, MATCH(' + rank + ', \'PMR MULA\'!$G$6:$G$19, 0)), INDEX(\'PMR MULA\'!$B$6:$B$19, MATCH(' + rank + ', \'PMR MULA\'!$E$6:$E$19, 0))), "")');
+    sheetLive.getRange("D" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR MULA\'!$B$6:$B$19, MATCH(' + rank + ', \'PMR MULA\'!$G$6:$G$19, 0)), INDEX(QUERY(\'PMR MULA\'!$B$6:$F$19, "select B where F = \'LOLOS SEMIFINAL\' order by E", 0), ' + rank + ')), "")');
     sheetLive.getRange("E" + r).setFormula('=IFERROR(VLOOKUP(D' + r + ', \'PMR MULA\'!$B$6:$C$19, 2, FALSE), "")');
     sheetLive.getRange("W" + r).setFormula('=IF(ISNUMBER(U' + r + '), RANK(U' + r + ', $U$8:$U$12), "")');
     sheetLive.getRange("Z" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
@@ -137,7 +137,7 @@ function initMula() {
   // 2. Semifinal Kelompok 2 (Rows 18-22) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
   for (var r = 18; r <= 22; r++) {
     var rank = r - 12; // No. Undi 6 s.d 10
-    sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR MULA\'!$B$6:$B$19, MATCH(' + rank + ', \'PMR MULA\'!$G$6:$G$19, 0)), INDEX(\'PMR MULA\'!$B$6:$B$19, MATCH(' + rank + ', \'PMR MULA\'!$E$6:$E$19, 0))), "")');
+    sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR MULA\'!$B$6:$B$19, MATCH(' + rank + ', \'PMR MULA\'!$G$6:$G$19, 0)), INDEX(QUERY(\'PMR MULA\'!$B$6:$F$19, "select B where F = \'LOLOS SEMIFINAL\' order by E", 0), ' + rank + ')), "")');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MULA\'!$B$6:$C$19, 2, FALSE), "")');
     sheetLive.getRange("W" + r).setFormula('=IF(ISNUMBER(U' + r + '), RANK(U' + r + ', $U$18:$U$22), "")');
     sheetLive.getRange("X" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
@@ -239,7 +239,7 @@ function initMadya() {
   // 1. Semifinal Kelompok 1 (Rows 8-12) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
   for (var r = 8; r <= 12; r++) {
     var rank = r - 7; // No. Undi 1 s.d 5
-    sheetLive.getRange("D" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR MADYA\'!$B$6:$B$23, MATCH(' + rank + ', \'PMR MADYA\'!$H$6:$H$23, 0)), INDEX(\'PMR MADYA\'!$B$6:$B$23, MATCH(' + rank + ', \'PMR MADYA\'!$F$6:$F$23, 0))), "")');
+    sheetLive.getRange("D" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR MADYA\'!$B$6:$B$23, MATCH(' + rank + ', \'PMR MADYA\'!$H$6:$H$23, 0)), INDEX(QUERY(\'PMR MADYA\'!$B$6:$G$23, "select B where G = \'LOLOS SEMIFINAL\' order by F", 0), ' + rank + ')), "")');
     sheetLive.getRange("E" + r).setFormula('=IFERROR(VLOOKUP(D' + r + ', \'PMR MADYA\'!$B$6:$C$23, 2, FALSE), "")');
     sheetLive.getRange("W" + r).setFormula('=IF(ISNUMBER(U' + r + '), RANK(U' + r + ', $U$8:$U$12), "")');
     sheetLive.getRange("Z" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
@@ -248,7 +248,7 @@ function initMadya() {
   // 2. Semifinal Kelompok 2 (Rows 18-22) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
   for (var r = 18; r <= 22; r++) {
     var rank = r - 12; // No. Undi 6 s.d 10
-    sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR MADYA\'!$B$6:$B$23, MATCH(' + rank + ', \'PMR MADYA\'!$H$6:$H$23, 0)), INDEX(\'PMR MADYA\'!$B$6:$B$23, MATCH(' + rank + ', \'PMR MADYA\'!$F$6:$F$23, 0))), "")');
+    sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR MADYA\'!$B$6:$B$23, MATCH(' + rank + ', \'PMR MADYA\'!$H$6:$H$23, 0)), INDEX(QUERY(\'PMR MADYA\'!$B$6:$G$23, "select B where G = \'LOLOS SEMIFINAL\' order by F", 0), ' + rank + ')), "")');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MADYA\'!$B$6:$C$23, 2, FALSE), "")');
     sheetLive.getRange("W" + r).setFormula('=IF(ISNUMBER(U' + r + '), RANK(U' + r + ', $U$18:$U$22), "")');
     sheetLive.getRange("X" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
@@ -349,7 +349,7 @@ function initWira() {
   // 1. Semifinal Kelompok 1 (Rows 8-12) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
   for (var r = 8; r <= 12; r++) {
     var rank = r - 7; // No. Undi 1 s.d 5
-    sheetLive.getRange("D" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR WIRA\'!$B$6:$B$19, MATCH(' + rank + ', \'PMR WIRA\'!$G$6:$G$19, 0)), INDEX(\'PMR WIRA\'!$B$6:$B$19, MATCH(LARGE(\'PMR WIRA\'!$E$6:$E$19, ' + rank + '), \'PMR WIRA\'!$E$6:$E$19, 0))), "")');
+    sheetLive.getRange("D" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR WIRA\'!$B$6:$B$19, MATCH(' + rank + ', \'PMR WIRA\'!$G$6:$G$19, 0)), INDEX(QUERY(\'PMR WIRA\'!$B$6:$F$19, "select B where F = \'LOLOS SEMIFINAL\' order by E", 0), ' + rank + ')), "")');
     sheetLive.getRange("E" + r).setFormula('=IFERROR(VLOOKUP(D' + r + ', \'PMR WIRA\'!$B$6:$C$19, 2, FALSE), "")');
     sheetLive.getRange("W" + r).setFormula('=IF(ISNUMBER(U' + r + '), RANK(U' + r + ', $U$8:$U$12), "")');
     sheetLive.getRange("Z" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
@@ -358,7 +358,7 @@ function initWira() {
   // 2. Semifinal Kelompok 2 (Rows 18-22) - Mengambil berdasarkan No. Undi SF (Fallback ke Rank Penyisihan)
   for (var r = 18; r <= 22; r++) {
     var rank = r - 12; // No. Undi 6 s.d 10
-    sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR WIRA\'!$B$6:$B$19, MATCH(' + rank + ', \'PMR WIRA\'!$G$6:$G$19, 0)), INDEX(\'PMR WIRA\'!$B$6:$B$19, MATCH(LARGE(\'PMR WIRA\'!$E$6:$E$19, ' + rank + '), \'PMR WIRA\'!$E$6:$E$19, 0))), "")');
+    sheetLive.getRange("C" + r).setFormula('=IFERROR(IFERROR(INDEX(\'PMR WIRA\'!$B$6:$B$19, MATCH(' + rank + ', \'PMR WIRA\'!$G$6:$G$19, 0)), INDEX(QUERY(\'PMR WIRA\'!$B$6:$F$19, "select B where F = \'LOLOS SEMIFINAL\' order by E", 0), ' + rank + ')), "")');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR WIRA\'!$B$6:$C$19, 2, FALSE), "")');
     sheetLive.getRange("W" + r).setFormula('=IF(ISNUMBER(U' + r + '), RANK(U' + r + ', $U$18:$U$22), "")');
     sheetLive.getRange("X" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
