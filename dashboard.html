@@ -2131,9 +2131,19 @@
         if (row && row.c) {
           const kode = row.c[1] && row.c[1].v ? row.c[1].v.toString().trim() : '';
           const nama = row.c[2] && row.c[2].v ? row.c[2].v.toString().trim() : '';
-          const totalRaw = row.c[3] ? row.c[3].v : 0;
-          const rankRaw = row.c[4] ? row.c[4].v : 1;
-          const status = row.c[5] && row.c[5].v ? row.c[5].v.toString().trim() : '';
+          let totalRaw = 0;
+          let rankRaw = 1;
+          let status = '';
+          
+          if (cat === 'mula') {
+            totalRaw = row.c[3] ? row.c[3].v : 0;
+            rankRaw = row.c[4] ? row.c[4].v : 1;
+            status = row.c[5] && row.c[5].v ? row.c[5].v.toString().trim() : '';
+          } else { // 'madya' & 'wira'
+            totalRaw = row.c[4] ? row.c[4].v : 0;
+            rankRaw = row.c[5] ? row.c[5].v : 1;
+            status = row.c[6] && row.c[6].v ? row.c[6].v.toString().trim() : '';
+          }
           
           // Ambil undian sesuai urutan kolom kategori (No. Undi Semifinal & No. Undi Final)
           let undiRaw = '';
@@ -2145,8 +2155,8 @@
             undiRaw = row.c[7] ? row.c[7].v : '';
             undiFinalRaw = row.c[8] ? row.c[8].v : '';
           } else if (cat === 'wira') {
-            undiRaw = row.c[6] ? row.c[6].v : '';
-            undiFinalRaw = row.c[7] ? row.c[7].v : '';
+            undiRaw = row.c[7] ? row.c[7].v : '';
+            undiFinalRaw = row.c[8] ? row.c[8].v : '';
           }
           const undi = undiRaw !== null && undiRaw !== undefined ? undiRaw.toString().trim() : '';
           const undiFinal = undiFinalRaw !== null && undiFinalRaw !== undefined ? undiFinalRaw.toString().trim() : '';
