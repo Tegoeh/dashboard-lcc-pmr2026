@@ -221,9 +221,9 @@ function initMadya() {
     sheetPmr.getRange("B" + r).setFormula('=IFERROR(INDEX(SORT(FILTER($B$6:$B$23, $G$6:$G$23 = "LOLOS SEMIFINAL"), FILTER($H$6:$H$23, $G$6:$G$23 = "LOLOS SEMIFINAL"), TRUE), A' + r + '), "")');
     sheetPmr.getRange("C" + r).setFormula('=IFERROR(VLOOKUP(B' + r + ', $B$6:$C$23, 2, FALSE), "")');
     sheetPmr.getRange("D" + r).setFormula('=IF(COUNTIF(\'LIVE BEL MADYA\'!$C$8:$C$12, B' + r + ')>0, 1, IF(COUNTIF(\'LIVE BEL MADYA\'!$C$18:$C$22, B' + r + ')>0, 2, ""))');
-    sheetPmr.getRange("E" + r).setFormula('=IF(B' + r + '="", "", SUM(IFERROR(FILTER(\'LIVE BEL MADYA\'!$U$8:$U$12, \'LIVE BEL MADYA\'!$C$8:$C$12 = B' + r + '), 0)) + SUM(IFERROR(FILTER(\'LIVE BEL MADYA\'!$U$18:$U$22, \'LIVE BEL MADYA\'!$C$18:$C$22 = B' + r + '), 0)))');
+    sheetPmr.getRange("E" + r).setFormula('=IF(B' + r + '="", "", SUM(IFERROR(FILTER(\'LIVE BEL MADYA\'!$W$8:$W$12, \'LIVE BEL MADYA\'!$C$8:$C$12 = B' + r + '), 0)) + SUM(IFERROR(FILTER(\'LIVE BEL MADYA\'!$W$18:$W$22, \'LIVE BEL MADYA\'!$C$18:$C$22 = B' + r + '), 0)))');
     sheetPmr.getRange("F" + r).setFormula('=IF(ISNUMBER(E' + r + '), RANK(E' + r + ', $E$28:$E$37), "")');
-    sheetPmr.getRange("G" + r).setFormula('=IF(F' + r + '="", "", IF(F' + r + '<=5, "LOLOS FINAL", ""))');
+    sheetPmr.getRange("G" + r).setFormula('=IF(IFERROR(VLOOKUP(B' + r + ', \'LIVE BEL MADYA\'!$C$8:$Z$22, 24, FALSE), "")="Lolos Final", IF(RANK(E' + r + ', FILTER($E$28:$E$37, IFERROR(VLOOKUP($B$28:$B$37, \'LIVE BEL MADYA\'!$C$8:$Z$22, 24, FALSE), "")="Lolos Final"))<=5, "LOLOS FINAL", ""), "")');
   }
   
   // 3. Babak Final (Rows 41-45)
@@ -263,11 +263,10 @@ function initMadya() {
     var rank = r - 7; // No. Undi SF 1 s.d 5
     sheetLive.getRange("C" + r).setFormula('=IFERROR(INDEX(FILTER(\'PMR MADYA\'!$B$6:$B$23, (\'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL") * (\'PMR MADYA\'!$H$6:$H$23 = ' + rank + ')), 1), IFERROR(INDEX(SORT(FILTER(\'PMR MADYA\'!$B$6:$B$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), FILTER(\'PMR MADYA\'!$F$6:$F$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), TRUE), ' + rank + '), ""))');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MADYA\'!$B$6:$C$23, 2, FALSE), "")');
-    sheetLive.getRange("U" + r).setFormula('=SUM(F' + r + ':T' + r + ')');
-    sheetLive.getRange("V" + r).setValue(0); // Reset tie break to static 0
-    sheetLive.getRange("W" + r).setFormula('=IF(ISNUMBER(U' + r + '), RANK(U' + r + ', $U$8:$U$12), "")');
-    sheetLive.getRange("X" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
-    sheetLive.getRange("Z" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
+    sheetLive.getRange("W" + r).setFormula('=SUM(F' + r + ':V' + r + ')');
+    sheetLive.getRange("X" + r).setValue(0); // Reset tie break to static 0
+    sheetLive.getRange("Y" + r).setFormula('=IF(ISNUMBER(W' + r + '), RANK(W' + r + ' + X' + r + '/1000, INDEX($W$8:$W$12 + $X$8:$X$12/1000, 0)), "")');
+    sheetLive.getRange("Z" + r).setFormula('=IF(Y' + r + '<=3, "Lolos Final", "-")');
   }
   
   // 2. Semifinal Kelompok 2 (Rows 18-22) - Mengambil berdasarkan No. Undi SF (Fallback ke Peringkat Penyisihan)
@@ -275,11 +274,10 @@ function initMadya() {
     var rank = r - 12; // No. Undi SF 6 s.d 10 (r=18 -> 6, r=22 -> 10)
     sheetLive.getRange("C" + r).setFormula('=IFERROR(INDEX(FILTER(\'PMR MADYA\'!$B$6:$B$23, (\'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL") * (\'PMR MADYA\'!$H$6:$H$23 = ' + rank + ')), 1), IFERROR(INDEX(SORT(FILTER(\'PMR MADYA\'!$B$6:$B$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), FILTER(\'PMR MADYA\'!$F$6:$F$23, \'PMR MADYA\'!$G$6:$G$23 = "LOLOS SEMIFINAL"), TRUE), ' + rank + '), ""))');
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MADYA\'!$B$6:$C$23, 2, FALSE), "")');
-    sheetLive.getRange("U" + r).setFormula('=SUM(F' + r + ':T' + r + ')');
-    sheetLive.getRange("V" + r).setValue(0); // Reset tie break to static 0
-    sheetLive.getRange("W" + r).setFormula('=IF(ISNUMBER(U' + r + '), RANK(U' + r + ', $U$18:$U$22), "")');
-    sheetLive.getRange("X" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
-    sheetLive.getRange("Z" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
+    sheetLive.getRange("W" + r).setFormula('=SUM(F' + r + ':V' + r + ')');
+    sheetLive.getRange("X" + r).setValue(0); // Reset tie break to static 0
+    sheetLive.getRange("Y" + r).setFormula('=IF(ISNUMBER(W' + r + '), RANK(W' + r + ' + X' + r + '/1000, INDEX($W$18:$W$22 + $X$18:$X$22/1000, 0)), "")');
+    sheetLive.getRange("Z" + r).setFormula('=IF(Y' + r + '<=3, "Lolos Final", "-")');
   }
   
   // 3. Final Kelompok (Rows 28-32) - Mengambil tim berstatus "LOLOS FINAL" di Semifinal PMR MADYA.
@@ -471,7 +469,7 @@ function initRekap() {
   sheet.getRange("C38").setFormula("='PMR MADYA'!B43");
   sheet.getRange("C39").setFormula("='PMR MADYA'!B44");
   sheet.getRange("C40").setFormula("='PMR MADYA'!B45");
-  sheet.getRange("C41").setFormula("=IFERROR(INDEX('PMR MADYA'!$B$28:$B$37, MATCH(6, 'PMR MADYA'!$F$28:$F$37, 0)), \"\")");
+  sheet.getRange("C41").setFormula('=IFERROR(INDEX(SORT(FILTER(\'PMR MADYA\'!$B$28:$B$37, \'PMR MADYA\'!$G$28:$G$37 <> "LOLOS FINAL"), FILTER(\'PMR MADYA\'!$E$28:$E$37, \'PMR MADYA\'!$G$28:$G$37 <> "LOLOS FINAL"), FALSE), 1), "")');
   
   for (var r = 36; r <= 41; r++) {
     sheet.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR MADYA\'!$B$6:$C$23, 2, FALSE), "")');
