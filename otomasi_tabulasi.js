@@ -244,13 +244,16 @@ function initMadya() {
   sheetLive.getRange("C18:D22").clearDataValidations().clearContent();
   sheetLive.getRange("C28:D32").clearDataValidations().clearContent();
   
-  // Bersihkan juga validasi data di kolom Rank & Status agar penulisan rumus tidak ditolak oleh Google Sheets
-  sheetLive.getRange("W8:W12").clearDataValidations();
-  sheetLive.getRange("X8:X12").clearDataValidations();
-  sheetLive.getRange("W18:W22").clearDataValidations();
-  sheetLive.getRange("X18:X22").clearDataValidations();
-  sheetLive.getRange("Z28:Z32").clearDataValidations();
-  sheetLive.getRange("AA28:AA32").clearDataValidations();
+  // Bersihkan juga validasi data di kolom TOTAL, Tie Break, Rank & Status agar penulisan rumus tidak ditolak oleh Google Sheets
+  sheetLive.getRange("W8:Z12").clearDataValidations();
+  sheetLive.getRange("W18:Z22").clearDataValidations();
+  sheetLive.getRange("Y28:AA32").clearDataValidations();
+  
+  // Tulis ulang header murni untuk menjamin baris 7 dan 17 tidak berisi formula salah
+  sheetLive.getRange("C7:E7").setValues([["Nama Regu", "Nama Sekolah", "Keterangan"]]);
+  sheetLive.getRange("W7:Z7").setValues([["TOTAL", "Tie Break", "Rank SF", "Status"]]);
+  sheetLive.getRange("C17:E17").setValues([["Nama Regu", "Nama Sekolah", "Keterangan"]]);
+  sheetLive.getRange("W17:Z17").setValues([["TOTAL", "Tie Break", "Rank SF", "Status"]]);
   
   // Set header kolom undian semifinal & final (Bisa diisi manual oleh panitia untuk mengacak grup)
   sheetPmr.getRange("H5").setValue("No. Undi SF");
@@ -366,13 +369,16 @@ function initWira() {
   sheetLive.getRange("C18:D22").clearDataValidations().clearContent();
   sheetLive.getRange("C28:D32").clearDataValidations().clearContent();
   
-  // Bersihkan juga validasi data di kolom Rank & Status agar penulisan rumus tidak ditolak oleh Google Sheets
-  sheetLive.getRange("W8:W12").clearDataValidations();
-  sheetLive.getRange("X8:X12").clearDataValidations();
-  sheetLive.getRange("W18:W22").clearDataValidations();
-  sheetLive.getRange("X18:X22").clearDataValidations();
-  sheetLive.getRange("Z28:Z32").clearDataValidations();
-  sheetLive.getRange("AA28:AA32").clearDataValidations();
+  // Bersihkan juga validasi data di kolom TOTAL, Tie Break, Rank & Status agar penulisan rumus tidak ditolak oleh Google Sheets
+  sheetLive.getRange("U8:X12").clearDataValidations();
+  sheetLive.getRange("U18:X22").clearDataValidations();
+  sheetLive.getRange("Y28:AA32").clearDataValidations();
+  
+  // Tulis ulang header murni untuk menjamin baris 7 dan 17 tidak berisi formula salah
+  sheetLive.getRange("C7:E7").setValues([["Nama Regu", "Nama Sekolah", "Keterangan"]]);
+  sheetLive.getRange("U7:X7").setValues([["TOTAL", "Tie Break", "Rank SF", "Status"]]);
+  sheetLive.getRange("C17:E17").setValues([["Nama Regu", "Nama Sekolah", "Keterangan"]]);
+  sheetLive.getRange("U17:X17").setValues([["TOTAL", "Tie Break", "Rank SF", "Status"]]);
   
   // Set header kolom undian semifinal & final (Bisa diisi manual oleh panitia untuk mengacak grup)
   sheetPmr.getRange("H5").setValue("No. Undi SF");
@@ -389,7 +395,6 @@ function initWira() {
     sheetLive.getRange("V" + r).setValue(0); // Reset tie break to static 0
     sheetLive.getRange("W" + r).setFormula('=IF(ISNUMBER(U' + r + '), RANK(U' + r + ' + V' + r + '/1000, INDEX($U$8:$U$12 + $V$8:$V$12/1000, 0)), "")');
     sheetLive.getRange("X" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
-    sheetLive.getRange("Z" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
   }
   
   // 2. Semifinal Kelompok 2 (Rows 18-22) - Mengambil berdasarkan No. Undi SF (Fallback ke Peringkat Penyisihan)
@@ -401,7 +406,6 @@ function initWira() {
     sheetLive.getRange("V" + r).setValue(0); // Reset tie break to static 0
     sheetLive.getRange("W" + r).setFormula('=IF(ISNUMBER(U' + r + '), RANK(U' + r + ' + V' + r + '/1000, INDEX($U$18:$U$22 + $V$18:$V$22/1000, 0)), "")');
     sheetLive.getRange("X" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
-    sheetLive.getRange("Z" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
   }
   
   // 3. Final Kelompok (Rows 28-32) - Mengambil 5 tim yang berstatus "LOLOS FINAL" di Semifinal PMR WIRA
