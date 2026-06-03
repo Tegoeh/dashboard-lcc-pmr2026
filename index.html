@@ -1252,6 +1252,9 @@
       <button class="tab-trigger" onclick="changeRound('semifinal2')" style="flex: 1; justify-content: center;">
         <i class="fa-solid fa-sitemap"></i> Semi Final II
       </button>
+      <button class="tab-trigger" onclick="changeRound('semifinal3')" style="flex: 1; justify-content: center;">
+        <i class="fa-solid fa-fire" style="color: var(--neon-pink);"></i> SF Tie-Break
+      </button>
       <button class="tab-trigger" onclick="changeRound('final')" style="flex: 1; justify-content: center;">
         <i class="fa-solid fa-fire-flame-curved"></i> Babak Final
       </button>
@@ -1661,7 +1664,7 @@
     // DATA SORT & CLASSIFY ENGINE
     // ==========================================
     function reorderCategory(cat) {
-      const rounds = ['penyisihan', 'semifinal1', 'semifinal2', 'final', 'ranking_akhir'];
+      const rounds = ['penyisihan', 'semifinal1', 'semifinal2', 'semifinal3', 'final', 'ranking_akhir'];
       rounds.forEach(round => {
         if (liveScoreboardData[cat] && liveScoreboardData[cat][round]) {
           liveScoreboardData[cat][round].sort((a, b) => b.total - a.total);
@@ -1704,7 +1707,7 @@
       const roundTriggers = document.querySelectorAll('#roundNavGroup .tab-trigger');
       roundTriggers.forEach(btn => btn.classList.remove('active'));
       
-      const idx = ['penyisihan', 'semifinal1', 'semifinal2', 'final', 'ranking_akhir'].indexOf(round);
+      const idx = ['penyisihan', 'semifinal1', 'semifinal2', 'semifinal3', 'final', 'ranking_akhir'].indexOf(round);
       if (idx !== -1) {
         roundTriggers[idx].classList.add('active');
       }
@@ -2028,6 +2031,7 @@
       if (activeRound === 'penyisihan') subLabel = 'Penyisihan - 10 Besar Terbaik';
       else if (activeRound === 'semifinal1') subLabel = 'Semi Final Grup I';
       else if (activeRound === 'semifinal2') subLabel = 'Semi Final Grup II';
+      else if (activeRound === 'semifinal3') subLabel = 'Semi Final Tie-Break';
       else if (activeRound === 'final') subLabel = 'Live Final - Skor Real-Time';
       else if (activeRound === 'ranking_akhir') subLabel = 'Hasil Juara & Peringkat Akhir';
 
