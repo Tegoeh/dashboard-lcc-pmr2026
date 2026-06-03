@@ -206,6 +206,10 @@ function initMadya() {
   sheetPmr.getRange("B28:H37").clearContent();
   sheetPmr.getRange("B41:F45").clearContent();
   
+  // Tulis ulang header murni PMR MADYA
+  sheetPmr.getRange("B26:G26").setValues([["KODE REGU", "NAMA SEKOLAH", "NO. KELOMPOK", "NILAI AKHIR", "RANK", "STATUS"]]);
+  sheetPmr.getRange("B40:F40").setValues([["KODE REGU", "NAMA SEKOLAH", "NILAI AKHIR", "RANK", "STATUS JUARA"]]);
+  
   // ==========================================
   // A. FORMULA DI SHEET PMR MADYA
   // ==========================================
@@ -239,9 +243,9 @@ function initMadya() {
   // B. FORMULA DI SHEET LIVE BEL MADYA
   // ==========================================
   
-  // Proaktif bersihkan Data Validation & Konten di Kolom C & D (Kelompok 1, Kelompok 2 & Final) agar bebas dari error
-  sheetLive.getRange("C8:D12").clearDataValidations().clearContent();
-  sheetLive.getRange("C18:D22").clearDataValidations().clearContent();
+  // Proaktif bersihkan Data Validation & Konten di Kolom C s.d E (Kelompok 1, Kelompok 2 & Final) agar bebas dari error
+  sheetLive.getRange("C8:E12").clearDataValidations().clearContent();
+  sheetLive.getRange("C18:E22").clearDataValidations().clearContent();
   sheetLive.getRange("C28:D32").clearDataValidations().clearContent();
   
   // Bersihkan juga validasi data di kolom TOTAL, Tie Break, Rank & Status agar penulisan rumus tidak ditolak oleh Google Sheets
@@ -331,6 +335,11 @@ function initWira() {
   sheetPmr.getRange("B24:H33").clearContent();
   sheetPmr.getRange("B37:F41").clearContent();
   
+  // Tulis ulang header murni PMR WIRA dan hapus tumpukan di baris 22
+  sheetPmr.getRange("B22:G22").clearContent(); // Bersihkan baris tumpukan
+  sheetPmr.getRange("B23:G23").setValues([["KODE REGU", "NAMA SEKOLAH", "NO. KELOMPOK", "NILAI AKHIR", "RANK", "STATUS"]]);
+  sheetPmr.getRange("B36:F36").setValues([["KODE REGU", "NAMA SEKOLAH", "TOTAL SKOR", "RANK", "STATUS JUARA"]]);
+  
   // ==========================================
   // A. FORMULA DI SHEET PMR WIRA
   // ==========================================
@@ -364,9 +373,9 @@ function initWira() {
   // B. FORMULA DI SHEET LIVE BEL WIRA
   // ==========================================
   
-  // Proaktif bersihkan Data Validation & Konten di Kolom C & D (Kelompok 1, Kelompok 2 & Final) agar bebas dari error
-  sheetLive.getRange("C8:D12").clearDataValidations().clearContent();
-  sheetLive.getRange("C18:D22").clearDataValidations().clearContent();
+  // Proaktif bersihkan Data Validation & Konten di Kolom C s.d E (Kelompok 1, Kelompok 2 & Final) agar bebas dari error
+  sheetLive.getRange("C8:E12").clearDataValidations().clearContent();
+  sheetLive.getRange("C18:E22").clearDataValidations().clearContent();
   sheetLive.getRange("C28:D32").clearDataValidations().clearContent();
   
   // Bersihkan juga validasi data di kolom TOTAL, Tie Break, Rank & Status agar penulisan rumus tidak ditolak oleh Google Sheets
