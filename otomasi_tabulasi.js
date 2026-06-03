@@ -223,7 +223,7 @@ function initMadya() {
     sheetPmr.getRange("D" + r).setFormula('=IF(COUNTIF(\'LIVE BEL MADYA\'!$C$8:$C$12, B' + r + ')>0, 1, IF(COUNTIF(\'LIVE BEL MADYA\'!$C$18:$C$22, B' + r + ')>0, 2, ""))');
     sheetPmr.getRange("E" + r).setFormula('=IF(B' + r + '="", "", SUM(IFERROR(FILTER(\'LIVE BEL MADYA\'!$W$8:$W$12, \'LIVE BEL MADYA\'!$C$8:$C$12 = B' + r + '), 0)) + SUM(IFERROR(FILTER(\'LIVE BEL MADYA\'!$W$18:$W$22, \'LIVE BEL MADYA\'!$C$18:$C$22 = B' + r + '), 0)))');
     sheetPmr.getRange("F" + r).setFormula('=IF(ISNUMBER(E' + r + '), RANK(E' + r + ', $E$28:$E$37), "")');
-    sheetPmr.getRange("G" + r).setFormula('=IF(IFERROR(VLOOKUP(B' + r + ', \'LIVE BEL MADYA\'!$C$8:$Z$22, 24, FALSE), "")="Lolos Final", IF(RANK(E' + r + ', FILTER($E$28:$E$37, IFERROR(VLOOKUP($B$28:$B$37, \'LIVE BEL MADYA\'!$C$8:$Z$22, 24, FALSE), "")="Lolos Final"))<=5, "LOLOS FINAL", ""), "")');
+    sheetPmr.getRange("G" + r).setFormula('=IF(IFERROR(VLOOKUP(B' + r + ', \'LIVE BEL MADYA\'!$C$8:$Z$22, 24, FALSE), "")="Lolos Final", IF(IFERROR(RANK(E' + r + ', FILTER($E$28:$E$37, IFERROR(VLOOKUP($B$28:$B$37, \'LIVE BEL MADYA\'!$C$8:$Z$22, 24, FALSE), "")="Lolos Final")), 99)<=5, "LOLOS FINAL", ""), "")');
   }
   
   // 3. Babak Final (Rows 41-45)
@@ -345,7 +345,7 @@ function initWira() {
     sheetPmr.getRange("D" + r).setFormula('=IF(COUNTIF(\'LIVE BEL WIRA\'!$C$8:$C$12, B' + r + ')>0, 1, IF(COUNTIF(\'LIVE BEL WIRA\'!$C$18:$C$22, B' + r + ')>0, 2, ""))');
     sheetPmr.getRange("E" + r).setFormula('=IF(B' + r + '="", "", SUM(IFERROR(FILTER(\'LIVE BEL WIRA\'!$U$8:$U$12, \'LIVE BEL WIRA\'!$C$8:$C$12 = B' + r + '), 0)) + SUM(IFERROR(FILTER(\'LIVE BEL WIRA\'!$U$18:$U$22, \'LIVE BEL WIRA\'!$C$18:$C$22 = B' + r + '), 0)))');
     sheetPmr.getRange("F" + r).setFormula('=IF(ISNUMBER(E' + r + '), RANK(E' + r + ', $E$24:$E$33), "")');
-    sheetPmr.getRange("G" + r).setFormula('=IF(F' + r + '="", "", IF(F' + r + '<=5, "LOLOS FINAL", ""))');
+    sheetPmr.getRange("G" + r).setFormula('=IF(IFERROR(VLOOKUP(B' + r + ', \'LIVE BEL WIRA\'!$C$8:$X$22, 22, FALSE), "")="Lolos Final", IF(IFERROR(RANK(E' + r + ', FILTER($E$24:$E$33, IFERROR(VLOOKUP($B$24:$B$33, \'LIVE BEL WIRA\'!$C$8:$X$22, 22, FALSE), "")="Lolos Final")), 99)<=5, "LOLOS FINAL", ""), "")');
   }
   
   // 3. Babak Final (Rows 37-41)
@@ -387,7 +387,7 @@ function initWira() {
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR WIRA\'!$B$6:$C$19, 2, FALSE), "")');
     sheetLive.getRange("U" + r).setFormula('=SUM(F' + r + ':T' + r + ')');
     sheetLive.getRange("V" + r).setValue(0); // Reset tie break to static 0
-    sheetLive.getRange("W" + r).setFormula('=IF(ISNUMBER(U' + r + '), RANK(U' + r + ', $U$8:$U$12), "")');
+    sheetLive.getRange("W" + r).setFormula('=IF(ISNUMBER(U' + r + '), RANK(U' + r + ' + V' + r + '/1000, INDEX($U$8:$U$12 + $V$8:$V$12/1000, 0)), "")');
     sheetLive.getRange("X" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
     sheetLive.getRange("Z" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
   }
@@ -399,7 +399,7 @@ function initWira() {
     sheetLive.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR WIRA\'!$B$6:$C$19, 2, FALSE), "")');
     sheetLive.getRange("U" + r).setFormula('=SUM(F' + r + ':T' + r + ')');
     sheetLive.getRange("V" + r).setValue(0); // Reset tie break to static 0
-    sheetLive.getRange("W" + r).setFormula('=IF(ISNUMBER(U' + r + '), RANK(U' + r + ', $U$18:$U$22), "")');
+    sheetLive.getRange("W" + r).setFormula('=IF(ISNUMBER(U' + r + '), RANK(U' + r + ' + V' + r + '/1000, INDEX($U$18:$U$22 + $V$18:$V$22/1000, 0)), "")');
     sheetLive.getRange("X" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
     sheetLive.getRange("Z" + r).setFormula('=IF(W' + r + '<=3, "Lolos Final", "-")');
   }
@@ -492,7 +492,7 @@ function initRekap() {
   sheet.getRange("C71").setFormula("='PMR WIRA'!B39");
   sheet.getRange("C72").setFormula("='PMR WIRA'!B40");
   sheet.getRange("C73").setFormula("='PMR WIRA'!B41");
-  sheet.getRange("C74").setFormula("=IFERROR(INDEX('PMR WIRA'!$B$24:$B$33, MATCH(6, 'PMR WIRA'!$F$24:$F$33, 0)), \"\")");
+  sheet.getRange("C74").setFormula('=IFERROR(INDEX(SORT(FILTER(\'PMR WIRA\'!$B$24:$B$33, \'PMR WIRA\'!$G$24:$G$33 <> "LOLOS FINAL"), FILTER(\'PMR WIRA\'!$E$24:$E$33, \'PMR WIRA\'!$G$24:$G$33 <> "LOLOS FINAL"), FALSE), 1), "")');
   
   for (var r = 69; r <= 74; r++) {
     sheet.getRange("D" + r).setFormula('=IFERROR(VLOOKUP(C' + r + ', \'PMR WIRA\'!$B$6:$C$19, 2, FALSE), "")');
