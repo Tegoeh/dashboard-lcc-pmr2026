@@ -2115,20 +2115,31 @@
       if (!table || !table.rows) return result;
       const rows = table.rows;
 
-      let idxLolos = -1; // Indeks baris "Nama Sekolah (Lolos)"
-      let idxFinal = -1; // Indeks baris "Nama Sekolah (Final)"
-
+      // Cari baris-baris header tabel di tengah sheet secara dinamis
+      const headerIndices = [];
       for (let i = 0; i < rows.length; i++) {
         const row = rows[i];
-        if (row && row.c && row.c[2] && row.c[2].v) {
-          const valStr = row.c[2].v.toString();
-          if (valStr.includes("Nama Sekolah (Lolos)")) {
-            idxLolos = i;
-          } else if (valStr.includes("Nama Sekolah (Final)")) {
-            idxFinal = i;
+        if (row && row.c && row.c[1] && row.c[1].v) {
+          const valB = row.c[1].v.toString().trim().toUpperCase();
+          if (valB === "KODE" || valB === "KODE REGU") {
+            headerIndices.push(i);
           }
         }
       }
+
+      // Saring header berurutan (ambil yang paling bawah jika berdampingan)
+      const cleanHeaderIndices = [];
+      for (let i = 0; i < headerIndices.length; i++) {
+        const current = headerIndices[i];
+        const next = headerIndices[i + 1];
+        if (next === current + 1) {
+          continue;
+        }
+        cleanHeaderIndices.push(current);
+      }
+
+      const idxLolos = cleanHeaderIndices.length > 0 ? cleanHeaderIndices[0] : -1;
+      const idxFinal = cleanHeaderIndices.length > 1 ? cleanHeaderIndices[1] : -1;
 
       // A. BABAK PENYISIHAN (Baris 0 sampai sebelum idxLolos)
       const endPenyisihan = idxLolos !== -1 ? idxLolos : rows.length;
