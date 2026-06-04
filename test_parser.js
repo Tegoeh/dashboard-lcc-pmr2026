@@ -157,6 +157,25 @@ function parseAllRoundsFromTable(table, cat) {
             result.semifinal2.push(item);
           } else if (grup === 3) {
             result.semifinal3.push(item);
+            // Kembalikan juga ke grup aslinya agar tidak hilang dari semifinal1 / semifinal2
+            let originalGrup = 1;
+            if (undiStr !== '') {
+              const uNum = parseInt(undiStr);
+              originalGrup = (uNum >= 1 && uNum <= 5) ? 1 : 2;
+            } else {
+              const lolosList = result.penyisihan
+                .filter(p => p.status === 'LOLOS SEMIFINAL')
+                .sort((a, b) => a.rank - b.rank);
+              const idxLolos = lolosList.findIndex(p => p.kode === kode);
+              if (idxLolos !== -1) {
+                originalGrup = (idxLolos < 5) ? 1 : 2;
+              }
+            }
+            if (originalGrup === 1) {
+              result.semifinal1.push({...item});
+            } else {
+              result.semifinal2.push({...item});
+            }
           }
         }
       }
