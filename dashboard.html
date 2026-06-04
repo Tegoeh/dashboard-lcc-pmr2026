@@ -1546,6 +1546,7 @@
           { kode: 'MU01', nama: 'SD NEGERI PANGYANGAN', total: 100, rank: 2, status: '' },
           { kode: 'MU05', nama: 'SD NEGERI 3 LELATENG', total: 100, rank: 2, status: '' }
         ],
+        semifinal3: [],
         final: [
           { kode: 'MU12', nama: 'SD NEGERI 1 MENDOYO DAUH TUKAD', total: 950, rank: 1, status: 'FINALIS' },
           { kode: 'MU07', nama: 'SD NEGERI 3 BERANGBANG', total: 900, rank: 2, status: 'FINALIS' },
@@ -1583,6 +1584,7 @@
           { kode: 'MA05', nama: 'SMP NEGERI 3 BALUK', total: 600, rank: 1, status: 'LOLOS FINAL' },
           { kode: 'MA12', nama: 'SMP SDK MARSUDIRINI', total: 300, rank: 2, status: 'LOLOS FINAL' }
         ],
+        semifinal3: [],
         final: [
           { kode: 'MA09', nama: 'SMP NEGERI 2 MENDOYO', total: 800, rank: 1, status: 'FINALIS' },
           { kode: 'MA05', nama: 'SMP NEGERI 3 BALUK', total: 750, rank: 2, status: 'FINALIS' },
@@ -1618,6 +1620,7 @@
           { kode: 'WI08', nama: 'SMA NEGERI 2 NEGARA', total: 700, rank: 1, status: 'LOLOS FINAL' },
           { kode: 'WI11', nama: 'SMK NEGERI 1 NEGARA', total: 400, rank: 2, status: 'LOLOS FINAL' }
         ],
+        semifinal3: [],
         final: [
           { kode: 'WI08', nama: 'SMA NEGERI 2 NEGARA', total: 850, rank: 1, status: 'FINALIS' },
           { kode: 'WI05', nama: 'SMA NEGERI 1 NEGARA', total: 800, rank: 2, status: 'FINALIS' },
@@ -2106,6 +2109,7 @@
         penyisihan: [],
         semifinal1: [],
         semifinal2: [],
+        semifinal3: [],
         final: [],
         ranking_akhir: []
       };
@@ -2253,6 +2257,8 @@
                 result.semifinal1.push(item);
               } else if (grup === 2) {
                 result.semifinal2.push(item);
+              } else if (grup === 3) {
+                result.semifinal3.push(item);
               }
             }
           }
@@ -2339,6 +2345,7 @@
       result.penyisihan.sort((a, b) => b.total - a.total);
       result.semifinal1.sort(sortSemifinal);
       result.semifinal2.sort(sortSemifinal);
+      result.semifinal3.sort(sortSemifinal);
       result.final.sort(sortFinal);
       result.ranking_akhir.sort(sortFinal);
 
@@ -2347,6 +2354,7 @@
       applyRank(result.penyisihan);
       applyRank(result.semifinal1);
       applyRank(result.semifinal2);
+      applyRank(result.semifinal3);
       applyRank(result.final);
       applyRank(result.ranking_akhir);
 

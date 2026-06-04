@@ -224,7 +224,7 @@ function initMadya() {
   for (var r = 28; r <= 37; r++) {
     sheetPmr.getRange("B" + r).setFormula('=IFERROR(INDEX(SORT(FILTER($B$6:$B$23, $G$6:$G$23 = "LOLOS SEMIFINAL"), FILTER($H$6:$H$23, $G$6:$G$23 = "LOLOS SEMIFINAL"), TRUE), A' + r + '), "")');
     sheetPmr.getRange("C" + r).setFormula('=IFERROR(VLOOKUP(B' + r + ', $B$6:$C$23, 2, FALSE), "")');
-    sheetPmr.getRange("D" + r).setFormula('=IF(COUNTIF(\'LIVE BEL MADYA\'!$C$8:$C$12, B' + r + ')>0, 1, IF(COUNTIF(\'LIVE BEL MADYA\'!$C$18:$C$22, B' + r + ')>0, 2, IF(COUNTIF(\'LIVE BEL MADYA\'!$C$28:$C$32, B' + r + ')>0, 3, "")))');
+    sheetPmr.getRange("D" + r).setFormula('=IF(COUNTIF(\'LIVE BEL MADYA\'!$C$28:$C$32, B' + r + ')>0, 3, IF(COUNTIF(\'LIVE BEL MADYA\'!$C$8:$C$12, B' + r + ')>0, 1, IF(COUNTIF(\'LIVE BEL MADYA\'!$C$18:$C$22, B' + r + ')>0, 2, "")))');
     // J: Skor SF 1&2 Murni untuk memutus Circular Dependency
     sheetPmr.getRange("J" + r).setFormula('=IF(B' + r + '="", "", SUM(IFERROR(FILTER(\'LIVE BEL MADYA\'!$W$8:$W$12, \'LIVE BEL MADYA\'!$C$8:$C$12 = B' + r + '), 0)) + SUM(IFERROR(FILTER(\'LIVE BEL MADYA\'!$W$18:$W$22, \'LIVE BEL MADYA\'!$C$18:$C$22 = B' + r + '), 0)))');
     // E: Nilai Akhir Semifinal (Skor SF 1&2 + (Skor SF 3 + Tie Break)/1000)
@@ -380,7 +380,7 @@ function initWira() {
   for (var r = 24; r <= 33; r++) {
     sheetPmr.getRange("B" + r).setFormula('=IFERROR(INDEX(SORT(FILTER($B$6:$B$19, $G$6:$G$19 = "LOLOS SEMIFINAL"), FILTER($H$6:$H$19, $G$6:$G$19 = "LOLOS SEMIFINAL"), TRUE), A' + r + '), "")');
     sheetPmr.getRange("C" + r).setFormula('=IFERROR(VLOOKUP(B' + r + ', $B$6:$C$19, 2, FALSE), "")');
-    sheetPmr.getRange("D" + r).setFormula('=IF(COUNTIF(\'LIVE BEL WIRA\'!$C$8:$C$12, B' + r + ')>0, 1, IF(COUNTIF(\'LIVE BEL WIRA\'!$C$18:$C$22, B' + r + ')>0, 2, IF(COUNTIF(\'LIVE BEL WIRA\'!$C$28:$C$32, B' + r + ')>0, 3, "")))');
+    sheetPmr.getRange("D" + r).setFormula('=IF(COUNTIF(\'LIVE BEL WIRA\'!$C$28:$C$32, B' + r + ')>0, 3, IF(COUNTIF(\'LIVE BEL WIRA\'!$C$8:$C$12, B' + r + ')>0, 1, IF(COUNTIF(\'LIVE BEL WIRA\'!$C$18:$C$22, B' + r + ')>0, 2, "")))');
     // J: Skor SF 1&2 Murni untuk memutus Circular Dependency
     sheetPmr.getRange("J" + r).setFormula('=IF(B' + r + '="", "", SUM(IFERROR(FILTER(\'LIVE BEL WIRA\'!$U$8:$U$12, \'LIVE BEL WIRA\'!$C$8:$C$12 = B' + r + '), 0)) + SUM(IFERROR(FILTER(\'LIVE BEL WIRA\'!$U$18:$U$22, \'LIVE BEL WIRA\'!$C$18:$C$22 = B' + r + '), 0)))');
     // E: Nilai Akhir Semifinal (Skor SF 1&2 + (Skor SF 3 + Tie Break)/1000)
