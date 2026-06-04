@@ -81,4 +81,38 @@ Untuk memastikan jalannya lomba PMR MADYA & WIRA besok bebas dari hambatan, moho
 2. **Pengisian Nomor Undian Semifinal:**
    * Pengisian nomor undian 10 besar babak penyisihan **wajib** diisi langsung secara manual di spreadsheet utama pada **Kolom H (`No. Undi SF`)** sheet `PMR MADYA`/`PMR WIRA`. Jangan memasukkan nomor undian dari website.
 3. **Sterilisasi Skor (Reset 0):**
-   * Pastikan semua kolom skor rebutan semifinal (`F8:T12`, `F18:T22`) dan jawaban final (`E28:X32`) di sheet `LIVE BEL MADYA` sudah kosong atau bernilai `0` agar Live Dashboard dimulai dari skor awal 0 secara steril.
+    * Pastikan semua kolom skor rebutan semifinal (`F8:T12`, `F18:T22`) dan jawaban final (`E28:X32`) di sheet `LIVE BEL MADYA` sudah kosong atau bernilai `0` agar Live Dashboard dimulai dari skor awal 0 secara steril.
+
+---
+
+## 🚀 4. Pembaruan Lanjutan Sesi Lomba (4 Juni 2026)
+
+Pada hari pelaksanaan lomba (4 Juni 2026), dilakukan serangkaian perbaikan penting untuk menjamin kestabilan visualisasi data pada saat babak semifinal Tie-Break dan babak final berlangsung:
+
+### A. Perbaikan Klasemen Semifinal & Lolos Final
+* **Masalah**: Peserta peringkat 5 (`WA03` - SMA Negeri 2 Jembrana) tidak masuk ke daftar Finalis meskipun secara akumulasi nilai menempati Peringkat 5 Semifinal.
+* **Penyebab**: Rumus kolom G (`Status`) di sheet `PMR WIRA` dan `PMR MADYA` sebelumnya mem-filter kelulusan berdasarkan VLOOKUP status `"Lolos Final"` per kelompok di sheet `LIVE BEL`. Karena `WA03` kalah *tie-break* di kelompoknya, status kelompoknya bernilai `"-"` sehingga ia terblokir meskipun secara keseluruhan (global) ia berada di peringkat 5.
+* **Solusi**: Memperbarui rumus kolom G di sheet `PMR WIRA` (G24:G33) dan `PMR MADYA` (G28:G37) menjadi formula sederhana dan dinamis: `=IF(F[row]="", "", IF(F[row]<=5, "LOLOS FINAL", ""))`.
+
+### B. Sinkronisasi Babak Semifinal 3 (Tie-Break) di Web Dashboard
+* **Masalah**: Panggung Semifinal 3 (Tie-Break) di Google Sheets sebelumnya tidak terdeteksi oleh web dashboard.
+* **Solusi**: Memperbarui parser JavaScript `parseAllRoundsFromTable` di [index.html](file:///home/tegoeh/tabulasi-lcc-pmr/index.html) dan [dashboard.html](file:///home/tegoeh/tabulasi-lcc-pmr/dashboard.html) agar mendeteksi `grup === 3`, mem-sorting nilainya, dan menyajikannya di tab **Semi Final Tie-Break**.
+
+### C. Solusi Regu Hilang dari Kelompok Asal saat Masuk Tie-Break
+* **Masalah**: Saat regu masuk ke panggung Tie-Break, status kelompoknya di Google Sheets berubah menjadi `3`, sehingga mereka hilang dari daftar grup aslinya (Semifinal 1 & 2) di website.
+* **Solusi**: Memperbarui logika parser web agar regu dengan `grup === 3` dimasukkan ke tab Tie-Break (`semifinal3`) sekaligus dimasukkan kembali ke grup aslinya (`semifinal1` atau `semifinal2`) berdasarkan nomor undian awalnya.
+
+### D. Pemisahan Skor Panggung Tie-Break
+* **Masalah**: Skor di tab Tie-Break pada website menampilkan skor akumulasi semifinal 1/2 (misal 200 atau 400) bukannya skor Tie-Break murni (seperti 0, 100, 200).
+* **Solusi**: Memperbarui logika parser untuk membaca kolom J (`Skor Murni SF 1&2`) dan menghitung nilai Tie-Break murni secara mandiri dengan rumus `Math.round((total - murni) * 1000)`.
+
+### E. Format Desimal Kolom E (Google Sheets)
+* **Masalah**: Angka koma penambah nilai Tie-Break (seperti `.1` atau `.2` dari pembagian skor /1000) tidak terlihat visual di Google Sheets karena format bawaan diset bulat.
+* **Solusi**: Memformat kolom E (`Nilai Akhir`) di sheet `PMR WIRA` & `PMR MADYA` menjadi format desimal `0.0` secara terprogram.
+
+### F. Pembersihan Visual Nomor Undian Babak Final
+* **Masalah**: Terdapat lencana nomor undian tiket di babak Final yang membingungkan panitia karena undian hanya ada di semifinal.
+* **Solusi**: Menghapus visualisasi lencana undian untuk babak final di [dashboard.html](file:///home/tegoeh/tabulasi-lcc-pmr/dashboard.html) dan [index.html](file:///home/tegoeh/tabulasi-lcc-pmr/index.html).
+
+### G. Panduan Penentuan Peserta Tie-Break Manual
+* Operator dapat langsung **mengetik manual** kode sekolah (misal: `WA03` atau `WA11`) pada kolom **C (`Nama Regu` / `Kode`)** mulai dari baris **28 s.d 32** pada sheet **`LIVE BEL WIRA`** (atau **`LIVE BEL MADYA`**). Seluruh data visual dan penghitungan skor otomatis akan tetap bekerja normal membaca kode ketikan manual tersebut. Rumus otomatis dapat dikembalikan pasca lomba dengan mengeklik menu **"Inisialisasi Rumus PMR WIRA"** pada toolbar Google Sheets.
