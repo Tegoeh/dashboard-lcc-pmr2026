@@ -1846,18 +1846,6 @@
                      </span>`;
             }
           }
-        } else if (activeRound === 'final') {
-          if (item.undiFinal !== undefined) {
-            if (item.undiFinal !== '') {
-              undiBadgeHTML = `<span class="lock-badge" style="background: rgba(0, 240, 255, 0.12); border-color: rgba(0, 240, 255, 0.25); color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue-glow); margin-left:0.5rem; cursor:pointer;" onclick="event.stopPropagation(); editSchoolUndi('${cat}', '${item.kode}', '${item.nama}', '${item.undiFinal}', 'final')" title="Klik untuk edit No. Undian Final">
-                   <i class="fa-solid fa-ticket"></i> Undi: ${item.undiFinal}
-                 </span>`;
-            } else {
-              undiBadgeHTML = `<span class="lock-badge" style="background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.25); color: var(--neon-gold); box-shadow: 0 0 8px var(--neon-gold-glow); margin-left:0.5rem; cursor:pointer;" onclick="event.stopPropagation(); editSchoolUndi('${cat}', '${item.kode}', '${item.nama}', '', 'final')" title="Klik untuk set No. Undian Final">
-                       <i class="fa-solid fa-ticket"></i> Belum Diundi
-                     </span>`;
-            }
-          }
         }
 
         const nameHTML = isNameVisible
@@ -2217,6 +2205,8 @@
             if (kode && kode !== '' && kode !== 'Kode') {
               let total = parseFloat(totalRaw);
               if (isNaN(total)) total = 0;
+              const murniVal = row.c[9] ? parseFloat(row.c[9].v) : total;
+              let murni = isNaN(murniVal) ? total : murniVal;
               let rank = parseInt(rankRaw);
               if (isNaN(rank)) rank = 1;
               let grup = parseInt(grupRaw);
@@ -2248,7 +2238,7 @@
               const item = {
                 kode: kode,
                 nama: nama,
-                total: total,
+                total: murni,
                 rank: rank,
                 status: status,
                 undi: undiStr,
@@ -2260,7 +2250,12 @@
               } else if (grup === 2) {
                 result.semifinal2.push(item);
               } else if (grup === 3) {
-                result.semifinal3.push(item);
+                const tieBreakScore = Math.round((total - murni) * 1000);
+                const tieBreakItem = {
+                  ...item,
+                  total: tieBreakScore
+                };
+                result.semifinal3.push(tieBreakItem);
                 // Kembalikan juga ke grup aslinya agar tidak hilang dari semifinal1 / semifinal2
                 let originalGrup = 1;
                 if (undiStr !== '') {
